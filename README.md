@@ -1,4 +1,4 @@
-# Smartball project firmware
+# Smartball project - firmware
 
 This repository contains the Smartball project firmware.
 
