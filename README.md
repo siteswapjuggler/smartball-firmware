@@ -1,6 +1,6 @@
 # Smartball project firmware
 
-This deposit contains our Smartball project firmware.
+This deposit contains the Smartball project firmware.
 
 ## Installation
 
