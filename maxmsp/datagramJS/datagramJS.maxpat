@@ -9,7 +9,7 @@
 			"modernui" : 1
 		}
 ,
-		"rect" : [ 111.0, 56.0, 1109.0, 919.0 ],
+		"rect" : [ 961.0, 51.0, 958.0, 988.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 10.0,
@@ -37,6 +37,168 @@
 		"style" : "",
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-72",
+					"maxclass" : "slider",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 285.5, 714.0, 20.0, 140.0 ],
+					"size" : 256.0,
+					"style" : ""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-69",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 285.5, 856.400024, 58.0, 20.0 ],
+					"presentation_rect" : [ 285.5, 857.400024, 0.0, 0.0 ],
+					"style" : "",
+					"text" : "/master $1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-52",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 256.549988, 186.0, 64.0, 20.0 ],
+					"style" : "",
+					"text" : "r new_cmds"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-51",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 48.549988, 898.0, 66.0, 20.0 ],
+					"style" : "",
+					"text" : "s new_cmds"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"compatibility" : 1,
+					"id" : "obj-49",
+					"maxclass" : "swatch",
+					"numinlets" : 3,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "float" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 152.5, 795.233337, 121.0, 59.0 ],
+					"presentation_rect" : [ 352.0, 291.0, 0.0, 0.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-50",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 152.5, 856.400024, 109.0, 20.0 ],
+					"presentation_rect" : [ 352.0, 357.0, 0.0, 0.0 ],
+					"style" : "",
+					"text" : "/rgb-bg $1 $2 $3 0 0 0"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-43",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 18.0, 795.233337, 29.5, 20.0 ],
+					"style" : "",
+					"text" : "0"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-41",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 113.700012, 795.233337, 29.5, 20.0 ],
+					"style" : "",
+					"text" : "20"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-36",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 80.5, 795.233337, 29.5, 20.0 ],
+					"presentation_rect" : [ 409.0, 189.0, 0.0, 0.0 ],
+					"style" : "",
+					"text" : "15"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-18",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 48.549988, 795.233337, 29.5, 20.0 ],
+					"style" : "",
+					"text" : "10"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-24",
+					"maxclass" : "number",
+					"maximum" : 255,
+					"minimum" : 0,
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 48.549988, 829.233337, 50.0, 20.0 ],
+					"style" : ""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-12",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 48.549988, 856.400024, 41.0, 20.0 ],
+					"style" : "",
+					"text" : "/stb $1"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-7",
 					"maxclass" : "gswitch2",
@@ -2253,7 +2415,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 17.0, 251.0, 199.0, 20.0 ],
+					"patching_rect" : [ 17.0, 251.0, 167.0, 20.0 ],
 					"style" : "",
 					"text" : "sadam.udpSender 239.0.0.50 8000"
 				}
@@ -2279,7 +2441,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 109.5, 217.0, 99.0, 20.0 ],
+					"patching_rect" : [ 109.5, 218.0, 99.0, 20.0 ],
 					"saved_object_attributes" : 					{
 						"filename" : "smartball_tx.js",
 						"parameter_enable" : 0
@@ -4472,6 +4634,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-51", 0 ],
+					"source" : [ "obj-12", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-83", 0 ],
 					"source" : [ "obj-120", 0 ]
 				}
@@ -4523,6 +4692,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-24", 0 ],
+					"source" : [ "obj-18", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-505", 0 ],
 					"midpoints" : [ 26.5, 106.0, 93.5, 106.0 ],
 					"source" : [ "obj-19", 0 ]
@@ -4554,6 +4730,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-14", 0 ],
 					"source" : [ "obj-23", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-12", 0 ],
+					"source" : [ "obj-24", 0 ]
 				}
 
 			}
@@ -4622,6 +4805,14 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-24", 0 ],
+					"midpoints" : [ 90.0, 821.233337, 58.049988, 821.233337 ],
+					"source" : [ "obj-36", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-57", 0 ],
 					"source" : [ "obj-37", 0 ]
 				}
@@ -4631,6 +4822,22 @@
 				"patchline" : 				{
 					"destination" : [ "obj-59", 0 ],
 					"source" : [ "obj-39", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-24", 0 ],
+					"midpoints" : [ 123.200012, 821.233337, 58.049988, 821.233337 ],
+					"source" : [ "obj-41", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-24", 0 ],
+					"midpoints" : [ 27.5, 822.233337, 54.549988, 822.233337, 54.549988, 824.233337, 58.049988, 824.233337 ],
+					"source" : [ "obj-43", 0 ]
 				}
 
 			}
@@ -4665,8 +4872,23 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-50", 0 ],
+					"source" : [ "obj-49", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-77", 6 ],
 					"source" : [ "obj-5", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-51", 0 ],
+					"midpoints" : [ 162.0, 884.0, 58.049988, 884.0 ],
+					"source" : [ "obj-50", 0 ]
 				}
 
 			}
@@ -4688,6 +4910,14 @@
 				"patchline" : 				{
 					"destination" : [ "obj-510", 0 ],
 					"source" : [ "obj-513", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-520", 0 ],
+					"midpoints" : [ 266.049988, 212.0, 119.0, 212.0 ],
+					"source" : [ "obj-52", 0 ]
 				}
 
 			}
@@ -4851,6 +5081,14 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-51", 0 ],
+					"midpoints" : [ 295.0, 884.0, 58.049988, 884.0 ],
+					"source" : [ "obj-69", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-17", 0 ],
 					"source" : [ "obj-7", 1 ]
 				}
@@ -4867,6 +5105,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-77", 0 ],
 					"source" : [ "obj-71", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-69", 0 ],
+					"source" : [ "obj-72", 0 ]
 				}
 
 			}
@@ -4974,14 +5219,14 @@
  ],
 		"dependency_cache" : [ 			{
 				"name" : "smartball_tx.js",
-				"bootpath" : "H:/Dropbox/03. fabrication numerique/08. ELECTRONIQUE/01. SMARTBALL/!!! Smartball ESP/Smartball v2/tests_ESP8266/test_développement/_ESP_SMARTBALL/maxmsp/datagramJS",
+				"bootpath" : "H:/Dropbox/03. fabrication numerique/08. ELECTRONIQUE/01. SMARTBALL/!!! Smartball ESP/Smartball v2/tests_ESP8266/test_développement/smartball-firmware/maxmsp/datagramJS",
 				"patcherrelativepath" : ".",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "smartball_rx.js",
-				"bootpath" : "H:/Dropbox/03. fabrication numerique/08. ELECTRONIQUE/01. SMARTBALL/!!! Smartball ESP/Smartball v2/tests_ESP8266/test_développement/_ESP_SMARTBALL/maxmsp/datagramJS",
+				"bootpath" : "H:/Dropbox/03. fabrication numerique/08. ELECTRONIQUE/01. SMARTBALL/!!! Smartball ESP/Smartball v2/tests_ESP8266/test_développement/smartball-firmware/maxmsp/datagramJS",
 				"patcherrelativepath" : ".",
 				"type" : "TEXT",
 				"implicit" : 1

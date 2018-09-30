@@ -9,7 +9,7 @@ function send(cmd,data) {
 		cks = cmd + msb + lsb;
 		msg = new Array();
 
-	for (var i = 0; i < l; i++) {						// données
+	for (var i = 0; i < l; i++) {					// données
 		cks += data[i];
 		msg.push(data[i]);
 		}
@@ -34,6 +34,12 @@ function anything() {
 			arguments[i] &= 255;
 		}
 		send(0x20,arguments); 
+	}
+	else if (messagename == "/rgb-bg") {
+		for (i=0;i<arguments.length;i++) {
+			arguments[i] &= 255;
+		}
+		send(0x22,arguments); 
 	}
 	else if (messagename == "/ping") {
 		send(0x01,noargs); 
@@ -86,6 +92,18 @@ function anything() {
 		data.push(arguments[0]>>8);
 		data.push(arguments[0]&255);
 		send(0x50,data);  
+	}
+	else if (messagename == "/stb") {
+		for (i=0;i<arguments.length;i++) {
+			arguments[i] &= 255;
+		}
+		send(0x60,arguments); 
+	}
+	else if (messagename == "/master") {
+		for (i=0;i<arguments.length;i++) {
+			arguments[i] &= 255;
+		}
+		send(0x70,arguments); 
 	}
 }
 anything.immediate = 1;

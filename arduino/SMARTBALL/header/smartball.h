@@ -1,18 +1,17 @@
+#ifndef SMARTBALL_h
+#define SMARTBALL_h
+
 //---------------------------------------------------------------
 // COLOR CONSTANT
 //---------------------------------------------------------------
 
-#define RED   0xFF0000
-#define BLUE  0x0000FF
-#define GREEN 0x00FF00
-#define BLACK 0x000000
+#define RED    0xFF0000
+#define BLUE   0x0000FF
+#define GREEN  0x00FF00
+#define BLACK  0x000000
 
-//---------------------------------------------------------------
-// EEPROM ADDRESSES
-//---------------------------------------------------------------
-
-#define FACTORY_SETTINGS_ADDR   0x00
-#define IMU_SETTINGS_ADDR       0x10
+#define WAIT   0X8F4E00
+#define ALERT  0X7F0000
 
 //---------------------------------------------------------------
 // DATAGRAM PROTOCOL
@@ -26,14 +25,17 @@
 #define CMD_SLEEP    0x03
 #define CMD_FACTORY  0x10
 #define SAVE_FACTORY 0x11
-#define CMD_COLOR    0x20
+#define CMD_COLOR1 	 0x20
 #define CMD_STREAM   0x21
+#define CMD_COLOR2   0x22
 #define CMD_IMU      0x30
 #define CMD_ACCRANGE 0x32
 #define CMD_GYRRANGE 0x33
 #define SAVE_IMU     0x31
 #define CMD_IRL      0x40
 #define CMD_MOT      0x50
+#define CMD_STB		 0x60
+#define CMD_MST		 0x70
 
 //---------------------------------------------------------------
 // ESP8266 PINOUT
@@ -80,8 +82,20 @@
 #define BUZ_BIT  4
 
 //---------------------------------------------------------------
+// EEPROM ADDRESSES
+//---------------------------------------------------------------
+
+#define FS_ADDR  0x00
+#define IS_ADDR  0x10
+#define WS_ADDR  0x40
+
+//---------------------------------------------------------------
 // DATA STRUCTURES
 //---------------------------------------------------------------
+
+#define PWD_LEN  64
+#define SSID_LEN 64
+
 
 struct _factorySettings {
   uint16_t serialNumber;
@@ -92,9 +106,12 @@ struct _factorySettings {
 struct _imuSettings {
   byte streamFlag;
   byte accRange;
-  byte accSmoothing;
   byte gyrRange;
-  byte gyrSmoothing;
-  byte magSmoothing;
 };
 
+struct _wifiSettings {
+  char ssid[SSID_LEN];
+  char password[PWD_LEN];
+};
+
+#endif
