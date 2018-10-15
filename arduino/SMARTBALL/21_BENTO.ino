@@ -2,8 +2,8 @@
 // UDP SOCKET
 //-----------------------------------------------------------------------------------
 
-WiFiUDP BenTo;                     // BenTo UDP socket
-#define BENTO_IN 8888              // BenTo UDP in port
+WiFiUDP BenTo;                          // BenTo UDP socket
+#define BENTO_IN 8888                   // BenTo UDP in port
 
 boolean connectBenTo() {
   return BenTo.begin(BENTO_IN) == 1;

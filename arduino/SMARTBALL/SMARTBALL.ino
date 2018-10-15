@@ -1,27 +1,27 @@
 /* ----------------------------------------------------------------------------------
- * THE SMARTBALL PROJECT - 23/09/2018
- * Copyright 2013-2018 Sylvain GARNAVAULT 
- * ----------------------------------------------------------------------------------
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, version 3 of the License.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- * 
- * ----------------------------------------------------------------------------------
- * 
- * Written as part of the Smartball project:
- *  - https://github.com/siteswapjuggler/smartball-hardware
- *  - https://github.com/siteswapjuggler/smartball-firmware 
- *  - https://github.com/siteswapjuggler/smartball-externals
- */
+   THE SMARTBALL PROJECT - 23/09/2018
+   Copyright 2013-2018 Sylvain GARNAVAULT
+   ----------------------------------------------------------------------------------
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, version 3 of the License.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+   ----------------------------------------------------------------------------------
+
+   Written as part of the Smartball project:
+    - https://github.com/siteswapjuggler/smartball-hardware
+    - https://github.com/siteswapjuggler/smartball-firmware
+    - https://github.com/siteswapjuggler/smartball-externals
+*/
 
 //-----------------------------------------------------------------------------------
 // BOARD VERSION
@@ -38,8 +38,6 @@
 #include <Ticker.h>            // ESP8266 scheduling library for regular event
 #include <EEPROM.h>            // 512 byte EEPROM Emulation for ESP8266
 #include <ESP8266WiFi.h>       // Standard WiFi Library
-#include <ESP8266mDNS.h>       // mDNS hostname standard
-#include <ArduinoOTA.h>        // allow Over the Air firmware updates
 #include <ESP8266WebServer.h>  // allow WebServer for configuration
 #include <WiFiUDP.h>           // UDP Protocol Library
 #include <OSCBundle.h>         // OSC Protocol Library
@@ -50,7 +48,6 @@
 // USER PARAMETERS
 //-----------------------------------------------------------------------------------
 
-//#define HANDLE_OTA           // uncomment to activate OTA (experimental option)
 //#define UNIQUE_OUT_PORT      // uncomment to set a unique out port for each ball, outPort = dmgOutPort + serial.number
 //#define DEBUG                // uncomment for serial debugging messages
 
@@ -58,6 +55,7 @@
 // GLOBAL VARIABLE
 //-----------------------------------------------------------------------------------
 
+bool   serverMode;
 Ticker batTicker;              // battery management ticker
 Ticker frameTicker;            // main frame ticker
 
@@ -66,7 +64,7 @@ Ticker frameTicker;            // main frame ticker
 //-----------------------------------------------------------------------------------
 
 void setup() {
-  Serial.begin(115200);
+  blinkRGB(RED, 250, 125);
   initDebug();
   initEEPROM();
   if (imuAvailable()) initIMU();
@@ -74,15 +72,14 @@ void setup() {
   if (irlAvailable()) initIRL();
   if (motAvailable()) initMOT();
   if (connectWifi()) {
-    serverInit();
-    connectOTA();
-//    connectMDNS(); // Does not work with the server
+    serverMode = false;
     blinkRGB(BLUE, 250, 125);
     if (connectDGM())   blinkRGB(GREEN, 250, 125); else blinkRGB(RED, 250, 125);
     if (connectOSC())   blinkRGB(GREEN, 250, 125); else blinkRGB(RED, 250, 125);
     if (connectBenTo()) blinkRGB(GREEN, 250, 125); else blinkRGB(RED, 250, 125);
   }
   else {
+    serverMode = true;
     accessPointInit();
     serverInit();
   }
@@ -95,12 +92,15 @@ void setup() {
 //-----------------------------------------------------------------------------------
 
 void loop() {
-  strobeUpdate();                       // update strobe state
-  receiveDGM();                         // receive Smartball Datagrams
-  receiveOSC();                         // receive Yo Protocol
-  receiveBenTo();                       // receive BenTo Datagrams
-  handleOTA();                          // (optional) OverTheAir Management
-  serverUpdate();                       // (optional) Webserver Management
+  if (serverMode) {
+    serverUpdate();                       // (optional) Webserver Management
+  }
+  else {
+    strobeUpdate();                       // update strobe state
+    receiveDGM();                         // receive Smartball Datagrams
+    receiveOSC();                         // receive Yo Protocol
+    receiveBenTo();                       // receive BenTo Datagrams
+  }
 }
 
 //-----------------------------------------------------------------------------------

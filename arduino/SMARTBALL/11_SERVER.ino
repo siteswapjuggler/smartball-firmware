@@ -2,7 +2,6 @@
 // WEB SERVER
 //-----------------------------------------------------------------------------------
 
-bool serverMode = false;
 ESP8266WebServer server(80);                            //Server on port 80
 
 void serverInit() {
@@ -19,7 +18,9 @@ void serverInit() {
 }
 
 void serverUpdate() {
-  if (serverMode) server.handleClient();
+  if (serverMode) {
+    server.handleClient();
+  }
 }
 
 //-----------------------------------------------------------------------------------
@@ -47,8 +48,12 @@ void setNetwork() {
   server.arg("ssid").toCharArray(wset.ssid, SSID_LEN);
   server.arg("pwd").toCharArray(wset.password, PWD_LEN);
 
+  
   if (!handleFileRead("/reboot.html"))                     // send it if it exists
     server.send(404, "text/plain", "404: Not Found");      // otherwise, respond with a 404 (Not Found) error
+
+  saveWifiSettings();
+  espReboot();
 }
 
 bool handleFileRead(String path) {
@@ -73,4 +78,3 @@ String getContentType(String filename) {
   else if (filename.endsWith(".png")) return "image/png";
   return "text/plain";
 }
-
