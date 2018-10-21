@@ -116,4 +116,3 @@ void mainFrame() {
   if (irlAvailable()) updateIRL();      // update infrared leds values
   if (motAvailable()) updateMOT();      // update vibration motor values
 }
-

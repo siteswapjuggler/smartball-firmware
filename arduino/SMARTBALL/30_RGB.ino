@@ -68,7 +68,7 @@ int32_t dim(byte v, int32_t c) {
   return rgb(values, 0);
 }
 
-int32_t rgb(byte* data, byte addr) {
+int32_t rgb(byte* data, uint16_t addr) {
   return (data[addr++] << 16) | (data[addr++] << 8) | data[addr];
 }
 
@@ -77,7 +77,7 @@ void changeRGB(byte slot, int32_t c) {
     colors[slot][i] = c;
 }
 
-void blinkRGB(uint32_t c, unsigned int dur, unsigned int gap) {
+void blinkRGB(uint32_t c, uint16_t dur, uint16_t gap) {
   changeRGB(0, c);
   updateRGB();
   delay(dur);
@@ -92,22 +92,22 @@ void blinkRGB(uint32_t c, unsigned int dur, unsigned int gap) {
 // DATAGRAM FUNCTIONS
 //-----------------------------------------------------------------------------------
 
-void setRGB(byte slot, byte n, uint16_t offsetet) {
+void setRGB(byte slot, byte n, uint16_t offset) {
   int32_t c1, c2, c3;
   switch (n) {
     default:
-      changeRGB(slot, rgb(_DIN, 0 + offsetet));
+      changeRGB(slot, rgb(_DIN, 0 + offset));
       break;
     case 2:
       for (int i = 0; i < RGB_NUM / 2; i++)
-        colors[slot][i] = rgb(_DIN, 0 + offsetet);
+        colors[slot][i] = rgb(_DIN, 0 + offset);
       for (int i = RGB_NUM / 2; i < RGB_NUM; i++)
-        colors[slot][i] = rgb(_DIN, 3 + offsetet);
+        colors[slot][i] = rgb(_DIN, 3 + offset);
       break;
     case 3:
-      c1 = rgb(_DIN, 0 + offsetet);
-      c2 = rgb(_DIN, 3 + offsetet);
-      c3 = rgb(_DIN, 6 + offsetet);
+      c1 = rgb(_DIN, 0 + offset);
+      c2 = rgb(_DIN, 3 + offset);
+      c3 = rgb(_DIN, 6 + offset);
       colors[slot][0] = c1;
       colors[slot][5] = c1;
       colors[slot][1] = c2;
@@ -117,7 +117,7 @@ void setRGB(byte slot, byte n, uint16_t offsetet) {
       break;
     case 6:
       for (int i = 0; i < RGB_NUM; i++)
-        colors[slot][i] = rgb(_DIN, 3 * i + offsetet);
+        colors[slot][i] = rgb(_DIN, 3 * i + offset);
       break;
   }
 }
