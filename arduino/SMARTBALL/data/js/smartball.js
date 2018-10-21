@@ -8,3 +8,5 @@ function scanNetwork() {
   xhttp.open("GET", "./scanNetwork", true);
   xhttp.send();
 }
+
+scanNetwork();

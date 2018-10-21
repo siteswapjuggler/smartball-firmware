@@ -13,7 +13,7 @@ boolean connectWifi() {
   bool state = true;
   while (WiFi.status() != WL_CONNECTED) {
     blinkRGB(WAIT, 125, 125);
-    if (i > 150 || WiFi.status() == WL_CONNECT_FAILED) {
+    if (i > 300 || WiFi.status() == WL_CONNECT_FAILED) {
       state = false;
       WiFi.disconnect();
       for (byte n = 0; n < (4 * 6); n++) blinkRGB(ALERT, 125, 125);
