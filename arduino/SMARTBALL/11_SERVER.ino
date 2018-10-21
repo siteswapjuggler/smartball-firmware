@@ -7,6 +7,9 @@ ESP8266WebServer server(80);                            //Server on port 80
 void serverInit() {
   SPIFFS.begin();                                       // Start file system
   server.on("/", handleRoot);                           // Which routine to handle at root location. This is display page
+  server.on("/getSN", getSN);                           // Asking for actual serial number
+  server.on("/getSSID", getSSID);                       // Asking for actual network SSID
+  server.on("/ballReboot", ballReboot);                 // Reboot the ball
   server.on("/scanNetwork", scanNetwork);               // Asking for available networks
   server.on("/setNetwork", HTTP_POST, setNetwork);      // Setting WiFi network parameters
   server.onNotFound([]() {                              // If the client requests any URI
@@ -47,12 +50,23 @@ void scanNetwork() {
 void setNetwork() {
   server.arg("ssid").toCharArray(wset.ssid, SSID_LEN);
   server.arg("pwd").toCharArray(wset.password, PWD_LEN);
-
+  saveWifiSettings();
   
   if (!handleFileRead("/reboot.html"))                     // send it if it exists
     server.send(404, "text/plain", "404: Not Found");      // otherwise, respond with a 404 (Not Found) error
+}
 
-  saveWifiSettings();
+void getSN() {
+  String answer = String(fset.serialNumber);
+  server.send(200, "text/plain", answer);
+}
+
+void getSSID() {
+  String answer = String(wset.ssid);
+  server.send(200, "text/plain", answer);
+}
+
+void ballReboot() {
   espReboot();
 }
 

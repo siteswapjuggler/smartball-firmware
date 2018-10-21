@@ -22,37 +22,52 @@
         </nav>
                 
         <main role="main" class="container">
-            <div class="starter-template">
+            <!------------------------------------------------------------------------------------------------------------------------------------>
+			
+			<div class="starter-template">
                 <h1>Welcome</h1>
                 <p class="lead">You can use this form to set your Smartball WiFi network.</p>
             </div>
+			
+	
+			<!------------------------------------------------------------------------------------------------------------------------------------>
+			
+			<div>
+				<h4 class="mb-3">WiFi Configuration</h4>
 
-			<h4 class="mb-3">WiFi Configuration</h4>
+				<form class="needs-validation" method="post" action="/setNetwork">
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<label for="ssid">Network SSID</label>
+							<select class="custom-select" id="ssid" name="ssid">
+							<option disabled selected>Select your network...</option>
+							</select>
+						</div>
+				
+						<div class="col-md-6 mb-3">
+							<label for="pwd">Password</label>
+							<input type="password" class="form-control" id="pwd" name="pwd" placeholder="password">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<button class="btn btn-info btn-lg" type="button" onclick="scanNetwork()" aria-disabled="true">Scan networks</button>
+						</div>
+						<div class="col-md-6 mb-3">
+							<button class="btn btn-success btn-lg" type="submit">Save configuration</button>
+						</div>
+					</div>
+				</form>
+			</div>
 
-            <form class="needs-validation" method="post" action="/setNetwork">
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="ssid">Network SSID</label>
-                        <select class="custom-select" id="ssid" name="ssid">
-                        <option disabled selected>Select your network...</option>
-                        </select>
-                	</div>
-            
-                    <div class="col-md-6 mb-3">
-                        <label for="pwd">Password</label>
-                        <input type="password" class="form-control" id="pwd" name="pwd" placeholder="password">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <button class="btn btn-info btn-lg" type="button" onclick="scanNetwork()" aria-disabled="true">Scan networks</button>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <button class="btn btn-success btn-lg" type="submit">Save configuration</button>
-                    </div>
-                </div>
-            </form>
-        </main>
+			<!------------------------------------------------------------------------------------------------------------------------------------>
+			
+			<div style="margin-top: 20px">
+				<h4 class="mb-3">Actual Configuration</h4>
+				<p class="lead" style="margin-bottom: 4px"><span class="config-title">Serial Number:</span><span id="ballSN">-</span></p>
+				<p class="lead"><span class="config-title">Network SSID:</span><span id="ballSSID">-</span></p>
+			</div>
+		</main>
 
 
         <!-- Bootstrap JS --> 

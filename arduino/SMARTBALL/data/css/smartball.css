@@ -41,3 +41,8 @@ li li:before {
   border-style: outset;
   border: none;
 }
+
+.config-title {
+	display:inline-block; 
+	width:140px;
+}
