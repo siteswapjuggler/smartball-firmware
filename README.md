@@ -19,7 +19,9 @@ The Smartball project is an ESP8266 Arduino compatible firmware. In order to upl
 - installing ESP8266 boards in the Arduino IDE
 - installing firmware dependencies
 - choosing your IDE options
+- upload EEPROM factory settings
 - upload the firmware
+- upload SPIFFS data
 
 ### Installing Arduino IDE 
 
@@ -46,10 +48,21 @@ You have now to configure the boards options in the IDE, those are the good opti
 - 921600
 - Only Sketch
 
+### Upload EEPROM factory settings
+
+After configuring the IDE, boards and libraries, just plug your Smartball, choose its serial port in the "Tool" menu and upload the firmware sketch stored in the 'arduino/EEPROM' subfolder. Remember to change to Serial Number according to your ball. Be patient, ESP8266 sketches can takes some time to compile. The communication can fail with high baudrates, check for power on, unplug and replug and try again.
+
+**ATTENTION:** you need to power on the ball before uploading...
+
+
 ### Upload the firmware
 
-After configuring the IDE, boards and libraries, just plug your Smartball, choose its serial port in the "Tool" menu and upload the sketch. ESP8266 sketches takes time to compile so be patient. It appears that sometimes the communication will fail, check for power on, unplug and replug and try again.
+After configuring the IDE, boards, libraries and setting up EEPROM factory settings, just plug your Smartball, choose its serial port in the "Tool" menu and upload the firmware sketch stored in the 'arduino/SMARTBALL' subfolder. Be patient, ESP8266 sketches can takes some time to compile. The communication can fail with high baudrates, check for power on, unplug and replug and try again.
 
-**ATENTION:** you need to power on the ball before uploading...
+**ATTENTION:** you need to power on the ball before uploading...
 
+### Upload SPIFFS data
 
+The new firmware use a SPI File System to store the webserver data files. You can upload those data by installing the file system upload as described in the repository : https://github.com/esp8266/arduino-esp8266fs-plugin, then using the *Tools > ESP8266 Sketch Data Upload* menu item within the Arduino IDE with the firmware sketch opened.
+
+**ATTENTION:** you need to power on the ball before uploading...
