@@ -3,31 +3,30 @@ inlets=1;
 outlets=2;
 
 function send(cmd,data) {
-	var l = data.length,
-		msb = l >> 8,
-		lsb = l & 255
-		cks = cmd + msb + lsb;
-		msg = new Array();
-
-	for (var i = 0; i < l; i++) {					// données
-		cks += data[i];
-		msg.push(data[i]);
-		}
-	outlet(0,0xE7,cmd,msb,lsb,msg,cks%256); 		// paquet
+	var l = data.length, msg = new Array();
+	for (var i = 0; i < l; i++) msg.push(data[i]);
+	outlet(0,cmd,msg);
 	}
 send.local=1;
 send.immediate=1;
 
-// SMARTBALL COLOR COMMANDS
+//--------------------------
+// SMARTBALL COMMANDS
+//--------------------------
 
 function anything() {
 	var noargs = new Array();
 	
 	if (messagename == "/stm") {
-		for (i=0;i<arguments.length;i++) {
-			arguments[i] &= 255;
+		data = new Array();
+		data.push((arguments[0]>>8)&255);
+		data.push(arguments[0]&255);
+		data.push((arguments[1]>>8)&255);
+		data.push(arguments[1]&255);
+		for (i=2;i<arguments.length;i++) {
+			data.push(arguments[i] & 255);
 		}
-		send(0x21,arguments); 
+		send(0x21,data); 
 	}
 	else if (messagename == "/rgb") {
 		for (i=0;i<arguments.length;i++) {
@@ -64,6 +63,14 @@ function anything() {
 	else if (messagename == "/saveFactory") {
 		send(0x11,noargs); 
 	}
+	else if (messagename == "/setGeneral") {
+		data = new Array();
+		data.push(arguments[0]&255);
+		send(0x12,data);
+	}
+	else if (messagename == "/saveGeneral") {
+		send(0x13,noargs); 
+	}
 	else if (messagename == "/imu") {
 		arguments[0] &= 255; 
 		send(0x30,arguments);
@@ -94,10 +101,11 @@ function anything() {
 		send(0x50,data);  
 	}
 	else if (messagename == "/stb") {
-		for (i=0;i<arguments.length;i++) {
-			arguments[i] &= 255;
-		}
-		send(0x60,arguments); 
+		data = new Array();
+		val  = arguments[0]*100; 
+		data.push(val>>8);
+		data.push(val&255);
+		send(0x60,data); 
 	}
 	else if (messagename == "/master") {
 		for (i=0;i<arguments.length;i++) {

@@ -31,9 +31,15 @@ void updateIMU() {
     IMU.setGyroRange((GyroRange)iset.gyrRange);
     changeGR = false;
   }
+
+  // SENSOR READING
   IMU.readSensor();
   strip.updatePins(D7, D5);
 
+  // QUATERNION FILTERS
+  //IMU.quaternionUpdate();
+  //IMU.realWorldAccel();
+  
   // TODO data filter (a low pass filter probably)
   // TODO data computation (for flags, peak, detection, apogee prediction)
   
@@ -62,6 +68,7 @@ void sendIMU() {
   int16_t  val = 0;
   uint16_t index = 0;
   _DOUT[index++] = iset.streamFlag;
+  
   if (iset.streamFlag & (1 << ACC_BIT)) {
     val = (int16_t)(IMU.getAccelX_mss() * 100.);
     _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
@@ -70,6 +77,7 @@ void sendIMU() {
     val = (int16_t)(IMU.getAccelZ_mss() * 100.);
     _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
   }
+  
   if (iset.streamFlag & (1 << GYR_BIT)) {
     val = (int16_t)(IMU.getGyroX_rads() * 100.);
     _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
@@ -78,6 +86,7 @@ void sendIMU() {
     val = (int16_t)(IMU.getGyroZ_rads() * 100.);
     _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
   }
+  
   if (iset.streamFlag & (1 << MAG_BIT)) {
     val = (int16_t)(IMU.getMagX_uT() * 100.);
     _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
@@ -86,10 +95,14 @@ void sendIMU() {
     val = (int16_t)(IMU.getMagZ_uT() * 100.);
     _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
   }
+  
   if (iset.streamFlag & (1 << TMP_BIT)) {
     val = (int16_t)(IMU.getTemperature_C() * 100.);
     _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
   }
+
+  
+  
   sendDgmAnswer(CMD_IMU,index);
 }
 

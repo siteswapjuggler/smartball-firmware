@@ -42,13 +42,13 @@
 #include <WiFiUDP.h>           // UDP Protocol Library
 #include <OSCBundle.h>         // OSC Protocol Library
 #include <MPU9250.h>           // Custom MPU920 SPI Library - see libraries subfolder
+#include <helper_3dmath.h>     // Quaternion class, vector and rotation
 #include <Adafruit_DotStar.h>  // Adafruit_Dotstar Library - https://github.com/adafruit/Adafruit_DotStar >> Issue with SPI Mode has been documented here https://github.com/adafruit/Adafruit_DotStar/isetsues/28
 
 //-----------------------------------------------------------------------------------
 // USER PARAMETERS
 //-----------------------------------------------------------------------------------
 
-//#define UNIQUE_OUT_PORT      // uncomment to set a unique out port for each ball, outPort = dmgOutPort + serial.number
 //#define DEBUG                // uncomment for serial debugging messages
 
 //-----------------------------------------------------------------------------------

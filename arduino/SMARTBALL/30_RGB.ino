@@ -4,8 +4,8 @@
 
 Adafruit_DotStar strip = Adafruit_DotStar(RGB_NUM, D7, D5, DOTSTAR_BGR);
 
-byte dimmer = 255;
 byte strobeState = 0;
+float dimmer = 100.;
 int32_t colors[2][RGB_NUM] = {0};
 
 //-----------------------------------------------------------------------------------
@@ -33,13 +33,13 @@ void updateRGB() {
 // STROBE FUNCTIONS
 //-----------------------------------------------------------------------------------
 
-byte strobeSpeed = 0;
-byte strobeInterval = 0;
-unsigned long previousTime;
+unsigned long strobeSpeed = 0.;
+unsigned long previousTime = 0;
+unsigned long strobeInterval = 0;
 
 void strobeUpdate() {
   if (strobeSpeed) {
-    unsigned long t = millis();
+    unsigned long t = micros();
     if (t - previousTime >= strobeInterval) {
       strobeState = (strobeState + 1) % 2;
       updateRGB();
@@ -59,10 +59,10 @@ void updateSTB() {
 // COLOR FUNCTIONS
 //-----------------------------------------------------------------------------------
 
-int32_t dim(byte v, int32_t c) {
+int32_t dim(float v, int32_t c) {
   byte values[] = {(c >> 16) & 255, (c >> 8) & 255, c & 255};
   for (byte i = 0; i < 3; i++) {
-    float val = (float)values[i] * (float)v / 255.;
+    float val = (float)values[i] * v / 100.;
     values[i] = round(val);
   }
   return rgb(values, 0);
@@ -92,22 +92,22 @@ void blinkRGB(uint32_t c, uint16_t dur, uint16_t gap) {
 // DATAGRAM FUNCTIONS
 //-----------------------------------------------------------------------------------
 
-void setRGB(byte slot, byte n, uint16_t offset) {
+void setRGB(byte slot, byte n, uint16_t addr) {
   int32_t c1, c2, c3;
   switch (n) {
     default:
-      changeRGB(slot, rgb(_DIN, 0 + offset));
+      changeRGB(slot, rgb(_DIN, addr));
       break;
     case 2:
       for (int i = 0; i < RGB_NUM / 2; i++)
-        colors[slot][i] = rgb(_DIN, 0 + offset);
+        colors[slot][i] = rgb(_DIN, addr);
       for (int i = RGB_NUM / 2; i < RGB_NUM; i++)
-        colors[slot][i] = rgb(_DIN, 3 + offset);
+        colors[slot][i] = rgb(_DIN, addr+3);
       break;
     case 3:
-      c1 = rgb(_DIN, 0 + offset);
-      c2 = rgb(_DIN, 3 + offset);
-      c3 = rgb(_DIN, 6 + offset);
+      c1 = rgb(_DIN, addr);
+      c2 = rgb(_DIN, addr+3);
+      c3 = rgb(_DIN, addr+6);
       colors[slot][0] = c1;
       colors[slot][5] = c1;
       colors[slot][1] = c2;
@@ -117,22 +117,20 @@ void setRGB(byte slot, byte n, uint16_t offset) {
       break;
     case 6:
       for (int i = 0; i < RGB_NUM; i++)
-        colors[slot][i] = rgb(_DIN, 3 * i + offset);
+        colors[slot][i] = rgb(_DIN, addr + 3*i);
       break;
   }
 }
 
-void setSTM(byte ballNumber) {
-  byte colorNumber = _DIN[0];
-  setRGB(0, colorNumber, 1 + 3 * colorNumber * (fset.serialNumber % ballNumber));
+void setSTB(uint16_t addr) {
+  strobeSpeed = (_DIN[addr] << 8) | _DIN[addr+1];                         // in 0.01 ms steps
+  strobeSpeed = strobeSpeed ? constrain(strobeSpeed, 1000, 50000) : 0;    // no strobe over 50 Hz and under 1 Hz
+  strobeSpeed *= 10;                                                      // transformation into µs
 }
 
-void setSTB() {
-  strobeSpeed = _DIN[0] ? constrain(_DIN[0], 10, 255) : 0;
-}
-
-void setMST() {
-  dimmer = _DIN[0];
+void setMST(uint16_t addr) {
+  dimmer = (float)((_DIN[addr] << 8) | _DIN[addr+1])/100.;                // Q14.2
+  dimmer = constrain(dimmer,0.,100.);                                     // dimmer contrain from 0. to 100.
 }
 
 bool rgbAvailable() {

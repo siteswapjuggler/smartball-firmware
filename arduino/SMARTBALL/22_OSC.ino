@@ -25,6 +25,8 @@ void receiveOSC() {
     if (!msg.hasError()) {
       msg.dispatch("/yo", wassup);
       msg.dispatch("/wifiSettings", wifiSettings);
+      msg.dispatch("/saveWifiSettings", saveWifiSettings);
+      msg.dispatch("/oscReboot", oscReboot);
     }
   }
 }
@@ -35,8 +37,7 @@ void receiveOSC() {
 
 void wassup(OSCMessage& msg) {
   if (msg.size() == 1 && msg.isString(0)) {
-    char clientIP[32];
-    msg.getString(0, clientIP, 32);
+    msg.getString(0, wset.outputIp, IP_LEN);
 
     char smartballIP[32];
     WiFi.localIP().toString().toCharArray(smartballIP, 32);
@@ -44,7 +45,7 @@ void wassup(OSCMessage& msg) {
     OSCMessage answer("/wassup");
     answer.add(smartballIP);
     answer.add((int32)fset.serialNumber);
-    OSC.beginPacket(clientIP, OSC_OUT);
+    OSC.beginPacket(wset.outputIp, OSC_OUT);
     answer.send(OSC);
     OSC.endPacket();
     answer.empty();
@@ -52,10 +53,16 @@ void wassup(OSCMessage& msg) {
 }
 
 void wifiSettings(OSCMessage& msg) {
-  if (msg.size() == 2 && msg.isString(0) && msg.isString(1)) {
+  if (msg.size() == 3 && msg.isString(0) && msg.isString(1)) {
     msg.getString(0, wset.ssid, SSID_LEN);
-    msg.getString(1, wset.password,  PWD_LEN);
-    saveWifiSettings();
-    espReboot();
+    msg.getString(1, wset.password, PWD_LEN);
   }
+}
+
+void saveWifiSettings(OSCMessage& msg) {
+    saveWifiSettings();
+}
+
+void oscReboot(OSCMessage& msg) {
+    espReboot();
 }
