@@ -15,8 +15,7 @@ send.immediate=1;
 //--------------------------
 
 function anything() {
-	var noargs = new Array();
-	
+	var noargs = new Array();	
 	if (messagename == "/stm") {
 		data = new Array();
 		data.push((arguments[0]>>8)&255);
@@ -65,6 +64,7 @@ function anything() {
 	}
 	else if (messagename == "/setGeneral") {
 		data = new Array();
+		data.push((arguments[0]>>8)&255);
 		data.push(arguments[0]&255);
 		send(0x12,data);
 	}
@@ -102,16 +102,17 @@ function anything() {
 	}
 	else if (messagename == "/stb") {
 		data = new Array();
-		val  = arguments[0]*100; 
+		val  = Math.round(arguments[0]*100); 
 		data.push(val>>8);
 		data.push(val&255);
 		send(0x60,data); 
 	}
 	else if (messagename == "/master") {
-		for (i=0;i<arguments.length;i++) {
-			arguments[i] &= 255;
-		}
-		send(0x70,arguments); 
+		data = new Array();
+		val  = Math.round(arguments[0]*100); 
+		data.push(val>>8);
+		data.push(val&255);
+		send(0x70,data); 
 	}
 }
 anything.immediate = 1;

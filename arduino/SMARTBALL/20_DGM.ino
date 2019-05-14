@@ -29,7 +29,6 @@ void receiveDGM() {
 
       case CMD_PING:      sendPong();              break;
       case CMD_REBOOT:    espReboot();             break;
-      case CMD_SLEEP:     espDeepSleep();          break;
       case CMD_FACTORY:   setFactorySettings();    break;
       case SAVE_FACTORY:  saveFactorySettings();   break;
       case CMD_GENERAL:   setGeneralSettings();    break;
@@ -72,10 +71,4 @@ void sendDgmAnswer(byte cmd, uint16_t len) {
   DGM.write(cmd);
   if (len) DGM.write(_DOUT, len);
   DGM.endPacket();
-}
-
-uint8_t checkSum(uint8_t c, uint16_t l, uint8_t *data) {
-  uint8_t sum = c + (l >> 8) + (l & 255);
-  for (uint16_t i = 0; i < l; i++) sum += data[i];
-  return sum;
 }

@@ -56,6 +56,7 @@ void wifiSettings(OSCMessage& msg) {
   if (msg.size() == 3 && msg.isString(0) && msg.isString(1)) {
     msg.getString(0, wset.ssid, SSID_LEN);
     msg.getString(1, wset.password, PWD_LEN);
+    msg.getString(2, wset.outputIp, IP_LEN);
   }
 }
 

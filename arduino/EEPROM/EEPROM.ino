@@ -40,19 +40,19 @@ void loop() {
 //-----------------------------------------------------------------------------------
 
 void factorySettings() {
-  gset.idNumber = 1;
+  gset.idNumber = 0;
 
-  fset.serialNumber   = 0;
-  fset.deviceFlag     = fset.serialNumber ? 3 : 15;
+  fset.serialNumber   = 33;
+  fset.deviceFlag     = 3; //fset.serialNumber ? 3 : 15;
   fset.adcCalibration = 1000.;
 
   iset.streamFlag = 0;
   iset.accRange   = 3;
   iset.gyrRange   = 3;
   
-  strcpy(wset.ssid, "formation");
-  strcpy(wset.password, "formation");
-  strcpy(wset.outputIp, "192.168.20.12");
+  strcpy(wset.ssid, "DOME_FORMATION");
+  strcpy(wset.password, "dome_formation");
+  strcpy(wset.outputIp, "192.168.200.10");
   
   EEPROM.begin(512);
   EEPROM.put(FS_ADDR, fset);

@@ -1,6 +1,6 @@
 /* ----------------------------------------------------------------------------------
-   THE SMARTBALL PROJECT - 23/09/2018
-   Copyright 2013-2018 Sylvain GARNAVAULT
+   THE SMARTBALL PROJECT - 11/05/2019
+   Copyright 2013-2019 Sylvain GARNAVAULT
    ----------------------------------------------------------------------------------
 
    This program is free software: you can redistribute it and/or modify
