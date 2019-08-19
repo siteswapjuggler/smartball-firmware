@@ -5,7 +5,10 @@
 MPU9250 IMU(SPI, IMU_CS);
 bool changeAR = false;
 bool changeGR = false;
-float accMagnitude, gyrMagnitude, magMagnitude;
+
+byte  freeFallState, freeFallFilter = 0., previousFreeFallFilter;
+float accFirstDerivative = 0., accSecondDerivative;
+float gyrFirstDerivative = 0., gyrSecondDerivative;
 
 //-----------------------------------------------------------------------------------
 // BASIC FUNCTIONS
@@ -32,21 +35,34 @@ void updateIMU() {
     IMU.setGyroRange((GyroRange)iset.gyrRange);
     changeGR = false;
   }
-
+  
+  // VALUE BACKUP
+  float prevAccelN  = IMU.getAccelN_mss();
+  float prevAccelD  = accFirstDerivative;
+  float prevGyroN   = IMU.getGyroN_rads();
+  float prevGyroD   = gyrFirstDerivative;
+  previousFreeFallFilter = freeFallFilter;
+  
   // SENSOR READING
   IMU.readSensor();
   strip.updatePins(D7, D5);
+  
+  // MADGWICK FILTER
+  IMU.madgwickUpdate();
+  IMU.realWorldUpdate();
 
-  // MAGNITUDE UPDATE
-  accMagnitude = sqrt(IMU.getAccelX_mss() * IMU.getAccelX_mss() + IMU.getAccelY_mss() * IMU.getAccelY_mss() + IMU.getAccelZ_mss() * IMU.getAccelZ_mss());
-  gyrMagnitude = sqrt(IMU.getGyroX_rads() * IMU.getGyroX_rads() + IMU.getGyroY_rads() * IMU.getGyroY_rads() + IMU.getGyroZ_rads() * IMU.getGyroZ_rads());
-  magMagnitude = sqrt(IMU.getMagX_uT() * IMU.getMagX_uT() + IMU.getMagY_uT() * IMU.getMagY_uT() + IMU.getMagZ_uT() * IMU.getMagZ_uT());
+  // FIRST & SECOND DERIVATIVE
+  accFirstDerivative  = IMU.getAccelN_mss() - prevAccelN;
+  accSecondDerivative = accFirstDerivative - prevAccelD;
+  gyrFirstDerivative  = IMU.getGyroN_rads() - prevGyroN;
+  gyrSecondDerivative = gyrFirstDerivative - prevGyroD;
+  
+  // FREE FALL FILTER
+ 
+  freeFallFilter  = (IMU.getGyroN_rads() > 8.72665) ? abs(gyrFirstDerivative) < 0.0898132 : abs(gyrFirstDerivative) < 0.0174533; 
+  freeFallFilter  = freeFallFilter | (abs(accFirstDerivative) < 0.1) << 1 | (abs(accSecondDerivative) < 0.25) << 2 | (IMU.getGyroN_rads() > 0.872665) << 3;
+  freeFallState   = (previousFreeFallFilter + freeFallFilter) >> 1;
 
-  // QUATERNION FILTERS
-  //IMU.quaternionUpdate();
-  //IMU.realWorldAccel();
-
-  // TODO data filter (a low pass filter probably)
   // TODO data computation (for flags, peak, detection, apogee prediction)
 
   if (iset.streamFlag) sendIMU();
@@ -102,35 +118,42 @@ void sendIMU() {
     _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
   }
 
+  if (iset.streamFlag & (1 << TMP_BIT)) {
+    val = (int16_t)(IMU.getTemperature_C() * 100.);
+    _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
+  }
+
   if (iset.streamFlag & (1 << VEC_BIT)) {
-    val = (int16_t)(accMagnitude * 100.);
+    val = (int16_t)(IMU.getAccelN_mss() * 100.);
     _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
-    val = (int16_t)(gyrMagnitude * 100.);
+    val = (int16_t)(IMU.getGyroN_rads() * 100.);
     _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
-    val = (int16_t)(magMagnitude * 100.);
+    val = (int16_t)(IMU.getMagN_uT() * 100.);
     _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
   }
 
   if (iset.streamFlag & (1 << QUA_BIT)) {
-    val = (int16_t)(10. * 100.);
+    val = (int16_t)(IMU.getQuatW() * 10000.);
     _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
-    val = (int16_t)(20. * 100.);
+    val = (int16_t)(IMU.getQuatX() * 10000.);
     _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
-    val = (int16_t)(30. * 100.);
+    val = (int16_t)(IMU.getQuatY() * 10000.);
+    _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
+    val = (int16_t)(IMU.getQuatZ() * 10000.);
     _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
   }
 
   if (iset.streamFlag & (1 << WLD_BIT)) {
-    val = (int16_t)(10. * 100.);
+    val = (int16_t)(IMU.getWorldX_mss() * 100.);
     _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
-    val = (int16_t)(20. * 100.);
+    val = (int16_t)(IMU.getWorldY_mss() * 100.);
     _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
-    val = (int16_t)(30. * 100.);
+    val = (int16_t)(IMU.getWorldZ_mss() * 100.);
     _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
   }
 
   if (iset.streamFlag & (1 << STA_BIT)) {
-    val = 0b1010101010101010;
+    val = freeFallState;//0b1010101010101010;
     _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
   }
 

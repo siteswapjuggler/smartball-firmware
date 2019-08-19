@@ -41,7 +41,7 @@ _wifiSettings    wset;
 // LED FEEDBACK
 //---------------------------------------------------------------
 
-#include <Adafruit_DotStar.h> // Adafruit_Dotstar Library - https://github.com/adafruit/Adafruit_DotStar >> Issue with SPI Mode has been documented here https://github.com/adafruit/Adafruit_DotStar/issues/28
+#include <Adafruit_DotStar.h>
 Adafruit_DotStar strip = Adafruit_DotStar(RGB_NUM, D7, D5, DOTSTAR_BGR);
 
 void setup() {
@@ -91,10 +91,6 @@ void initRGB() {
   digitalWrite(RGB_CS, LOW);
   strip.begin();
   digitalWrite(RGB_CS, HIGH);
-}
-
-int32_t rgb(byte * data, byte addr) {
-  return (data[addr++] << 16) | (data[addr++] << 8) | data[addr];
 }
 
 void changeRGB(int32_t c) {

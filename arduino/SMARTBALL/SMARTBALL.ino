@@ -42,7 +42,6 @@
 #include <WiFiUDP.h>           // UDP Protocol Library
 #include <OSCBundle.h>         // OSC Protocol Library
 #include <MPU9250.h>           // Custom MPU920 SPI Library - see libraries subfolder
-#include <helper_3dmath.h>     // Quaternion class, vector and rotation
 #include <Adafruit_DotStar.h>  // Adafruit_Dotstar Library - https://github.com/adafruit/Adafruit_DotStar >> Issue with SPI Mode has been documented here https://github.com/adafruit/Adafruit_DotStar/isetsues/28
 
 //-----------------------------------------------------------------------------------
@@ -57,6 +56,7 @@
 
 bool   serverMode;
 Ticker batTicker;              // battery management ticker
+Ticker imuTicker;              // imu management ticker
 Ticker frameTicker;            // main frame ticker
 
 //-----------------------------------------------------------------------------------
@@ -83,8 +83,9 @@ void setup() {
     accessPointInit();
     serverInit();
   }
-  batTicker.attach_ms(100, updateBAT);
-  frameTicker.attach_ms(10, mainFrame);
+  imuTicker.attach_ms(7, imuFrame);       // IMU updates @ 142.85 Hz
+  batTicker.attach_ms(100, updateBAT);    // BAT updates @ 10 Hz
+  frameTicker.attach_ms(10, mainFrame);   // Main updates @ 100 Hz
 }
 
 //-----------------------------------------------------------------------------------
@@ -112,7 +113,14 @@ void mainFrame() {
     updateSTB();                        // update Strobe speed
     updateRGB();                        // update RGB leds
   }
-  if (imuAvailable()) updateIMU();      // update IMU values
   if (irlAvailable()) updateIRL();      // update infrared leds values
   if (motAvailable()) updateMOT();      // update vibration motor values
+}
+
+//-----------------------------------------------------------------------------------
+// IMU TICKER CALLBACK
+//-----------------------------------------------------------------------------------
+
+void imuFrame() {
+ if (imuAvailable()) updateIMU();      // update IMU values
 }
