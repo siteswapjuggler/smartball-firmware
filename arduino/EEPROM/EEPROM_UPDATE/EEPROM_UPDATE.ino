@@ -29,8 +29,8 @@ _oldImuSettings     oiset;
 // NEW EEPROM
 //-----------------------------------------------------------------------------------
 
-#define BOARD_VERSION 1        // 1 - Alpha and first batch for les Objets Volants
-#include "header/smartball.h"  // Smartball specific definitions
+#define BOARD_VERSION 1
+#include "header/smartball.h"
 
 _factorySettings fset;
 _imuSettings     iset;
