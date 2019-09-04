@@ -11,7 +11,7 @@ int   batCounter = 0;
 
 void updateBAT() {
   // REFRESH BATT VALUE @10Hz
-  float v = (float)analogRead(BATT_PIN);  // TODO COULD BE A PROBLEM FOR WIFI ROUTINE
+  float v = (float)analogRead(BATT_PIN);    // TODO COULD BE A PROBLEM FOR WIFI ROUTINE
   float s = fset.adcCalibration >= 0. ? fset.adcCalibration : 5.;
   float n = 5.*v/s;
   

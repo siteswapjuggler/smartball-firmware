@@ -48,8 +48,9 @@
 // USER PARAMETERS
 //-----------------------------------------------------------------------------------
 
-//#define MSG_DEBUG            // uncomment for communication serial feedbacks
-//#define TIME_DEBUG           // uncomment for time debug serial feedbacks
+#define DGM_DEBUG            // uncomment for datagram communication serial feedbacks
+#define TIME_DEBUG           // uncomment for time debug serial feedbacks
+#define EEPROM_DEBUG         // uncomment for EEPROM serial print during setup
 
 //-----------------------------------------------------------------------------------
 // GLOBAL VARIABLE
@@ -87,8 +88,8 @@ void setup() {
     serverInit();
   }
   
-  imuTicker.attach_ms(7, imuFrame);       // IMU updates  @ 142.85 Hz   (TODO quicker what are the limitation)
-  batTicker.attach_ms(100, updateBAT);    // BAT updates  @ 10 Hz       (TODO become optionnal)
+  imuTicker.attach_ms(10, imuFrame);      // IMU updates  @ 100 Hz   (TODO quicker but what is the limitation)
+  batTicker.attach_ms(100, updateBAT);    // BAT updates  @ 10 Hz    (TODO become optionnal)
   frameTicker.attach_ms(10, mainFrame);   // Main updates @ 100 Hz
 }
 
@@ -103,9 +104,7 @@ void loop() {
   }
   else {
     strobeUpdate();                       // update strobe state
-    
     receiveDGM();                         // receive Smartball Datagrams (TODO become optional)
-    
     receiveOSC();                         // receive Yo Protocol         (TODO become optional)
     receiveBenTo();                       // receive BenTo Datagrams     (TODO become optional)
   }

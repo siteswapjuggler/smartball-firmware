@@ -83,6 +83,9 @@ function anything() {
 	else if (messagename == "/saveImu") {
 		send(0x31,noargs);
 	}
+	else if (messagename == "/defaultImu") {
+		send(0x34,noargs);
+	}
 	else if (messagename == "/accRange") {
 		arguments[0] &= 3; 
 		send(0x32,arguments);

@@ -77,18 +77,24 @@ void updateIMU() {
 // DATAGRAM FUNCTIONS
 //-----------------------------------------------------------------------------------
 
-void setIMU() {
-  iset.streamFlag = _DIN[0];
+void setIMU(byte v) {
+  iset.streamFlag = v;
 }
 
-void setAccRange() {
-  iset.accRange = _DIN[0];
+void setAccRange(byte v) {
+  iset.accRange = v;
   changeAR = true;
 }
 
-void setGyrRange() {
-  iset.gyrRange = _DIN[0];
+void setGyrRange(byte v) {
+  iset.gyrRange = v;
   changeGR = true;
+}
+
+void setDefaultIMUSettings() {
+  setIMU((1 << VEC_BIT) | (1 << STA_BIT));
+  setGyrRange(3);
+  setAccRange(3);
 }
 
 void sendIMU() {
@@ -128,8 +134,6 @@ void sendIMU() {
     _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
   }
 
-  // NOUVEAUTÉ -------------------------------------------
-
   if (iset.streamFlag & (1 << VEC_BIT)) {
     val = (int16_t)(IMU.getAccelN_mss() * 100.);
     _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
@@ -163,8 +167,6 @@ void sendIMU() {
     val = freeFallState;//0b1010101010101010;
     _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
   }
-
-  // NOUVEAUTÉ -------------------------------------------
 
   sendDgmAnswer(CMD_IMU, index);
 }

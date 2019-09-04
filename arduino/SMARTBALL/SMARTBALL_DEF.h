@@ -31,6 +31,7 @@
 #define SAVE_IMU      0x31
 #define CMD_ACCRANGE  0x32
 #define CMD_GYRRANGE  0x33
+#define DEFAULT_IMU   0x34
 #define CMD_IRL       0x40
 #define CMD_MOT       0x50
 #define CMD_STB		    0x60
@@ -110,7 +111,7 @@
 // Memory usage: 10/16 bytes
 struct _factorySettings {
   uint16_t serialNumber;    // unique ID depending on manufacturing
-  uint16_t deviceFlag;      // subsystems definition 
+  uint16_t deviceFlag;      // subsystems definition
   float adcCalibration;     // scale factor for adc
   //uint16_t eepromVersion;   // TODO eeprom versionning
 };

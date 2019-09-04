@@ -29,14 +29,18 @@ void receiveDGM() {
 
       case CMD_PING:      sendPong();              break;
       case CMD_REBOOT:    espReboot();             break;
+      
       case CMD_FACTORY:   setFactorySettings();    break;
       case SAVE_FACTORY:  saveFactorySettings();   break;
+      
       case CMD_GENERAL:   setGeneralSettings();    break;
       case SAVE_GENERAL:  saveGeneralSettings();   break;
-      case CMD_IMU:       setIMU();                break;
+
       case SAVE_IMU:      saveImuSettings();       break;
-      case CMD_ACCRANGE:  setAccRange();           break;
-      case CMD_GYRRANGE:  setGyrRange();           break;
+      case DEFAULT_IMU:   setDefaultIMUSettings(); break;
+      case CMD_IMU:       setIMU(_DIN[0]);         break;
+      case CMD_ACCRANGE:  setAccRange(_DIN[0]);    break;
+      case CMD_GYRRANGE:  setGyrRange(_DIN[0]);    break;
 
       //------------------------------------------------
       // Those commands needs high bandwidth efficiency

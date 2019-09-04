@@ -24,6 +24,7 @@ void initEEPROM() {
   EEPROM.get(GS_ADDR, gset);
   EEPROM.get(WS_ADDR, wset);
   EEPROM.end();
+  printEepromDebug();
 }
 
 void espReboot() {
