@@ -38,6 +38,8 @@
 #include <Ticker.h>            // ESP8266 scheduling library for regular event
 #include <EEPROM.h>            // 512 byte EEPROM Emulation for ESP8266
 #include <ESP8266WiFi.h>       // Standard WiFi Library
+#include <DNSServer.h>         // DNS Server management
+#include <ESP8266mDNS.h>       // mDNS Hostname management
 #include <ESP8266WebServer.h>  // allow WebServer for configuration
 #include <WiFiUDP.h>           // UDP Protocol Library
 #include <OSCBundle.h>         // OSC Protocol Library
@@ -59,6 +61,7 @@
 bool   serverMode;
 Ticker batTicker;              // battery management ticker
 Ticker imuTicker;              // imu management ticker
+Ticker sendTicker;             // data sending ticker
 Ticker frameTicker;            // main frame ticker
 
 //-----------------------------------------------------------------------------------
@@ -66,7 +69,7 @@ Ticker frameTicker;            // main frame ticker
 //-----------------------------------------------------------------------------------
 
 void setup() {
-  blinkRGB(RED, 250, 125);                // (TODO visual feedback become optionnal)
+  blinkLed(BLUE, LONG_BLINK);      // (TODO visual feedback become optionnal)
   initDebug();
   initEEPROM();
   
@@ -77,18 +80,24 @@ void setup() {
   
   if (connectWifi()) {
     serverMode = false;
-    blinkRGB(BLUE, 250, 125);
-    if (connectDGM())   blinkRGB(GREEN, 250, 125); else blinkRGB(RED, 250, 125);
-    if (connectOSC())   blinkRGB(GREEN, 250, 125); else blinkRGB(RED, 250, 125);
-    if (connectBenTo()) blinkRGB(GREEN, 250, 125); else blinkRGB(RED, 250, 125);
+    blinkLed(BLUE, MEDIUM_BLINK);
+    blinkLed(connectDGM()   ? GREEN : RED, MEDIUM_BLINK);
+    blinkLed(connectOSC()   ? GREEN : RED, MEDIUM_BLINK);
+    blinkLed(connectBenTo() ? GREEN : RED, MEDIUM_BLINK);
   }
   else {
     serverMode = true;
-    accessPointInit();
-    serverInit();
+    initAccessPoint();
+    initWebServer();
+    initDNS();
   }
+
+  initMDNS();
   
-  imuTicker.attach_ms(10, imuFrame);      // IMU updates  @ 100 Hz   (TODO quicker but what is the limitation)
+  if (imuAvailable()) {
+    imuTicker.attach_ms(5, updateIMU);    // IMU updates  @ 200 Hz   (TODO quicker but what is the limitation)
+    sendTicker.attach_ms(10, sendIMU);    // IMU sendings @ 100 Hz   (TODO choose bandwidth)
+  }
   batTicker.attach_ms(100, updateBAT);    // BAT updates  @ 10 Hz    (TODO become optionnal)
   frameTicker.attach_ms(10, mainFrame);   // Main updates @ 100 Hz
 }
@@ -98,15 +107,17 @@ void setup() {
 //-----------------------------------------------------------------------------------
 
 void loop() {
-  
-  if (serverMode) {
-    serverUpdate();                       // (optional) Webserver Management
-  }
-  else {
-    strobeUpdate();                       // update strobe state
+  updateMDNS();                           // mDNS service responder update
+
+  if (!serverMode) {
+    updateStrobe();                       // update strobe state
     receiveDGM();                         // receive Smartball Datagrams (TODO become optional)
     receiveOSC();                         // receive Yo Protocol         (TODO become optional)
     receiveBenTo();                       // receive BenTo Datagrams     (TODO become optional)
+  }  
+  else {
+    updateDNS();                          // (optional) DNS redirection service
+    updateWebServer();                    // (optional) Webserver Management
   }
   
   yield();                                // manage WiFi tasks
@@ -125,12 +136,4 @@ void mainFrame() {
   }
   if (irlAvailable()) updateIRL();      // update infrared leds values
   if (motAvailable()) updateMOT();      // update vibration motor values
-}
-
-//-----------------------------------------------------------------------------------
-// IMU TICKER CALLBACK
-//-----------------------------------------------------------------------------------
-
-void imuFrame() {
- if (imuAvailable()) updateIMU();      // update IMU values
 }

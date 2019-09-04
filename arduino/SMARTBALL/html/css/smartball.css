@@ -1,48 +1,11 @@
-body {
-	padding-top: 5rem;
-}
-
 .container {
 	max-width: 720px;
 }
 
-.starter-template {
-	padding: 3rem 0;
+.icon {
+	display:block;
 }
 
-.spacement {
-	padding: 1.4rem 0 0 0;
-}
-
-.spacement p {
-	padding: 1rem 1rem;
-}
-
-li ul {
-   list-style-type: none;
-   padding-left : 0px;
-}
-
-li li:before {
-   content: '- ';
-}
-
-.btn {
-    -webkit-border-radius: 0px;
-    -moz-border-radius: 0px;
-    -ms-border-radius: 0px;
-    -o-border-radius: 0px;
-    border-radius: 0px;
-    outline: none;
-    border: none;
-
-}
-.btn:active {
-  border-style: outset;
-  border: none;
-}
-
-.config-title {
-	display:inline-block; 
-	width:140px;
+.btn-minwidth {
+	min-width: 120px;
 }

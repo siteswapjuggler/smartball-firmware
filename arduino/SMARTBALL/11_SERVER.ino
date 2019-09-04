@@ -4,64 +4,44 @@
 
 ESP8266WebServer server(80);                            //Server on port 80
 
-void serverInit() {
+void initWebServer() {
   SPIFFS.begin();                                       // Start file system
-  server.on("/", handleRoot);                           // Which routine to handle at root location. This is display page
-  server.on("/getSN", getSN);                           // Asking for actual serial number
-  server.on("/getSSID", getSSID);                       // Asking for actual network SSID
+  server.on("/", handleRoot);                           // Hande root request
   server.on("/ballReboot", ballReboot);                 // Reboot the ball
-  server.on("/scanNetwork", scanNetwork);               // Asking for available networks
+  server.on("/getNetworks", getNetworks);                 // Get available networks
+  server.on("/getParameters", getParameters);           // Asking for actual parameters
+  server.on("/refreshNetworks", refreshNetworks);       // Refresh available networks
   server.on("/setNetwork", HTTP_POST, setNetwork);      // Setting WiFi network parameters
-  server.onNotFound([]() {                              // If the client requests any URI
-    if (!handleFileRead(server.uri()))                  // send it if it exists
-      server.send(404, "text/plain", "404: Not Found"); // otherwise, respond with a 404 (Not Found) error
-  });
+  server.onNotFound(handleAny);                         // Handle not found ressources
   server.begin();
   serverMode = true;
 }
 
-void serverUpdate() {
-  if (serverMode) {
-    server.handleClient();
-  }
+void updateWebServer() {
+  server.handleClient();
 }
 
 //-----------------------------------------------------------------------------------
-// RESSOURCE HANDLERS
+// WEBSERVER API
 //-----------------------------------------------------------------------------------
 
-void handleRoot() {
-  if (!handleFileRead("/"))                             // send it if it exists
-    server.send(404, "text/plain", "404: Not Found");   // otherwise, respond with a 404 (Not Found) error
+void getNetworks() {
+  server.send(200, "text/plain", availableNetworks);
 }
 
-void scanNetwork() {
-  String options;
-  int n = WiFi.scanNetworks();
-  if (n == 0)
-    options += "<option disabled selected>No network found...</option>";
-  else {
-    for (int i = 0; i < n; ++i)
-      options += "<option>" + WiFi.SSID(i) + "</option>";
-  }
-  server.send(200, "text/plain", options);
+void refreshNetworks() {
+  availableNetworks = listNetworks();
+  getNetworks();
 }
 
 void setNetwork() {
   server.arg("ssid").toCharArray(wset.ssid, SSID_LEN);
   server.arg("pwd").toCharArray(wset.password, PWD_LEN);
   saveWifiSettings();
-
-  if (!handleFileRead("/reboot.html"))                     // send it if it exists
-    server.send(404, "text/plain", "404: Not Found");      // otherwise, respond with a 404 (Not Found) error
+  if (!handleFileRead("/reboot.html")) handleError;
 }
 
-void getSN() {
-  String answer = String(fset.serialNumber);
-  server.send(200, "text/plain", answer);
-}
-
-void getSSID() {
+void getParameters() {
   String answer = String(wset.ssid);
   server.send(200, "text/plain", answer);
 }
@@ -69,6 +49,29 @@ void getSSID() {
 void ballReboot() {
   espReboot();
 }
+
+//----------------------------------------------------------------------------------------
+// RESSOURCE HANDLERS
+//----------------------------------------------------------------------------------------
+
+void handleRoot() {
+  if (!handleFileRead("/"))
+    handleError();
+}
+
+void handleAny() {
+  if (!handleFileRead(server.uri()))
+    handleError();
+}
+
+void handleError() {
+  if (!handleFileRead("/404.html"))
+    server.send(404, F("text/plain"), F("404: Not Found"));
+}
+
+//-----------------------------------------------------------------------------------
+// FILE SYSTEM HANDLERS
+//-----------------------------------------------------------------------------------
 
 bool handleFileRead(String path) {
   if (path.endsWith("/")) path += "index.html";
@@ -86,17 +89,18 @@ bool handleFileRead(String path) {
 }
 
 String getContentType(String filename) {
-  if (filename.endsWith(".html"))      return "text/html";
+  if (filename.endsWith(".gz"))   return "application/x-gzip";
+  else if (filename.endsWith(".ico"))  return "image/x-icon";
+  else if (filename.endsWith(".png"))  return "image/png";
+  else if (filename.endsWith(".jpg"))  return "image/jpeg";
+  else if (filename.endsWith(".gif"))  return "image/gif";
+  else if (filename.endsWith(".svg"))  return "image/svg+xml";
   else if (filename.endsWith(".htm"))  return "text/html";
+  else if (filename.endsWith(".html")) return "text/html";
   else if (filename.endsWith(".css"))  return "text/css";
   else if (filename.endsWith(".js"))   return "application/javascript";
-  else if (filename.endsWith(".png"))  return "image/png";
-  else if (filename.endsWith(".gif"))  return "image/gif";
-  else if (filename.endsWith(".jpg"))  return "image/jpeg";
-  else if (filename.endsWith(".ico"))  return "image/x-icon";
   else if (filename.endsWith(".xml"))  return "text/xml";
   else if (filename.endsWith(".pdf"))  return "application/x-pdf";
   else if (filename.endsWith(".zip"))  return "application/x-zip";
-  else if (filename.endsWith(".gz"))   return "application/x-gzip";
   return "text/plain";
 }

@@ -17,7 +17,7 @@ void initRGB() {
   digitalWrite(RGB_CS, LOW);
   strip.begin();
   digitalWrite(RGB_CS, HIGH);
-  blinkRGB(RED, 500, 100);
+  blinkLed(RED, LONG_BLINK);
 }
 
 void updateRGB() {
@@ -37,7 +37,7 @@ unsigned long strobeSpeed = 0.;
 unsigned long previousTime = 0;
 unsigned long strobeInterval = 0;
 
-void strobeUpdate() {
+void updateStrobe() {
   if (strobeSpeed) {
     unsigned long t = micros();
     if (t - previousTime >= strobeInterval) {
@@ -72,20 +72,14 @@ int32_t rgb(byte* data, uint16_t addr) {
   return (data[addr++] << 16) | (data[addr++] << 8) | data[addr];
 }
 
-void changeRGB(byte slot, int32_t c) {
-  for (int i = 0; i < RGB_NUM; i++)
-    colors[slot][i] = c;
-}
-
-void blinkRGB(uint32_t c, uint16_t dur, uint16_t gap) {
-  changeRGB(0, c);
+uint32_t blinkLed(uint32_t c, uint16_t BLINK_DUR) {
+  colors[0][1] = c;
   updateRGB();
-  delay(dur);
-  if (gap) {
-    changeRGB(0, BLACK);
-    updateRGB();
-    delay(gap);
-  }
+  delay(BLINK_DUR);
+  colors[0][1] = BLACK;
+  updateRGB();
+  delay(BLINK_GAP);
+  return BLINK_DUR + BLINK_GAP;
 }
 
 //-----------------------------------------------------------------------------------
@@ -96,18 +90,19 @@ void setRGB(byte slot, byte n, uint16_t addr) {
   int32_t c1, c2, c3;
   switch (n) {
     default:
-      changeRGB(slot, rgb(_DIN, addr));
+      for (int i = 0; i < RGB_NUM; i++)
+        colors[slot][i] = rgb(_DIN, addr);
       break;
     case 2:
       for (int i = 0; i < RGB_NUM / 2; i++)
         colors[slot][i] = rgb(_DIN, addr);
       for (int i = RGB_NUM / 2; i < RGB_NUM; i++)
-        colors[slot][i] = rgb(_DIN, addr+3);
+        colors[slot][i] = rgb(_DIN, addr + 3);
       break;
     case 3:
       c1 = rgb(_DIN, addr);
-      c2 = rgb(_DIN, addr+3);
-      c3 = rgb(_DIN, addr+6);
+      c2 = rgb(_DIN, addr + 3);
+      c3 = rgb(_DIN, addr + 6);
       colors[slot][0] = c1;
       colors[slot][5] = c1;
       colors[slot][1] = c2;
@@ -117,20 +112,20 @@ void setRGB(byte slot, byte n, uint16_t addr) {
       break;
     case 6:
       for (int i = 0; i < RGB_NUM; i++)
-        colors[slot][i] = rgb(_DIN, addr + 3*i);
+        colors[slot][i] = rgb(_DIN, addr + 3 * i);
       break;
   }
 }
 
 void setSTB(uint16_t addr) {
-  strobeSpeed = (_DIN[addr] << 8) | _DIN[addr+1];                         // in 0.01 ms steps
+  strobeSpeed = (_DIN[addr] << 8) | _DIN[addr + 1];                       // in 0.01 ms steps
   strobeSpeed = strobeSpeed ? constrain(strobeSpeed, 1000, 50000) : 0;    // no strobe over 50 Hz and under 1 Hz
   strobeSpeed *= 10;                                                      // transformation into µs
 }
 
 void setMST(uint16_t addr) {
-  dimmer = (float)((_DIN[addr] << 8) | _DIN[addr+1])/100.;                // Q14.2
-  dimmer = constrain(dimmer,0.,100.);                                     // dimmer contrain from 0. to 100.
+  dimmer = (float)((_DIN[addr] << 8) | _DIN[addr + 1]) / 100.;            // Q14.2
+  dimmer = constrain(dimmer, 0., 100.);                                   // dimmer contrain from 0. to 100.
 }
 
 bool rgbAvailable() {

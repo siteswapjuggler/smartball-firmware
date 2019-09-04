@@ -2001,7 +2001,7 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 628.450012, 749.166687, 248.0, 20.0 ],
 					"style" : "",
-					"text" : "/wifiSettings Sylvain-network paulklimek 192.168.1.14"
+					"text" : "/wifiSettings Sylvain-network paulklimek 192.168.1.12"
 				}
 
 			}
@@ -2065,7 +2065,7 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 527.450012, 872.666687, 147.875, 20.0 ],
 					"style" : "",
-					"text" : "/wassup 192.168.1.33 0"
+					"text" : "/wassup 192.168.1.34 43"
 				}
 
 			}
@@ -4503,7 +4503,7 @@
 							"modernui" : 1
 						}
 ,
-						"rect" : [ 0.0, 43.0, 1920.0, 997.0 ],
+						"rect" : [ 8.0, 51.0, 1920.0, 997.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -4539,7 +4539,6 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 508.5, 244.0, 70.0, 22.0 ],
-									"presentation_rect" : [ 505.0, 245.0, 0.0, 0.0 ],
 									"style" : "",
 									"text" : "/defaultImu"
 								}

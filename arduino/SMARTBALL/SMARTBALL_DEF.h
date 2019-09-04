@@ -10,8 +10,18 @@
 #define GREEN  0x00FF00
 #define BLACK  0x000000
 
-#define WAIT   0X8F4E00
-#define ALERT  0X7F0000
+#define WAIT_COLOR  0X8F4E00
+#define ALERT_COLOR 0X7F0000
+
+//---------------------------------------------------------------
+// BLINKS & TIMEOUTS
+//---------------------------------------------------------------
+
+#define WIFI_TIMEOUT 20000  // WiFi connection timeout in ms
+#define LONG_BLINK   400    // 
+#define MEDIUM_BLINK 200    // 
+#define QUICK_BLINK  100    //
+#define BLINK_GAP    100    //
 
 //---------------------------------------------------------------
 // DATAGRAM PROTOCOL
