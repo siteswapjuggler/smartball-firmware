@@ -50,7 +50,7 @@ void receiveDGM() {
       case CMD_STB:       setSTB(0);               break;
       case CMD_MST:       setMST(0);               break;
     }
-    printDebug(cmd, len, _DIN);
+    printMsgDebug(cmd, len, _DIN);
   }
 }
 

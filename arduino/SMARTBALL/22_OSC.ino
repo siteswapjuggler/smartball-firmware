@@ -23,7 +23,7 @@ void receiveOSC() {
       msg.fill(c);
     }
     if (!msg.hasError()) {
-      msg.dispatch("/yo", wassup);
+      msg.dispatch("/yo", wassup);                           // TODO Transcrire en datagrams
       msg.dispatch("/wifiSettings", wifiSettings);
       msg.dispatch("/saveWifiSettings", saveWifiSettings);
       msg.dispatch("/oscReboot", oscReboot);

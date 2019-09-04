@@ -3,7 +3,7 @@
 //-----------------------------------------------------------------------------------
 
 #define BOARD_VERSION 1        // 1 - Alpha and first batch for les Objets Volants
-#include "header/smartball.h"  // Smartball specific definitions
+#include "SMARTBALL_DEF.h"     // Smartball specific definitions
 
 //-----------------------------------------------------------------------------------
 // LIBRARIES
@@ -33,6 +33,9 @@ void setup() {
 //-----------------------------------------------------------------------------------
 
 void loop() {
+  // prevent from crashing
+  yield();
+  delay(1);
 }
 
 //-----------------------------------------------------------------------------------
@@ -42,17 +45,17 @@ void loop() {
 void factorySettings() {
   gset.idNumber = 0;
 
-  fset.serialNumber   = 33;
-  fset.deviceFlag     = 3; //fset.serialNumber ? 3 : 15;
+  fset.serialNumber   = 43;     // depend on the ball your actually flashing
+  fset.deviceFlag     = 15;     // 3 for les Objets Volants, 15 for full devices
   fset.adcCalibration = 1000.;
 
   iset.streamFlag = 0;
   iset.accRange   = 3;
   iset.gyrRange   = 3;
   
-  strcpy(wset.ssid, "DOME_FORMATION");
-  strcpy(wset.password, "dome_formation");
-  strcpy(wset.outputIp, "192.168.200.10");
+  strcpy(wset.ssid, "ssid");
+  strcpy(wset.password, "password");
+  strcpy(wset.outputIp, "239.0.0.51");
   
   EEPROM.begin(512);
   EEPROM.put(FS_ADDR, fset);
@@ -61,4 +64,3 @@ void factorySettings() {
   EEPROM.put(WS_ADDR, wset);
   EEPROM.end();
 }
-

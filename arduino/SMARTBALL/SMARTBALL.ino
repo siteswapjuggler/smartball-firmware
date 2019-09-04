@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------------
-   THE SMARTBALL PROJECT - 11/05/2019
+   THE SMARTBALL PROJECT - 29/08/2019
    Copyright 2013-2019 Sylvain GARNAVAULT
    ----------------------------------------------------------------------------------
 
@@ -28,7 +28,7 @@
 //-----------------------------------------------------------------------------------
 
 #define BOARD_VERSION 1        // 1 - Alpha and first batch for les Objets Volants
-#include "header/smartball.h"  // Smartball specific definitions
+#include "SMARTBALL_DEF.h"     // Smartball specific definitions
 
 //-----------------------------------------------------------------------------------
 // LIBRARIES
@@ -48,7 +48,8 @@
 // USER PARAMETERS
 //-----------------------------------------------------------------------------------
 
-//#define DEBUG                // uncomment for serial debugging messages
+//#define MSG_DEBUG            // uncomment for communication serial feedbacks
+//#define TIME_DEBUG           // uncomment for time debug serial feedbacks
 
 //-----------------------------------------------------------------------------------
 // GLOBAL VARIABLE
@@ -64,13 +65,15 @@ Ticker frameTicker;            // main frame ticker
 //-----------------------------------------------------------------------------------
 
 void setup() {
-  blinkRGB(RED, 250, 125);
+  blinkRGB(RED, 250, 125);                // (TODO visual feedback become optionnal)
   initDebug();
   initEEPROM();
+  
   if (imuAvailable()) initIMU();
   if (rgbAvailable()) initRGB();
   if (irlAvailable()) initIRL();
   if (motAvailable()) initMOT();
+  
   if (connectWifi()) {
     serverMode = false;
     blinkRGB(BLUE, 250, 125);
@@ -83,8 +86,9 @@ void setup() {
     accessPointInit();
     serverInit();
   }
-  imuTicker.attach_ms(7, imuFrame);       // IMU updates @ 142.85 Hz
-  batTicker.attach_ms(100, updateBAT);    // BAT updates @ 10 Hz
+  
+  imuTicker.attach_ms(7, imuFrame);       // IMU updates  @ 142.85 Hz   (TODO quicker what are the limitation)
+  batTicker.attach_ms(100, updateBAT);    // BAT updates  @ 10 Hz       (TODO become optionnal)
   frameTicker.attach_ms(10, mainFrame);   // Main updates @ 100 Hz
 }
 
@@ -93,15 +97,21 @@ void setup() {
 //-----------------------------------------------------------------------------------
 
 void loop() {
+  
   if (serverMode) {
     serverUpdate();                       // (optional) Webserver Management
   }
   else {
     strobeUpdate();                       // update strobe state
-    receiveDGM();                         // receive Smartball Datagrams
-    receiveOSC();                         // receive Yo Protocol
-    receiveBenTo();                       // receive BenTo Datagrams
+    
+    receiveDGM();                         // receive Smartball Datagrams (TODO become optional)
+    
+    receiveOSC();                         // receive Yo Protocol         (TODO become optional)
+    receiveBenTo();                       // receive BenTo Datagrams     (TODO become optional)
   }
+  
+  yield();                                // manage WiFi tasks
+  ESP.wdtFeed();                          // feeding watchdog to prevent unexpected reboot
 }
 
 //-----------------------------------------------------------------------------------
@@ -111,6 +121,7 @@ void loop() {
 void mainFrame() {
   if (rgbAvailable()) {
     updateSTB();                        // update Strobe speed
+                                        // TODO insert mode management here
     updateRGB();                        // update RGB leds
   }
   if (irlAvailable()) updateIRL();      // update infrared leds values

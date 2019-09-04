@@ -22,9 +22,14 @@ function anything() {
 		data.push(arguments[0]&255);
 		data.push((arguments[1]>>8)&255);
 		data.push(arguments[1]&255);
+		
+		//-----------------------------------------------------------------
+		// doesn't work anymore need to parse arguments for different types
 		for (i=2;i<arguments.length;i++) {
 			data.push(arguments[i] & 255);
 		}
+		//-----------------------------------------------------------------
+		
 		send(0x21,data); 
 	}
 	else if (messagename == "/rgb") {

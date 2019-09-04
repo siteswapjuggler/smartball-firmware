@@ -3,10 +3,10 @@ inlets=1;
 outlets=1;
 
 function parse(id,sn,cmd,data) {
-	function xyz(addr) {
+	function xyz(addr,div) {
 		var coordinates = new Array();
 		for (var i=0;i<3;i++) {
-			coordinates[i] = int16_complement(data[addr],data[addr+1])/100.;
+			coordinates[i] = int16_complement(data[addr],data[addr+1])/div;
 			addr += 2;
 		}
 		return coordinates;
@@ -26,19 +26,35 @@ function parse(id,sn,cmd,data) {
 	function imu() {
 		var addr = 1;
 		if (data[0] & 1)  {
-			outlet(0,id,'imu','acc',xyz(addr));
+			outlet(0,id,'imu','acc',xyz(addr,100.));
 			addr += 6;
 		}
 		if (data[0] & 2) {
-			outlet(0,id,'imu','gyr',xyz(addr));
+			outlet(0,id,'imu','gyr',xyz(addr,100.));
 			addr += 6;
 		}
 		if (data[0] & 4) {
-			outlet(0,id,'imu','mag',xyz(addr));
+			outlet(0,id,'imu','mag',xyz(addr,100.));
 			addr += 6;
 		}
 		if (data[0] & 8) {
 			outlet(0,id,'imu','tmp',int16_complement(data[addr],data[addr+1])/100.);
+			addr += 2;
+		}
+		if (data[0] & 16)  {
+			outlet(0,id,'imu','vec',xyz(addr,100.));
+			addr += 6;
+		}
+		if (data[0] & 32) {
+			outlet(0,id,'imu','quat',xyz(addr,10000.));
+			addr += 6;
+		}
+		if (data[0] & 64) {
+			outlet(0,id,'imu','wld',xyz(addr,100.));
+			addr += 6;
+		}
+		if (data[0] & 128) {
+			outlet(0,id,'imu','state',int16_complement(data[addr],data[addr+1]));
 			addr += 2;
 		}
 	}

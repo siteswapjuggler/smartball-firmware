@@ -30,7 +30,7 @@ _oldImuSettings     oiset;
 //-----------------------------------------------------------------------------------
 
 #define BOARD_VERSION 1
-#include "header/smartball.h"
+#include "SMARTBALL_DEF.h"
 
 _factorySettings fset;
 _imuSettings     iset;
@@ -46,20 +46,13 @@ Adafruit_DotStar strip = Adafruit_DotStar(RGB_NUM, D7, D5, DOTSTAR_BGR);
 
 void setup() {
   initRGB();
-  EEPROM.begin(512);
-  EEPROM.get(OLD_FACTORY_SETTINGS_ADDR, ofset);
-  EEPROM.get(OLD_IMU_SETTINGS_ADDR, oiset);
-  EEPROM.end();
-  changeRGB(0x800000);
-  delay(1000);
-
   fset.serialNumber = ofset.serialNumber;
   fset.deviceFlag = 3;
   fset.adcCalibration = 1000.;
   iset.streamFlag = oiset.streamFlag;
   iset.accRange = 3;
   iset.gyrRange = 3;
-  gset.idNumber = ofset.serialNumber;
+  gset.idNumber = 26;
   strcpy(wset.ssid, "Les Objets Volants");
   strcpy(wset.password, "lesobjetsvolants");
   strcpy(wset.outputIp, "239.0.0.51");

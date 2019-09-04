@@ -6,6 +6,8 @@ MPU9250 IMU(SPI, IMU_CS);
 bool changeAR = false;
 bool changeGR = false;
 
+// FILTERS IMPLEMENTATION
+
 byte  freeFallState, freeFallFilter = 0., previousFreeFallFilter;
 float accFirstDerivative = 0., accSecondDerivative;
 float gyrFirstDerivative = 0., gyrSecondDerivative;
@@ -51,6 +53,10 @@ void updateIMU() {
   IMU.madgwickUpdate();
   IMU.realWorldUpdate();
 
+  //**************************************************************************************
+  // WIP data computation (flags, peak, detection, apogee prediction)
+  //**************************************************************************************
+
   // FIRST & SECOND DERIVATIVE
   accFirstDerivative  = IMU.getAccelN_mss() - prevAccelN;
   accSecondDerivative = accFirstDerivative - prevAccelD;
@@ -61,9 +67,8 @@ void updateIMU() {
  
   freeFallFilter  = (IMU.getGyroN_rads() > 8.72665) ? abs(gyrFirstDerivative) < 0.0898132 : abs(gyrFirstDerivative) < 0.0174533; 
   freeFallFilter  = freeFallFilter | (abs(accFirstDerivative) < 0.1) << 1 | (abs(accSecondDerivative) < 0.25) << 2 | (IMU.getGyroN_rads() > 0.872665) << 3;
-  freeFallState   = (previousFreeFallFilter + freeFallFilter) >> 1;
+  freeFallState   = (previousFreeFallFilter + freeFallFilter) > 1;
 
-  // TODO data computation (for flags, peak, detection, apogee prediction)
 
   if (iset.streamFlag) sendIMU();
 }
@@ -123,6 +128,8 @@ void sendIMU() {
     _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
   }
 
+  // NOUVEAUTÉ -------------------------------------------
+
   if (iset.streamFlag & (1 << VEC_BIT)) {
     val = (int16_t)(IMU.getAccelN_mss() * 100.);
     _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
@@ -156,6 +163,8 @@ void sendIMU() {
     val = freeFallState;//0b1010101010101010;
     _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
   }
+
+  // NOUVEAUTÉ -------------------------------------------
 
   sendDgmAnswer(CMD_IMU, index);
 }
