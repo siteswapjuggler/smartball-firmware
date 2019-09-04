@@ -1,5 +1,5 @@
 release
 arduino/TESTS
-arduino/EEPROM/EEPROM_UPDATE
+arduino/EEPROM
 arduino/SMARTBALL/node_modules
 arduino/SMARTBALL/package-lock.json
