@@ -65,21 +65,25 @@ int32_t dim(float v, int32_t c) {
     float val = (float)values[i] * v / 100.;
     values[i] = round(val);
   }
-  return rgb(values, 0);
+  return color(values, 0);
 }
 
-int32_t rgb(byte* data, uint16_t addr) {
+int32_t color(byte* data, uint16_t addr) {
   return (data[addr++] << 16) | (data[addr++] << 8) | data[addr];
 }
 
 uint32_t blinkLed(uint32_t c, uint16_t BLINK_DUR) {
-  colors[0][1] = c;
-  updateRGB();
-  delay(BLINK_DUR);
-  colors[0][1] = BLACK;
-  updateRGB();
-  delay(BLINK_GAP);
-  return BLINK_DUR + BLINK_GAP;
+  if (bli) {
+    colors[0][1] = c;
+    updateRGB();
+    delay(BLINK_DUR);
+    colors[0][1] = BLACK;
+    updateRGB();
+    delay(BLINK_GAP);
+    return BLINK_DUR + BLINK_GAP;
+  }
+  delay(1);
+  return 1;
 }
 
 //-----------------------------------------------------------------------------------
@@ -91,18 +95,18 @@ void setRGB(byte slot, byte n, uint16_t addr) {
   switch (n) {
     default:
       for (int i = 0; i < RGB_NUM; i++)
-        colors[slot][i] = rgb(_DIN, addr);
+        colors[slot][i] = color(_DIN, addr);
       break;
     case 2:
       for (int i = 0; i < RGB_NUM / 2; i++)
-        colors[slot][i] = rgb(_DIN, addr);
+        colors[slot][i] = color(_DIN, addr);
       for (int i = RGB_NUM / 2; i < RGB_NUM; i++)
-        colors[slot][i] = rgb(_DIN, addr + 3);
+        colors[slot][i] = color(_DIN, addr + 3);
       break;
     case 3:
-      c1 = rgb(_DIN, addr);
-      c2 = rgb(_DIN, addr + 3);
-      c3 = rgb(_DIN, addr + 6);
+      c1 = color(_DIN, addr);
+      c2 = color(_DIN, addr + 3);
+      c3 = color(_DIN, addr + 6);
       colors[slot][0] = c1;
       colors[slot][5] = c1;
       colors[slot][1] = c2;
@@ -112,7 +116,7 @@ void setRGB(byte slot, byte n, uint16_t addr) {
       break;
     case 6:
       for (int i = 0; i < RGB_NUM; i++)
-        colors[slot][i] = rgb(_DIN, addr + 3 * i);
+        colors[slot][i] = color(_DIN, addr + 3 * i);
       break;
   }
 }
@@ -126,8 +130,4 @@ void setSTB(uint16_t addr) {
 void setMST(uint16_t addr) {
   dimmer = (float)((_DIN[addr] << 8) | _DIN[addr + 1]) / 100.;            // Q14.2
   dimmer = constrain(dimmer, 0., 100.);                                   // dimmer contrain from 0. to 100.
-}
-
-bool rgbAvailable() {
-  return fset.deviceFlag & (1 << RGB_BIT);
 }

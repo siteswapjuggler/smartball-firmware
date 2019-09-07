@@ -18,10 +18,6 @@ void updateIRL() {
   analogWrite(IRL_PIN, irlValue);
 }
 
-bool irlAvailable() {
-  return fset.deviceFlag & (1 << IRL_BIT);
-}
-
 void changeIRL(int16_t v) {
   irlValue = v & 1023;
 }

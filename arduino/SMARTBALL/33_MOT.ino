@@ -18,10 +18,6 @@ void updateMOT() {
   analogWrite(MOT_PIN, motValue);
 }
 
-bool motAvailable() {
-  return fset.deviceFlag & (1 << MOT_BIT);
-}
-
 bool changeMOT(int16_t v) {
   motValue = v & 1023;
 }

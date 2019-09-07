@@ -18,7 +18,6 @@ const rename = require('gulp-rename');
 const gzip = require('gulp-gzip');
 const babel = require('gulp-babel');
 const htmlmin = require('gulp-htmlmin');
-//const minline = require('gulp-minify-inline');
 const cleancss = require('gulp-clean-css');
 const spritesmith = require('gulp.spritesmith');
 const useref = require('gulp-useref');
@@ -99,5 +98,5 @@ function html() {
 //----------------------------------------------------------------------------------------
 
 exports.sprite  = sprite;
-exports.inline  = series(clean,sprite,files,html,embed,clear);
-exports.default = series(clean,sprite,files,html,normal,clear);
+exports.inline  = series(clean,files,html,embed,clear);
+exports.default = series(clean,files,html,normal,clear);

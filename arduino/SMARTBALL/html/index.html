@@ -7,7 +7,7 @@
 			<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 			<!-- build:css css/index.css -->
-			<link rel="stylesheet" href="./css/bootstrap.min.css">
+-			<link rel="stylesheet" href="./css/bootstrap.min.css">
 			<link rel="stylesheet" href="./css/smartball.css">
 			<link rel="stylesheet" href="./css/sprite.css">
 			<!-- endbuild -->
@@ -28,45 +28,59 @@
                 
 			<main role="main" class="container">
 
+				<!------------------------------------------------------------------------------------->
+				<!-- Welcome text   																																 -->
+				<!------------------------------------------------------------------------------------->
+
 				<div class="starter-template mb-5 mt-5">
 					<h1 multi="welcome-title"></h1>
 					<p class="lead" multi="welcome-text"></p>
 				</div>
-			
+
+				<!------------------------------------------------------------------------------------->
+				<!-- WiFi configuration 																														 -->
+				<!------------------------------------------------------------------------------------->
+
 				<div class="mt-3">
-					<h4 class="mb-3" multi="wifi-form-title"></h4>
-					<div class="row">
-						<div class="col-md-6 mb-3">
-							<label for="ssid" multi="wifi-form-network-label"></label>
-							<div class="input-group">
-								<select class="custom-select" id="ssid" name="ssid">
-								<option selected multi="wifi-form-network-nowifi"></option>
-								</select>
-								<div class="input-group-addon">
-									<button class="btn btn-secondary btn-md" type="button" onclick="getNetworks(true)" aria-disabled="true" style="margin-left:10px;spadding: 0.36rem .75rem">
-										<i class="icon icon-sync"></i>
-									</button>
+					<form class="needs-validation" method="post" action="/setConfig">
+						<h4 class="mb-3" multi="wifi-form-title"></h4>
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<label for="ssid" multi="wifi-form-network-label"></label>
+								<div class="input-group">
+									<select class="custom-select" id="ssid" name="ssid">
+									<option selected multi="wifi-form-network-nowifi"></option>
+									</select>
+									<div class="input-group-addon">
+										<button class="btn btn-secondary btn-md" type="button" onclick="getNetworks(true)" aria-disabled="true" style="margin-left:10px;spadding: 0.36rem .75rem">
+											<i class="icon icon-sync"></i>
+										</button>
+									</div>
 								</div>
 							</div>
-						</div>
-						
-						<div class="col-md-6 mb-3" id="show_hide_password">
-							<label for="pwd" multi="wifi-form-password-label"></label>
-							<div class="input-group">
-								<input type="password" class="form-control" id="pwd" name="pwd" multi="wifi-form-password-placehoder" placeholder="">
-								<div class="input-group-addon">
-									<button class="btn btn-secondary btn-md" type="button" onclick="togglePassword()" aria-disabled="true" style="margin-left:10px;spadding: 0.36rem .75rem">
-										<i class="icon icon-eye-closed" id="view"></i>
-									</button>
+							
+							<div class="col-md-6 mb-3" id="show_hide_password">
+								<label for="pwd" multi="wifi-form-password-label"></label>
+								<div class="input-group">
+									<input type="password" class="form-control" id="pwd" name="pwd" multi="wifi-form-password-placehoder" placeholder="">
+									<div class="input-group-addon">
+										<button class="btn btn-secondary btn-md" type="button" onclick="togglePassword()" aria-disabled="true" style="margin-left:10px;spadding: 0.36rem .75rem">
+											<i class="icon icon-eye-closed" id="view"></i>
+										</button>
+									</div>
 								</div>
 							</div>
-						</div>
+						</form>
 					</div>
 				
 					<div class="float-right mt-2">
 						<button class="btn btn-minwidth btn-success btn-md" type="submit" multi="submit-button"></button>
 					</div>
 				</div>
+
+				<!------------------------------------------------------------------------------------->
+				<!-- Actual parameters 																						   								 -->
+				<!------------------------------------------------------------------------------------->
 
 				<div class="mt-3" style="clear:both;">
 					<h4 class="mb-3" multi="parameters-title"></h4>

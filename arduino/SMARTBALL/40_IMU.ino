@@ -7,7 +7,6 @@ bool changeAR = false;
 bool changeGR = false;
 
 // FILTERS IMPLEMENTATION
-
 byte  freeFallState, freeFallFilter = 0., previousFreeFallFilter;
 float accFirstDerivative = 0., accSecondDerivative;
 float gyrFirstDerivative = 0., gyrSecondDerivative;
@@ -16,28 +15,13 @@ float gyrFirstDerivative = 0., gyrSecondDerivative;
 // BASIC FUNCTIONS
 //-----------------------------------------------------------------------------------
 
-bool imuAvailable() {
-  return fset.deviceFlag & (1 << IMU_BIT);
-}
 void initIMU() {
   strip.updatePins();
   IMU.begin();
-  IMU.setAccelRange((AccelRange)iset.accRange);
-  IMU.setGyroRange((GyroRange)iset.gyrRange);
   strip.updatePins(D7, D5);
 }
 
 void updateIMU() {
-  strip.updatePins();
-  if (changeAR) {
-    IMU.setAccelRange((AccelRange)iset.accRange);
-    changeAR = false;
-  }
-  if (changeGR) {
-    IMU.setGyroRange((GyroRange)iset.gyrRange);
-    changeGR = false;
-  }
-
   // VALUE BACKUP
   float prevAccelN  = IMU.getAccelN_mss();
   float prevAccelD  = accFirstDerivative;
@@ -46,6 +30,7 @@ void updateIMU() {
   previousFreeFallFilter = freeFallFilter;
 
   // SENSOR READING
+  strip.updatePins();
   IMU.readSensor();
   strip.updatePins(D7, D5);
 
@@ -64,7 +49,6 @@ void updateIMU() {
   gyrSecondDerivative = gyrFirstDerivative - prevGyroD;
 
   // FREE FALL FILTER
-
   freeFallFilter  = (IMU.getGyroN_rads() > 8.72665) ? abs(gyrFirstDerivative) < 0.0898132 : abs(gyrFirstDerivative) < 0.0174533;
   freeFallFilter  = freeFallFilter | (abs(accFirstDerivative) < 0.1) << 1 | (abs(accSecondDerivative) < 0.25) << 2 | (IMU.getGyroN_rads() > 0.872665) << 3;
   freeFallState   = (previousFreeFallFilter + freeFallFilter) > 1;
@@ -74,33 +58,14 @@ void updateIMU() {
 // DATAGRAM FUNCTIONS
 //-----------------------------------------------------------------------------------
 
-void setIMU(byte v) {
-  iset.streamFlag = v;
-}
-
-void setAccRange(byte v) {
-  iset.accRange = v;
-  changeAR = true;
-}
-
-void setGyrRange(byte v) {
-  iset.gyrRange = v;
-  changeGR = true;
-}
-
-void setDefaultIMUSettings() {
-  setIMU((1 << VEC_BIT) | (1 << STA_BIT));
-  setGyrRange(3);
-  setAccRange(3);
-}
-
 void sendIMU() {
-  if (iset.streamFlag) {
+  if (gset.imuFlag) {
     int16_t  val = 0;
     uint16_t index = 0;
-    _DOUT[index++] = iset.streamFlag;
+    _DOUT[index++] = gset.imuFlag >>  8;
+    _DOUT[index++] = gset.imuFlag & 255;
 
-    if (iset.streamFlag & (1 << ACC_BIT)) {
+    if (gset.imuFlag & (1 << ACC_BIT)) {
       val = (int16_t)(IMU.getAccelX_mss() * 100.);
       _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
       val = (int16_t)(IMU.getAccelY_mss() * 100.);
@@ -109,7 +74,7 @@ void sendIMU() {
       _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
     }
 
-    if (iset.streamFlag & (1 << GYR_BIT)) {
+    if (gset.imuFlag & (1 << GYR_BIT)) {
       val = (int16_t)(IMU.getGyroX_rads() * 100.);
       _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
       val = (int16_t)(IMU.getGyroY_rads() * 100.);
@@ -118,7 +83,7 @@ void sendIMU() {
       _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
     }
 
-    if (iset.streamFlag & (1 << MAG_BIT)) {
+    if (gset.imuFlag & (1 << MAG_BIT)) {
       val = (int16_t)(IMU.getMagX_uT() * 100.);
       _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
       val = (int16_t)(IMU.getMagY_uT() * 100.);
@@ -127,12 +92,12 @@ void sendIMU() {
       _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
     }
 
-    if (iset.streamFlag & (1 << TMP_BIT)) {
+    if (gset.imuFlag & (1 << TMP_BIT)) {
       val = (int16_t)(IMU.getTemperature_C() * 100.);
       _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
     }
 
-    if (iset.streamFlag & (1 << VEC_BIT)) {
+    if (gset.imuFlag & (1 << VEC_BIT)) {
       val = (int16_t)(IMU.getAccelN_mss() * 100.);
       _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
       val = (int16_t)(IMU.getGyroN_rads() * 100.);
@@ -141,7 +106,7 @@ void sendIMU() {
       _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
     }
 
-    if (iset.streamFlag & (1 << QUA_BIT)) {
+    if (gset.imuFlag & (1 << QUA_BIT)) {
       val = (int16_t)(IMU.getQuatW() * 10000.);
       _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
       val = (int16_t)(IMU.getQuatX() * 10000.);
@@ -152,7 +117,7 @@ void sendIMU() {
       _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
     }
 
-    if (iset.streamFlag & (1 << WLD_BIT)) {
+    if (gset.imuFlag & (1 << WLD_BIT)) {
       val = (int16_t)(IMU.getWorldX_mss() * 100.);
       _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
       val = (int16_t)(IMU.getWorldY_mss() * 100.);
@@ -161,21 +126,11 @@ void sendIMU() {
       _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
     }
 
-    if (iset.streamFlag & (1 << STA_BIT)) {
-      val = freeFallState;//0b1010101010101010;
+    if (gset.imuFlag & (1 << STA_BIT)) {
+      val = freeFallState;
       _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
     }
 
     sendDgmAnswer(CMD_IMU, index);
   }
-}
-
-//-----------------------------------------------------------------------------------
-// EEPROM FUNCTIONS
-//-----------------------------------------------------------------------------------
-
-void saveImuSettings() {
-  EEPROM.begin(512);
-  EEPROM.put(IS_ADDR, iset);
-  EEPROM.end();
 }

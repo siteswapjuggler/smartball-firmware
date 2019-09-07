@@ -6,7 +6,7 @@ unsigned long debugTime;
 
 void initDebug() {
 #if defined(DGM_DEBUG) || defined(TIME_DEBUG) || defined(EEPROM_DEBUG)
-  Serial.begin(1000000);
+  Serial.begin(115200);
 #endif
 }
 
@@ -46,23 +46,49 @@ void printError(const char *error) {
 
 void printEepromDebug() {
 #ifdef EEPROM_DEBUG
+  Serial.println("--------- Eeprom Settings ---------");
+  Serial.println();
+  Serial.print("Eeprom credential: ");
+  Serial.println(eset.credential,HEX);
+  Serial.print("Eeprom version: ");
+  Serial.println(eepromVersion);
   Serial.println("--------- Factory Settings ---------");
   Serial.println();
   Serial.print("Serial number: ");
   Serial.println(fset.serialNumber);
   Serial.print("Device flag: ");
-  Serial.println(fset.deviceFlag);
+  Serial.println(fset.deviceFlag,BIN);
   Serial.print("ADC calibration: ");
   Serial.println(fset.adcCalibration);
   Serial.println();
-  Serial.println("--------- IMU Settings ---------");
+  Serial.println("--------- General Settings ---------");
   Serial.println();
-  Serial.print("Stream Flag: ");
-  Serial.println(iset.streamFlag);
-  Serial.print("Accelerometer Range: ");
-  Serial.println(iset.accRange);
-  Serial.print("Gyroscope Range: ");
-  Serial.println(iset.gyrRange);
+  Serial.print("ID number: ");
+  Serial.println(gset.idNumber);
+  Serial.print("Config Flag: ");
+  Serial.println(gset.configFlag, BIN);
+  Serial.print("IMU Flag: ");
+  Serial.println(gset.imuFlag, BIN);
+  Serial.println();
+  Serial.println("--------- DGM Settings ---------");
+  Serial.println();
+  Serial.print("Output IP: ");
+  Serial.println(dset.outputIp);
+  Serial.print("Input Port: ");
+  Serial.println(dset.inputPort);
+  Serial.print("Output Port: ");
+  Serial.println(dset.outputPort);
+  Serial.println();
+  Serial.println("--------- BenTo Settings ---------");
+  Serial.println();
+  Serial.print("Output IP: ");
+  Serial.println(bset.outputIp);
+  Serial.print("BenTo Input Port: ");
+  Serial.println(bset.benInputPort);
+  Serial.print("OSC Input Port: ");
+  Serial.println(bset.oscInputPort);
+  Serial.print("OSC Output Port: ");
+  Serial.println(bset.oscOutputPort);
   Serial.println();
   Serial.println("--------- WiFi Settings ---------");
   Serial.println();
@@ -70,13 +96,6 @@ void printEepromDebug() {
   Serial.println(wset.ssid);
   Serial.print("Password: ");
   Serial.println(wset.password);
-  Serial.print("Output IP: ");
-  Serial.println(wset.outputIp);
-  Serial.println();
-  Serial.println("--------- General Settings ---------");
-  Serial.println();
-  Serial.print("ID number: ");
-  Serial.println(gset.idNumber);
   Serial.println();
 #endif
 }

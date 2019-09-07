@@ -4,12 +4,12 @@
 		"appversion" : 		{
 			"major" : 7,
 			"minor" : 3,
-			"revision" : 5,
+			"revision" : 6,
 			"architecture" : "x86",
 			"modernui" : 1
 		}
 ,
-		"rect" : [ 8.0, 51.0, 1920.0, 997.0 ],
+		"rect" : [ 0.0, 51.0, 1920.0, 997.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 10.0,
@@ -73,7 +73,7 @@
 						"appversion" : 						{
 							"major" : 7,
 							"minor" : 3,
-							"revision" : 5,
+							"revision" : 6,
 							"architecture" : "x86",
 							"modernui" : 1
 						}
@@ -269,7 +269,7 @@
 						"appversion" : 						{
 							"major" : 7,
 							"minor" : 3,
-							"revision" : 5,
+							"revision" : 6,
 							"architecture" : "x86",
 							"modernui" : 1
 						}
@@ -715,7 +715,7 @@
 						"appversion" : 						{
 							"major" : 7,
 							"minor" : 3,
-							"revision" : 5,
+							"revision" : 6,
 							"architecture" : "x86",
 							"modernui" : 1
 						}
@@ -1166,7 +1166,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 581.325012, 376.0, 170.125, 16.333313 ],
+					"patching_rect" : [ 581.325012, 384.0, 170.125, 16.333313 ],
 					"style" : ""
 				}
 
@@ -1249,7 +1249,7 @@
 						"appversion" : 						{
 							"major" : 7,
 							"minor" : 3,
-							"revision" : 5,
+							"revision" : 6,
 							"architecture" : "x86",
 							"modernui" : 1
 						}
@@ -1696,6 +1696,7 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-145",
+					"int" : 1,
 					"maxclass" : "gswitch2",
 					"numinlets" : 2,
 					"numoutlets" : 2,
@@ -2200,7 +2201,7 @@
 						"appversion" : 						{
 							"major" : 7,
 							"minor" : 3,
-							"revision" : 5,
+							"revision" : 6,
 							"architecture" : "x86",
 							"modernui" : 1
 						}
@@ -2877,7 +2878,7 @@
 						"appversion" : 						{
 							"major" : 7,
 							"minor" : 3,
-							"revision" : 5,
+							"revision" : 6,
 							"architecture" : "x86",
 							"modernui" : 1
 						}
@@ -3066,7 +3067,7 @@
 						"appversion" : 						{
 							"major" : 7,
 							"minor" : 3,
-							"revision" : 5,
+							"revision" : 6,
 							"architecture" : "x86",
 							"modernui" : 1
 						}
@@ -3280,7 +3281,7 @@
 						"appversion" : 						{
 							"major" : 7,
 							"minor" : 3,
-							"revision" : 5,
+							"revision" : 6,
 							"architecture" : "x86",
 							"modernui" : 1
 						}
@@ -3548,7 +3549,7 @@
 						"appversion" : 						{
 							"major" : 7,
 							"minor" : 3,
-							"revision" : 5,
+							"revision" : 6,
 							"architecture" : "x86",
 							"modernui" : 1
 						}
@@ -3717,7 +3718,7 @@
 						"appversion" : 						{
 							"major" : 7,
 							"minor" : 3,
-							"revision" : 5,
+							"revision" : 6,
 							"architecture" : "x86",
 							"modernui" : 1
 						}
@@ -4108,7 +4109,7 @@
 						"appversion" : 						{
 							"major" : 7,
 							"minor" : 3,
-							"revision" : 5,
+							"revision" : 6,
 							"architecture" : "x86",
 							"modernui" : 1
 						}
@@ -4498,12 +4499,12 @@
 						"appversion" : 						{
 							"major" : 7,
 							"minor" : 3,
-							"revision" : 5,
+							"revision" : 6,
 							"architecture" : "x86",
 							"modernui" : 1
 						}
 ,
-						"rect" : [ 8.0, 51.0, 1920.0, 997.0 ],
+						"rect" : [ 0.0, 51.0, 1920.0, 997.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -6080,13 +6081,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-110", 2 ],
-					"source" : [ "obj-28", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-28", 0 ],
 					"source" : [ "obj-29", 0 ]
 				}
@@ -6515,6 +6509,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-21", 0 ],
+					"source" : [ "obj-79", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-79", 0 ],
 					"source" : [ "obj-8", 0 ]
 				}
@@ -6583,29 +6584,29 @@
  ],
 		"dependency_cache" : [ 			{
 				"name" : "smartball_tx.js",
-				"bootpath" : "H:/Dropbox/03. FABRICATION NUMERIQUE/06. ELECTRONIQUE/01. SMARTBALL/02. SOFTWARE/01. ESP8266/smartball-firmware/maxmsp/datagramJS",
+				"bootpath" : "~/Dropbox/03. fabrication numerique/06. ELECTRONIQUE/01. SMARTBALL/02. SOFTWARE/01. ESP8266/smartball-firmware/maxmsp/datagramJS",
 				"patcherrelativepath" : ".",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "smartball_rx.js",
-				"bootpath" : "H:/Dropbox/03. FABRICATION NUMERIQUE/06. ELECTRONIQUE/01. SMARTBALL/02. SOFTWARE/01. ESP8266/smartball-firmware/maxmsp/datagramJS",
+				"bootpath" : "~/Dropbox/03. fabrication numerique/06. ELECTRONIQUE/01. SMARTBALL/02. SOFTWARE/01. ESP8266/smartball-firmware/maxmsp/datagramJS",
 				"patcherrelativepath" : ".",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
-				"name" : "sadam.udpReceiver.mxe",
-				"type" : "iLaF"
+				"name" : "sadam.udpReceiver.mxo",
+				"type" : "iLaX"
 			}
 , 			{
-				"name" : "sadam.udpSender.mxe",
-				"type" : "iLaF"
+				"name" : "sadam.udpSender.mxo",
+				"type" : "iLaX"
 			}
 , 			{
-				"name" : "ramp.mxe",
-				"type" : "iLaF"
+				"name" : "ramp.mxo",
+				"type" : "iLaX"
 			}
  ],
 		"autosave" : 0,

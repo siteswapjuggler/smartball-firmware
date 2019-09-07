@@ -1,28 +1,41 @@
 //-----------------------------------------------------------------------------------
-// WIFI CONNECTION & LISTING
+// WIFI CONNECTION
 //-----------------------------------------------------------------------------------
 
 char* HOSTNAME;
-String availableNetworks;
 
 boolean connectWifi() {
-  WiFi.disconnect();
-  WiFi.mode(WIFI_STA);
-  availableNetworks = listNetworks();
   setHostname(fset.serialNumber);
+  WiFi.mode(WIFI_STA);
+  WiFi.hostname(HOSTNAME);
   WiFi.begin(wset.ssid, wset.password);
-  bool state = true;
   uint32_t timeout = 0;
   while (WiFi.status() != WL_CONNECTED) {
     timeout += blinkLed(WAIT_COLOR, QUICK_BLINK);
     if (timeout >= WIFI_TIMEOUT || WiFi.status() == WL_CONNECT_FAILED) {
-      state = false;
       WiFi.disconnect();
       for (byte n = 0; n < 4; n++) blinkLed(ALERT_COLOR, LONG_BLINK);
-      break;
+      return false;
     }
   }
-  return state;
+  return true;
+}
+
+//-----------------------------------------------------------------------------------
+// WIFI HELPERS
+//-----------------------------------------------------------------------------------
+
+void setHostname(uint16_t sn) {
+  if (sn) {
+    HOSTNAME = "SB_00000";
+    for (int i = 0, m = 1; i < 5; i++) {
+      HOSTNAME[7 - i] = 48 + ((sn / m) % 10);
+      m *= 10;
+    }
+  }
+  else {
+    HOSTNAME = "SB_ALPHA";
+  }
 }
 
 String listNetworks() {
@@ -52,20 +65,6 @@ void initAccessPoint() {
   WiFi.softAP(HOSTNAME);
 }
 
-void setHostname(uint16_t sn) {
-  if (sn) {
-    HOSTNAME = "SMARTBALL_00000";
-    HOSTNAME = "SB_00000";
-    for (int i = 0, m = 1; i < 5; i++) {
-      HOSTNAME[7 - i] = 48 + ((sn / m) % 10);
-      m *= 10;
-    }
-  }
-  else {
-    HOSTNAME = "SB_ALPHA";
-  }
-}
-
 //----------------------------------------------------------------------------------------
 // DNS CONFIGURATION
 //----------------------------------------------------------------------------------------
@@ -79,34 +78,4 @@ void initDNS() {
 
 void updateDNS() {
   dnsServer.processNextRequest();
-}
-
-//----------------------------------------------------------------------------------------
-// MDNS CONFIGURATION
-//----------------------------------------------------------------------------------------
-
-void initMDNS() {
-  MDNS.begin(HOSTNAME);
-  if (!serverMode) {
-    MDNS.addService("datagram", "udp", 8000);
-    MDNS.addService("bento", "udp", 8888);
-    MDNS.addService("osc", "udp", 9000);
-  }
-  else {
-    MDNS.addService("http","tcp", 80);
-  }
-}
-
-void updateMDNS() {
-  MDNS.update();
-}
-
-//-----------------------------------------------------------------------------------
-// EEPROM FUNCTIONS
-//-----------------------------------------------------------------------------------
-
-void saveWifiSettings() {
-  EEPROM.begin(512);
-  EEPROM.put(WS_ADDR, wset);
-  EEPROM.end();
 }

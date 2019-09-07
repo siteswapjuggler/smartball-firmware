@@ -3,13 +3,10 @@
 //-----------------------------------------------------------------------------------
 
 WiFiUDP DGM;                       // datagram UDP socket
-#define DGM_IN   8000              // datagram UDP in port
-#define DGM_OUT  9000              // datagram UDP out port
-
 IPAddress multiIp(239, 0, 0, 50);  // multicast address of smartballs
 
 boolean connectDGM() {
-  return DGM.beginMulticast(WiFi.localIP(), multiIp, DGM_IN) == 1;
+  return DGM.beginMulticast(WiFi.localIP(), multiIp, dset.inputPort) == 1;
 }
 
 //-----------------------------------------------------------------------------------
@@ -33,14 +30,11 @@ void receiveDGM() {
       case CMD_FACTORY:   setFactorySettings();    break;
       case SAVE_FACTORY:  saveFactorySettings();   break;
       
-      case CMD_GENERAL:   setGeneralSettings();    break;
+      case CMD_GENERAL:   setIdNumber();           break;
       case SAVE_GENERAL:  saveGeneralSettings();   break;
 
-      case SAVE_IMU:      saveImuSettings();       break;
-      case DEFAULT_IMU:   setDefaultIMUSettings(); break;
-      case CMD_IMU:       setIMU(_DIN[0]);         break;
-      case CMD_ACCRANGE:  setAccRange(_DIN[0]);    break;
-      case CMD_GYRRANGE:  setGyrRange(_DIN[0]);    break;
+      case CMD_IMU:       setImuFlag();            break;
+      case DEFAULT_IMU:   setDefaultImuFlag();     break;
 
       //------------------------------------------------
       // Those commands needs high bandwidth efficiency
@@ -67,7 +61,7 @@ void sendPong() {
 }
 
 void sendDgmAnswer(byte cmd, uint16_t len) {
-  DGM.beginPacket(wset.outputIp, DGM_OUT);
+  DGM.beginPacket(dset.outputIp, dset.outputPort);
   DGM.write(gset.idNumber >> 8);
   DGM.write(gset.idNumber & 255);
   DGM.write(fset.serialNumber >> 8);
@@ -75,4 +69,10 @@ void sendDgmAnswer(byte cmd, uint16_t len) {
   DGM.write(cmd);
   if (len) DGM.write(_DOUT, len);
   DGM.endPacket();
+}
+
+void setDefaultDgmSettings() {
+  strcpy(dset.outputIp,"239.0.0.51");
+  dset.inputPort  = 8000;
+  dset.outputPort = 9000;
 }

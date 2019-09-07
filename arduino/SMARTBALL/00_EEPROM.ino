@@ -1,53 +1,45 @@
 //-----------------------------------------------------------------------------------
-// GLOBAL BUFFERS
-//-----------------------------------------------------------------------------------
-
-static byte _DIN[1024], _DOUT[42];
-
-//-----------------------------------------------------------------------------------
 // GLOBAL VARIABLE
 //-----------------------------------------------------------------------------------
 
+_eepromSettings  eset;
 _factorySettings fset;
-_imuSettings     iset;
 _generalSettings gset;
 _wifiSettings    wset;
+_dgmSettings     dset;
+_benSettings     bset;
 
 //-----------------------------------------------------------------------------------
 // GENERAL FUNCTIONS
 //-----------------------------------------------------------------------------------
 
-void initEEPROM() {
+void initEeprom() {
   EEPROM.begin(512);
+  EEPROM.get(ES_ADDR, eset);
   EEPROM.get(FS_ADDR, fset);
-  EEPROM.get(IS_ADDR, iset);
   EEPROM.get(GS_ADDR, gset);
+  EEPROM.get(DS_ADDR, dset);
+  EEPROM.get(BS_ADDR, bset);
   EEPROM.get(WS_ADDR, wset);
   EEPROM.end();
+  eepromVersion = getEepromVersion();
   printEepromDebug();
 }
 
-void espReboot() {
-  ESP.restart();
-}
-
-//-----------------------------------------------------------------------------------
-// DATAGRAM FUNCTIONS
-//-----------------------------------------------------------------------------------
-
-void setFactorySettings() {
-  fset.serialNumber   = _DIN[0] << 8 | _DIN[1];
-  fset.deviceFlag     = _DIN[2] << 8 | _DIN[3];
-  fset.adcCalibration = (float)(_DIN[4] << 8 | _DIN[5]) / 10.;
-}
-
-void setGeneralSettings() {
-  gset.idNumber = _DIN[0] << 8 | _DIN[1];
+String getEepromVersion() {
+  String v = String(eset.major)+"."+String(eset.minor)+"."+String(eset.revision);
+  return v;
 }
 
 //-----------------------------------------------------------------------------------
 // EEPROM FUNCTIONS
 //-----------------------------------------------------------------------------------
+
+void saveEepromSettings() {
+  EEPROM.begin(512);
+  EEPROM.put(ES_ADDR, eset);
+  EEPROM.end();
+}
 
 void saveFactorySettings() {
   EEPROM.begin(512);
@@ -58,5 +50,23 @@ void saveFactorySettings() {
 void saveGeneralSettings() {
   EEPROM.begin(512);
   EEPROM.put(GS_ADDR, gset);
+  EEPROM.end();
+}
+
+void saveDgmSettings() {
+  EEPROM.begin(512);
+  EEPROM.put(DS_ADDR, dset);
+  EEPROM.end();
+}
+
+void saveBenSettings() {
+  EEPROM.begin(512);
+  EEPROM.put(BS_ADDR, bset);
+  EEPROM.end();
+}
+
+void saveWifiSettings() {
+  EEPROM.begin(512);
+  EEPROM.put(WS_ADDR, wset);
   EEPROM.end();
 }
