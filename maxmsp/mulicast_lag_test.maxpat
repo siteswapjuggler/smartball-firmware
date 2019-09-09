@@ -195,7 +195,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 196.0, 149.0, 156.0, 22.0 ],
+					"patching_rect" : [ 196.0, 149.0, 163.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"stream_col1" : 1,
 						"stream_col2" : 0,
@@ -208,7 +208,7 @@
 					}
 ,
 					"style" : "",
-					"text" : "sb.send 192.168.1.34 8000"
+					"text" : "sb.send 192.168.100.3 8000"
 				}
 
 			}

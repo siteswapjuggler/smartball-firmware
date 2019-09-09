@@ -29,9 +29,6 @@ void receiveDGM() {
       case CMD_PING:      sendPong();              break;
       case CMD_REBOOT:    espReboot();             break;
       
-      case CMD_FACTORY:   setFactorySettings();    break;
-      case SAVE_FACTORY:  saveFactorySettings();   break;
-      
       case CMD_GENERAL:   setIdNumber();           break;
       case SAVE_GENERAL:  saveGeneralSettings();   break;
 
@@ -50,7 +47,7 @@ void receiveDGM() {
       case CMD_STB:       setSTB(0);               break;
       case CMD_MST:       setMST(0);               break;
     }
-    printMsgDebug(cmd, len, _DIN);
+    printDgmDebug(cmd, len, _DIN);
   }
 }
 
@@ -71,10 +68,4 @@ void sendDgmAnswer(byte cmd, uint16_t len) {
   DGM.write(cmd);
   if (len) DGM.write(_DOUT, len);
   DGM.endPacket();
-}
-
-void setDefaultDgmSettings() {
-  strcpy(dset.outputIp,"239.0.0.51");
-  dset.inputPort  = 8000;
-  dset.outputPort = 9000;
 }

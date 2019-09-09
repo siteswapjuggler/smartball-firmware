@@ -121,7 +121,7 @@ _opMode operationMode;            // running or config
 #define RGB_NUM   6
 
 //---------------------------------------------------------------
-// DEVICE FLAG ADDRESSES (8bit)
+// DEVICE FLAG ADDRESSES (8 bits)
 //---------------------------------------------------------------
 
 #define RGB_BIT  0
@@ -142,7 +142,7 @@ _opMode operationMode;            // running or config
 
 
 //---------------------------------------------------------------
-// STREAM FLAG ADDRESSES (16bits)
+// STREAM FLAG ADDRESSES (16 bits)
 //---------------------------------------------------------------
 
 #define COL_STREAM_MASK   0b111
@@ -179,14 +179,14 @@ _opMode operationMode;            // running or config
 #define WS_ADDR  0x70
 
 //---------------------------------------------------------------
-// EEPROM DATA STRUCTURES
+// EEPROM DATA STRUCTURES (176 bytes)
 //---------------------------------------------------------------
 
 #define IP_LEN 16
 #define PWD_LEN  32
 #define SSID_LEN 32
 
-// Memory usage: 6/16 bytes
+// Memory usage: 7/16 bytes
 struct _eepromSettings {
   uint32_t credential;      // must be 0xFDB97531
   uint8_t  major;           // major version number
@@ -196,31 +196,31 @@ struct _eepromSettings {
 
 // Memory usage: 8/16 bytes
 struct _factorySettings {
-  uint16_t serialNumber;    // unique ID depending on manufacturing
+  uint16_t serialNumber;    // unique identification number
   uint16_t deviceFlag;      // subsystems definition
   float adcCalibration;     // scale factor for adc
 };
 
-// Memory usage: 8/16 bytes
+// Memory usage: 6/16 bytes
 struct _generalSettings {
-  uint16_t idNumber;
-  uint16_t imuFlag;
-  uint16_t configFlag;
+  uint16_t idNumber;        // software identification number
+  uint16_t imuFlag;         // IMU data flag
+  uint16_t configFlag;      // Configuration flag
 };
 
-// Memory usage: 6/16 bytes
+// Memory usage: 20/32 bytes
 struct _dgmSettings {
-  char outputIp[IP_LEN];
-  uint16_t  inputPort;
-  uint16_t  outputPort;
+  char outputIp[IP_LEN];    // Client IP to send data to
+  uint16_t  inputPort;      // Incoming port for datagram message
+  uint16_t  outputPort;     // Outgoing port for datagram message
 };
 
-// Memory usage: 6/16 bytes
+// Memory usage: 22/32 bytes
 struct _benSettings {
-  char outputIp[IP_LEN];
-  uint16_t benInputPort;
-  uint16_t oscInputPort;
-  uint16_t oscOutputPort;
+  char outputIp[IP_LEN];    // Client IP to send data to
+  uint16_t benInputPort;    // BenTo incoming port for datagram message
+  uint16_t oscInputPort;    // Yo Protocol Input port
+  uint16_t oscOutputPort;   // Yo Protocol Output port
 };
 
 // Memory usage: 64 bytes

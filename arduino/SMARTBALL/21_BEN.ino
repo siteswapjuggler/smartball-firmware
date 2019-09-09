@@ -11,13 +11,6 @@ boolean receiveBEN() {
   receiveBenTo();
 }
 
-void setDefaultBenSettings() {
-  strcpy(bset.outputIp,"239.0.0.51");
-  bset.benInputPort  = 8888;
-  bset.oscInputPort  = 9000;
-  bset.oscOutputPort = 10000;
-}
-
 //-----------------------------------------------------------------------------------
 // BENTO SOCKET
 //-----------------------------------------------------------------------------------

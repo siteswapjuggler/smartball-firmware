@@ -23,7 +23,6 @@ void initEeprom() {
   EEPROM.get(WS_ADDR, wset);
   EEPROM.end();
   eepromVersion = getEepromVersion();
-  printEepromDebug();
 }
 
 String getEepromVersion() {
@@ -35,33 +34,9 @@ String getEepromVersion() {
 // EEPROM FUNCTIONS
 //-----------------------------------------------------------------------------------
 
-void saveEepromSettings() {
-  EEPROM.begin(512);
-  EEPROM.put(ES_ADDR, eset);
-  EEPROM.end();
-}
-
-void saveFactorySettings() {
-  EEPROM.begin(512);
-  EEPROM.put(FS_ADDR, fset);
-  EEPROM.end();
-}
-
 void saveGeneralSettings() {
   EEPROM.begin(512);
   EEPROM.put(GS_ADDR, gset);
-  EEPROM.end();
-}
-
-void saveDgmSettings() {
-  EEPROM.begin(512);
-  EEPROM.put(DS_ADDR, dset);
-  EEPROM.end();
-}
-
-void saveBenSettings() {
-  EEPROM.begin(512);
-  EEPROM.put(BS_ADDR, bset);
   EEPROM.end();
 }
 

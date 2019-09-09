@@ -1,6 +1,6 @@
 /* -------------------------------------------------------------------------------------
-   THE SMARTBALL PROJECT - 08/09/2019
-   Copyright 2013-2019 Sylvain GARNAVAULT
+   THE SMARTBALL PROJECT - 09/09/2019
+   Copyright 2018-2019 Sylvain GARNAVAULT
    -------------------------------------------------------------------------------------
 
    This program is free software: you can redistribute it and/or modify
@@ -36,7 +36,6 @@
 
 //#define DGM_DEBUG            // uncomment for datagram communication serial feedbacks
 #define TIME_DEBUG           // uncomment for time debug serial feedbacks
-//#define EEPROM_DEBUG         // uncomment for EEPROM serial print during setup
 
 //--------------------------------------------------------------------------------------
 // INITIAL SETUP
@@ -46,7 +45,6 @@ void setup() {
   //------------------------------------------------------------------------------------
   // Hardware configuration
   //------------------------------------------------------------------------------------
-  // resetSettings();
 
   initDebug();                  // serial connection
   initEeprom();                 // get EEPROM datas
