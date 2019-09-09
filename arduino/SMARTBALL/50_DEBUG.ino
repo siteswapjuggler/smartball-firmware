@@ -18,8 +18,9 @@ void getDebugTime() {
 
 void printTimeDebug(const char* msg) {
 #ifdef TIME_DEBUG
+  uint32_t delta = micros() - debugTime;
   Serial.print(msg);
-  Serial.println(micros() - debugTime);
+  Serial.println(delta);
 #endif
 }
 

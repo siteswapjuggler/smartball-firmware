@@ -14,11 +14,23 @@ function togglePassword() {
 	}
 }
 
+function testBall() {
+	var xhttp = new XMLHttpRequest();
+	xhttp.open("GET", "./testBall", true);
+	xhttp.send();
+}
+
 function getParameters() {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
    if (this.readyState == 4 && this.status == 200) {
-	  //TODO
+			parameters = this.response.split(",");
+			document.getElementById("NT").innerHTML = parameters[0];
+			document.getElementById("ID").innerHTML = parameters[1];
+			document.getElementById("SN").innerHTML = parameters[2];
+			document.getElementById("FW").innerHTML = parameters[3];
+			document.getElementById("EP").innerHTML = parameters[4];
+			document.getElementById("PR").innerHTML = parameters[5];
     }
   };
   xhttp.open("GET", "./getParameters", true);
@@ -47,3 +59,4 @@ function getNetworks(refresh) {
 }
 
 getNetworks(false);
+getParameters();

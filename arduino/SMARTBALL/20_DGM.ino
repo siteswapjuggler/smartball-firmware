@@ -16,6 +16,8 @@ boolean connectDGM() {
 void receiveDGM() {
   uint16_t packetSize = DGM.parsePacket();
   if (packetSize)  {
+    printTimeDebug("packet: ");
+    getDebugTime();
     byte cmd = DGM.read();
     uint16_t len = packetSize - 1;
     if (len) DGM.read(_DIN, len);

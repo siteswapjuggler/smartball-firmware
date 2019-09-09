@@ -2,6 +2,14 @@
 #define SMARTBALL_h
 
 //-----------------------------------------------------------------------------------
+// COMPILATION ALERT
+//-----------------------------------------------------------------------------------
+
+#if !defined(ESP8266)
+  #error "Unsupported board selected!"
+#endif 
+
+//-----------------------------------------------------------------------------------
 // LIBRARIES
 //-----------------------------------------------------------------------------------
 
@@ -16,9 +24,9 @@
 #include <MPU9250.h>           // Custom MPU920 SPI Library - see libraries subfolder
 #include <Adafruit_DotStar.h>  // Adafruit_Dotstar Library - https://github.com/adafruit/Adafruit_DotStar >> Issue with SPI Mode has been documented here https://github.com/adafruit/Adafruit_DotStar/isetsues/28
 
-//---------------------------------------------------------------
+//-----------------------------------------------------------------------------------
 // OPERATION MODE
-//---------------------------------------------------------------
+//-----------------------------------------------------------------------------------
 
 enum _opMode : uint8_t {
   SET = 0,
@@ -47,7 +55,7 @@ _opMode operationMode;            // running or config
 //---------------------------------------------------------------
 
 #define FIRMWARE_STATE   "WIP"    // WIP, release, beta
-#define FIRMWARE_VERSION "0.3.0"  //
+#define FIRMWARE_VERSION "0.4.0"  // 
 #define PROTOCOL_VERSION "0.4.0"  //
 
 //---------------------------------------------------------------
@@ -59,6 +67,7 @@ _opMode operationMode;            // running or config
 #define GREEN  0x00FF00
 #define BLACK  0x000000
 
+#define TEST_COLOR  0X000020
 #define WAIT_COLOR  0X8F4E00
 #define ALERT_COLOR 0X7F0000
 
@@ -66,7 +75,7 @@ _opMode operationMode;            // running or config
 // BLINKS & TIMEOUTS
 //---------------------------------------------------------------
 
-#define WIFI_TIMEOUT 5000  // WiFi connection timeout in ms
+#define WIFI_TIMEOUT 10000  // WiFi connection timeout in ms
 #define LONG_BLINK   400    // 
 #define MEDIUM_BLINK 200    // 
 #define QUICK_BLINK  100    //
@@ -122,16 +131,18 @@ _opMode operationMode;            // running or config
 #define BUZ_BIT  4
 
 //---------------------------------------------------------------
-// CONFIG FLAG ADDRESSES (16bit)
+// CONFIG FLAG ADDRESSES (16 bits)
 //---------------------------------------------------------------
 
 #define BLI_BIT  0        // Blink leds at start
 #define BAT_BIT  1        // Send automatic battery information
 #define DGM_BIT  8        // Activate DGM protocol
 #define BEN_BIT  9        // Activate BenTo protocol
+#define SPD_BIT 15        // Speed variation 50Hz or 100Hz
+
 
 //---------------------------------------------------------------
-// STREAM FLAG ADDRESSES (16bit)
+// STREAM FLAG ADDRESSES (16bits)
 //---------------------------------------------------------------
 
 #define COL_STREAM_MASK   0b111
@@ -144,7 +155,7 @@ _opMode operationMode;            // running or config
 #define LOOP_STREAM_BIT	  15
 
 //---------------------------------------------------------------
-// IMU FLAG ADDRESSES (16bit)
+// IMU FLAG ADDRESSES (8 bits)
 //---------------------------------------------------------------
 
 #define ACC_BIT  0        // Accelerometer
@@ -155,8 +166,6 @@ _opMode operationMode;            // running or config
 #define QUA_BIT  5        // Orientation Quaternion
 #define WLD_BIT  6        // World Acceleration  
 #define STA_BIT  7        // State Detection
-#define BUF_BIT 14        // Buffer activation
-#define SPD_BIT 15        // Speed variation 50Hz or 100Hz
 
 //---------------------------------------------------------------
 // EEPROM ADDRESSES
@@ -174,8 +183,8 @@ _opMode operationMode;            // running or config
 //---------------------------------------------------------------
 
 #define IP_LEN 16
-#define PWD_LEN  64
-#define SSID_LEN 64
+#define PWD_LEN  32
+#define SSID_LEN 32
 
 // Memory usage: 6/16 bytes
 struct _eepromSettings {
@@ -206,6 +215,7 @@ struct _dgmSettings {
   uint16_t  outputPort;
 };
 
+// Memory usage: 6/16 bytes
 struct _benSettings {
   char outputIp[IP_LEN];
   uint16_t benInputPort;
@@ -213,7 +223,7 @@ struct _benSettings {
   uint16_t oscOutputPort;
 };
 
-// Memory usage: 144 bytes
+// Memory usage: 64 bytes
 struct _wifiSettings {
   char ssid[SSID_LEN];
   char password[PWD_LEN];

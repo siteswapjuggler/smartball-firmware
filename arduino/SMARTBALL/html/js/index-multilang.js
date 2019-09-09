@@ -1,7 +1,7 @@
 var translation = {'fr': new Array(), 'en': new Array()};
 
 translation['fr'] = {
-	//TITLE AND METADATE
+	//TITLE AND METADATA
 	'title':	'SMARTBALL - configuration',
 	
 	//WELCOMING TEXT
@@ -17,13 +17,29 @@ translation['fr'] = {
 	'wifi-form-password-placehoder': 'mot de passe',
 	'submit-button': 'Appliquer',
 	
-	//ACTUAL PARAMETERS
+	//CURRENT PARAMETERS
 	'parameters-title': 'Paramètres actuels',
-	'parameters-serial-label': 'Numéro de série : ',
-	'parameters-network-label': 'Reseau : ',
-	'parameters-outputip-label': 'IP de sortie : ',
 	'test-button': 'Test'
 	};
 	
 translation['en'] = {
+	//TITLE AND METADATA
+	'title':	'SMARTBALL - configuration',
+	
+	//WELCOMING TEXT
+	'welcome-title': 'Welcome',
+	'welcome-text': 'This form allow you to configure your ball WiFi connection.',
+	
+	//WIFI FORM
+	'wifi-form-title': 'WiFi configuration',
+	'wifi-form-network-label': 'Available networks',
+	'wifi-form-network-nowifi': 'no network available',
+	'wifi-form-network-selector': 'select your network',
+	'wifi-form-password-label': 'Password',
+	'wifi-form-password-placehoder': 'password',
+	'submit-button': 'Apply',
+	
+	//CURRENT PARAMETERS
+	'parameters-title': 'Current parameters',
+	'test-button': 'Test'
 	};

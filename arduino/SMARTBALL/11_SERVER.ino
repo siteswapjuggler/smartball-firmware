@@ -7,7 +7,8 @@ ESP8266WebServer server(80);                            //Server on port 80
 void initWebServer() {
   SPIFFS.begin();                                       // Start file system
   server.on("/", handleRoot);                           // Hande root request
-  server.on("/ballReboot", espReboot);                  // Reboot the ball
+  server.on("/testBall", testBall);                     // Test the ball
+  server.on("/rebootBall", espReboot);                  // Reboot the ball
   server.on("/getNetworks", getNetworks);               // Get available networks
   server.on("/getParameters", getParameters);           // Asking for actual parameters
   server.on("/refreshNetworks", refreshNetworks);       // Refresh available networks
@@ -23,6 +24,14 @@ void updateWebServer() {
 //-----------------------------------------------------------------------------------
 // WEBSERVER API
 //-----------------------------------------------------------------------------------
+
+bool test = false;
+
+void testBall() {
+  test = test ? false : true;
+   changeRGB(0,test ? TEST_COLOR : BLACK);  
+  server.send(200, "text/plain", test ? "TEST ON" : "TEST OFF");
+}
 
 void getNetworks() {
   server.send(200, "text/plain", availableNetworks);
@@ -42,8 +51,8 @@ void setNetwork() {
 
 void getParameters() {
   String answer;
-  answer += String(gset.idNumber)+", ",String(wset.ssid)+", "+dset.outputIp+", "+String(dset.outputPort);
-  answer += String(fset.serialNumber)+", "+String(fset.deviceFlag)+", "+BOARD_VERSION+", "+eepromVersion+", "+FIRMWARE_STATE+", "+FIRMWARE_VERSION;
+  answer += String(wset.ssid)+","+String(gset.idNumber)+","+String(HOSTNAME)+",";
+  answer += String(FIRMWARE_VERSION)+" | "+String(FIRMWARE_STATE)+","+eepromVersion+","+String(PROTOCOL_VERSION);
   server.send(200, "text/plain", answer);
 }
 

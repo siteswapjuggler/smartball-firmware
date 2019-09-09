@@ -35,7 +35,7 @@
 //--------------------------------------------------------------------------------------
 
 //#define DGM_DEBUG            // uncomment for datagram communication serial feedbacks
-//#define TIME_DEBUG           // uncomment for time debug serial feedbacks
+#define TIME_DEBUG           // uncomment for time debug serial feedbacks
 //#define EEPROM_DEBUG         // uncomment for EEPROM serial print during setup
 
 //--------------------------------------------------------------------------------------
@@ -44,16 +44,14 @@
 
 void setup() {
   //------------------------------------------------------------------------------------
-  // hardware configuration
+  // Hardware configuration
   //------------------------------------------------------------------------------------
-
-  //resetSettings();
+  // resetSettings();
 
   initDebug();                  // serial connection
   initEeprom();                 // get EEPROM datas
   initDevice();                 // hardware initialisation
   initSystem();                 // system initialisation
-
   blinkLed(BLUE, LONG_BLINK);   // end of hardware config
 
   //------------------------------------------------------------------------------------
@@ -83,7 +81,7 @@ void setup() {
       if (imu) imuTicker.attach_ms(5, updateIMU);      // IMU updates  @ 200 Hz
       break;
     case SET:
-      availableNetworks = listNetworks();
+      availableNetworks = listNetworks();              // List network at start
       break;
   }
 }
@@ -95,17 +93,17 @@ void setup() {
 void loop() {
   switch (operationMode) {
     case RUN:
-      if (rgb) updateStrobe();              // update strobe state
-      if (dgm) receiveDGM();                // receive Smartball Datagrams
-      if (ben) receiveBEN();                // receive BenTo & Yo Protocol
+      if (rgb) updateStrobe();   // update strobe state
+      if (dgm) receiveDGM();     // receive Smartball Datagrams
+      if (ben) receiveBEN();     // receive BenTo & Yo Protocol
       break;
     case SET:
-      updateDNS();                          // DNS redirection service
-      updateWebServer();                    // Webserver Management
+      updateDNS();               // DNS redirection service
+      updateWebServer();         // Webserver Management
       break;
     }
-  yield();                                  // WiFi tasks extra management
-  ESP.wdtFeed();                            // feeding watchdog
+  yield();                       // WiFi tasks extra management 
+  ESP.wdtFeed();                 // feeding watchdog
 }
 
 //--------------------------------------------------------------------------------------
@@ -114,11 +112,11 @@ void loop() {
 
 void mainFrame() {
   if (rgb) {
-    updateSTB();           // update Strobe speed
-    updateRGB();           // update RGB leds
+    updateSTB();                 // update Strobe speed
+    updateRGB();                 // update RGB leds
   }
-  if (irl) updateIRL();    // update infrared leds values
-  if (mot) updateMOT();    // update vibration motor values
+  if (irl) updateIRL();          // update infrared leds values
+  if (mot) updateMOT();          // update vibration motor values
 }
 
 //--------------------------------------------------------------------------------------

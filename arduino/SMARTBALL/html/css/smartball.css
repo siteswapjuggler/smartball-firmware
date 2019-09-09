@@ -6,6 +6,18 @@
 	display:block;
 }
 
+dl .icon {
+	display:inline-block;
+	vertical-align:middle;
+	position:relative;
+	bottom:2px;
+	margin-right: 30px;
+}
+
 .btn-minwidth {
 	min-width: 120px;
+}
+
+main.container {
+	padding: 0 30px;
 }

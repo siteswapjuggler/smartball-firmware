@@ -29,6 +29,14 @@ void updateRGB() {
   digitalWrite(RGB_CS, HIGH);
 }
 
+void changeRGB(uint8_t s, uint32_t c) {
+  for (byte i = 0; i < RGB_NUM; i++) {
+    colors[s][i] = c;
+  }
+  updateRGB();
+}
+
+
 //-----------------------------------------------------------------------------------
 // STROBE FUNCTIONS
 //-----------------------------------------------------------------------------------
@@ -73,17 +81,17 @@ int32_t color(byte* data, uint16_t addr) {
 }
 
 uint32_t blinkLed(uint32_t c, uint16_t BLINK_DUR) {
-  if (bli) {
+  if (bli && rgb) {
     colors[0][1] = c;
     updateRGB();
-    delay(BLINK_DUR);
+  }
+  delay(BLINK_DUR);
+  if (bli && rgb) {
     colors[0][1] = BLACK;
     updateRGB();
-    delay(BLINK_GAP);
-    return BLINK_DUR + BLINK_GAP;
   }
-  delay(1);
-  return 1;
+  delay(BLINK_GAP);
+  return BLINK_DUR + BLINK_GAP;
 }
 
 //-----------------------------------------------------------------------------------

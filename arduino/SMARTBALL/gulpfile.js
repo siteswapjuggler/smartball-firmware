@@ -98,5 +98,5 @@ function html() {
 //----------------------------------------------------------------------------------------
 
 exports.sprite  = sprite;
-exports.inline  = series(clean,files,html,embed,clear);
-exports.default = series(clean,files,html,normal,clear);
+exports.inline  = series(clean,sprite,files,html,embed,clear);
+exports.default = series(clean,sprite,files,html,normal,clear);

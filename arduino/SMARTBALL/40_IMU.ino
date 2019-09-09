@@ -62,8 +62,7 @@ void sendIMU() {
   if (gset.imuFlag) {
     int16_t  val = 0;
     uint16_t index = 0;
-    _DOUT[index++] = gset.imuFlag >>  8;
-    _DOUT[index++] = gset.imuFlag & 255;
+    _DOUT[index++] = gset.imuFlag;
 
     if (gset.imuFlag & (1 << ACC_BIT)) {
       val = (int16_t)(IMU.getAccelX_mss() * 100.);
