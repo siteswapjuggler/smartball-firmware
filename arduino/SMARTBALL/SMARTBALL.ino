@@ -34,8 +34,8 @@
 // USER PARAMETERS
 //--------------------------------------------------------------------------------------
 
-//#define DGM_DEBUG            // uncomment for datagram communication serial feedbacks
-#define TIME_DEBUG           // uncomment for time debug serial feedbacks
+#define DGM_DEBUG            // uncomment for datagram communication serial feedbacks
+//#define TIME_DEBUG           // uncomment for time debug serial feedbacks
 
 //--------------------------------------------------------------------------------------
 // INITIAL SETUP
@@ -76,7 +76,7 @@ void setup() {
     case RUN:
       frameTicker.attach_ms(10, mainFrame);            // Main updates @ 100 Hz
       if (bat) batTicker.attach_ms(100, updateBAT);    // BAT updates  @  10 Hz
-      if (imu) imuTicker.attach_ms(5, updateIMU);      // IMU updates  @ 200 Hz
+      if (imu) imuTicker.attach_ms(7.5, updateIMU);    // IMU updates  @ 150 Hz
       break;
     case SET:
       availableNetworks = listNetworks();              // List network at start

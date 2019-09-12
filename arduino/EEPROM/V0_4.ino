@@ -43,13 +43,13 @@ struct _generalSettings {
 };
 
 struct _dgmSettings {
-  char outputIp[IP_LEN];
+  uint32_t  outputIp;
   uint16_t  inputPort;
   uint16_t  outputPort;
 };
 
 struct _benSettings {
-  char outputIp[IP_LEN];
+  uint32_t outputIp;
   uint16_t benInputPort;
   uint16_t oscInputPort;
   uint16_t oscOutputPort;
@@ -58,6 +58,9 @@ struct _benSettings {
 struct _wifiSettings {
   char ssid[SSID_LEN];
   char password[PWD_LEN];
+  uint32_t staticIp;
+  uint32_t gateway;
+  uint32_t subnet;
 };
 
 _eepromSettings  eset;
@@ -79,6 +82,8 @@ void getParameters() {
 }
 
 void setDefaultParameters() {
+  IPAddress tmpIp;
+
   eset.credential     = 0xFDB97531;         // Eeprom magic number
   eset.major          = 0;                  // Eeprom major version
   eset.minor          = 4;                  // Eeprom minor version
@@ -92,17 +97,25 @@ void setDefaultParameters() {
   gset.imuFlag        = 1;                  // Only accelerometer
   gset.configFlag     = 0b100000011;        // Blink, batt & datagram
 
-  strcpy(dset.outputIp, DEFAULT_IP);        // default output IP
+  tmpIp.fromString(DEFAULT_IP);
+  dset.outputIp       = (uint32_t)tmpIp;    // default output IP
   dset.inputPort      = 8000;               // default input port
   dset.outputPort     = 9000;               // default output port
 
-  strcpy(bset.outputIp, DEFAULT_IP);        // default output IP
+  tmpIp.fromString(DEFAULT_IP);
+  bset.outputIp       = (uint32_t)tmpIp;    // default output IP
   bset.benInputPort   = 8888;               // default BenTo input port
   bset.oscInputPort   = 9000;               // default Yo protocol input port
   bset.oscOutputPort  = 10000;              // default Yo protocol output port
   
   strcpy(wset.ssid, DEFAULT_SSID);          // default ssid
   strcpy(wset.password, DEFAULT_PWD);       // default password
+  tmpIp.fromString(DEFAULT_STATIC);
+  wset.staticIp       = (uint32_t)tmpIp;    // default device IP
+  tmpIp.fromString(DEFAULT_GATEWAY);
+  wset.gateway        = (uint32_t)tmpIp;    // default gateway IP
+  tmpIp.fromString(DEFAULT_MASK);
+  wset.subnet         = (uint32_t)tmpIp;    // default subnetwork mask
 }
 
 void saveDefaultParameters() {
@@ -129,16 +142,19 @@ void printParameters() {
   Serial.println("IF: 0b" + String(gset.imuFlag, BIN));
   Serial.println("CF: 0b" + String(gset.configFlag, BIN));
   Serial.println("\n[ DGM Settings ]");
-  Serial.println("IP: " + String(dset.outputIp));
+  Serial.print("IP: ");Serial.println(IPAddress(dset.outputIp));
   Serial.println("IN: " + String(dset.inputPort));
   Serial.println("OU: " + String(dset.outputPort));
   Serial.println("\n[ BenTo Settings ]");
-  Serial.println("IP: " + String(bset.outputIp));
+  Serial.print("IP: ");Serial.println(IPAddress(bset.outputIp));
   Serial.println("IN: " + String(bset.benInputPort));
   Serial.println("OI: " + String(bset.oscInputPort));
   Serial.println("OO: " + String(bset.oscOutputPort));
   Serial.println("\n[ WiFi Settings ]");
   Serial.println("SSID:\t" + String(wset.ssid));
   Serial.println("PWD:\t" + String(wset.password));
+  Serial.print("IP:\t");Serial.println(IPAddress(wset.staticIp));
+  Serial.print("GW:\t");Serial.println(IPAddress(wset.gateway));
+  Serial.print("SM:\t");Serial.println(IPAddress(wset.subnet));
 }
 #endif

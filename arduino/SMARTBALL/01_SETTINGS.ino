@@ -40,7 +40,7 @@ void setDefaultIdNumber() {
 }
 
 void setImuFlag() {
-  gset.imuFlag = _DIN[0] << 8 | _DIN[1];
+  gset.imuFlag = _DIN[0];
 }
 
 void setDefaultImuFlag() {

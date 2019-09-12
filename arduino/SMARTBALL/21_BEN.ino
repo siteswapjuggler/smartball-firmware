@@ -63,6 +63,7 @@ void receiveOSC() {
 
 void wassup(OSCMessage& msg) {
   if (msg.size() == 1 && msg.isString(0)) {
+    /* BROKEN
     msg.getString(0, bset.outputIp, IP_LEN);
     OSCMessage answer("/wassup");
     answer.add(WiFi.localIP().toString());
@@ -70,5 +71,6 @@ void wassup(OSCMessage& msg) {
     answer.send(OSC);
     OSC.endPacket();
     answer.empty();
+    */
   }
 }

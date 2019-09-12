@@ -54,7 +54,7 @@ function parse(id,sn,cmd,data) {
 			addr += 6;
 		}
 		if (data[0] & 128) {
-			outlet(0,id,'imu','state',int16_complement(data[addr],data[addr+1]));
+			outlet(0,id,'imu','sta',int16_complement(data[addr],data[addr+1]));
 			addr += 2;
 		}
 	}

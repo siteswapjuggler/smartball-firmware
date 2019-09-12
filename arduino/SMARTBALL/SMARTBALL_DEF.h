@@ -75,7 +75,7 @@ _opMode operationMode;            // running or config
 // BLINKS & TIMEOUTS
 //---------------------------------------------------------------
 
-#define WIFI_TIMEOUT 10000  // WiFi connection timeout in ms
+#define WIFI_TIMEOUT 20000  // WiFi connection timeout in ms
 #define LONG_BLINK   400    // 
 #define MEDIUM_BLINK 200    // 
 #define QUICK_BLINK  100    //
@@ -208,25 +208,28 @@ struct _generalSettings {
   uint16_t configFlag;      // Configuration flag
 };
 
-// Memory usage: 20/32 bytes
+// Memory usage: 8/32 bytes
 struct _dgmSettings {
-  char outputIp[IP_LEN];    // Client IP to send data to
+  uint32_t  outputIp;       // Client IP to send data to
   uint16_t  inputPort;      // Incoming port for datagram message
   uint16_t  outputPort;     // Outgoing port for datagram message
 };
 
-// Memory usage: 22/32 bytes
+// Memory usage: 10/32 bytes
 struct _benSettings {
-  char outputIp[IP_LEN];    // Client IP to send data to
+  uint32_t outputIp;        // Client IP to send data to
   uint16_t benInputPort;    // BenTo incoming port for datagram message
   uint16_t oscInputPort;    // Yo Protocol Input port
   uint16_t oscOutputPort;   // Yo Protocol Output port
 };
 
-// Memory usage: 64 bytes
+// Memory usage: 76 bytes
 struct _wifiSettings {
   char ssid[SSID_LEN];
   char password[PWD_LEN];
+  uint32_t staticIp;
+  uint32_t gateway;
+  uint32_t subnet;
 };
 
 #endif

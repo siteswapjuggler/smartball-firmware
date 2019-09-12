@@ -2,12 +2,11 @@
 // GLOBAL VARIABLE
 //-----------------------------------------------------------------------------------
 
+int imuCounter = 0;
 MPU9250 IMU(SPI, IMU_CS);
-bool changeAR = false;
-bool changeGR = false;
 
 // FILTERS IMPLEMENTATION
-byte  freeFallState, freeFallFilter = 0., previousFreeFallFilter;
+byte  ballState;
 float accFirstDerivative = 0., accSecondDerivative;
 float gyrFirstDerivative = 0., gyrSecondDerivative;
 
@@ -27,7 +26,6 @@ void updateIMU() {
   float prevAccelD  = accFirstDerivative;
   float prevGyroN   = IMU.getGyroN_rads();
   float prevGyroD   = gyrFirstDerivative;
-  previousFreeFallFilter = freeFallFilter;
 
   // SENSOR READING
   strip.updatePins();
@@ -48,10 +46,14 @@ void updateIMU() {
   gyrFirstDerivative  = IMU.getGyroN_rads() - prevGyroN;
   gyrSecondDerivative = gyrFirstDerivative - prevGyroD;
 
-  // FREE FALL FILTER
-  freeFallFilter  = (IMU.getGyroN_rads() > 8.72665) ? abs(gyrFirstDerivative) < 0.0898132 : abs(gyrFirstDerivative) < 0.0174533;
-  freeFallFilter  = freeFallFilter | (abs(accFirstDerivative) < 0.1) << 1 | (abs(accSecondDerivative) < 0.25) << 2 | (IMU.getGyroN_rads() > 0.872665) << 3;
-  freeFallState   = (previousFreeFallFilter + freeFallFilter) > 1;
+  // DENIS FREE FALL FILTER
+  ballState = ((IMU.getAccelN_mss() > 15.) << 1) | ((IMU.getAccelN_mss() < 8.) << 0) ;
+
+  if (imuCounter == 0) {
+    sendIMU();
+  }
+  imuCounter++;
+  imuCounter %= 3;
 }
 
 //-----------------------------------------------------------------------------------
@@ -126,7 +128,7 @@ void sendIMU() {
     }
 
     if (gset.imuFlag & (1 << STA_BIT)) {
-      val = freeFallState;
+      val = ballState;
       _DOUT[index++] = val >> 8; _DOUT[index++] = val & 255;
     }
 

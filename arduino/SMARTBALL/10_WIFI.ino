@@ -8,6 +8,7 @@ boolean connectWifi() {
   setHostname(fset.serialNumber);
   WiFi.mode(WIFI_STA);
   WiFi.hostname(HOSTNAME);
+  WiFi.config(wset.staticIp,wset.gateway,wset.subnet);
   WiFi.begin(wset.ssid, wset.password);
   uint32_t timeout = 0;
   while (WiFi.status() != WL_CONNECTED) {

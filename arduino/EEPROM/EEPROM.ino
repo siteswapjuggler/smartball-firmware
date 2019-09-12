@@ -17,24 +17,29 @@
 */
 
 #include <EEPROM.h>
+#include <ESP8266WiFi.h>
 
 //----------------------------------------------------------------------------------
 // USER PARAMETERS
 //----------------------------------------------------------------------------------
 
-#define SERIAL_NUMBER 43
-#define DEVICE_FLAG   3
-#define DEFAULT_SSID  "ssid"
-#define DEFAULT_PWD   "password"
-#define DEFAULT_IP    "239.0.0.51"
+#define SERIAL_NUMBER   1
+#define DEVICE_FLAG     3
+#define DEFAULT_SSID    "ssid"
+#define DEFAULT_PWD     "password"
+#define DEFAULT_IP      "192.168.0.50"
+#define DEFAULT_STATIC  "192.168.0.100"
+#define DEFAULT_GATEWAY "192.168.0.1"
+#define DEFAULT_MASK    "255.255.255.0"
 
 //----------------------------------------------------------------------------------
 // EEPROM VERSION
 //----------------------------------------------------------------------------------
 
 #define MAJOR    0
-#define MINOR    4
+#define MINOR    3
 #define REVISION 0
+#define RESET_PARAMETERS
 
 //----------------------------------------------------------------------------------
 // SET & READ EEPROM
@@ -45,9 +50,11 @@ String eepromVersion;
 void setup() {
   Serial.begin(115200);
 
+#ifdef RESET_PARAMETERS
   Serial.println("Set & save default parameters");
   setDefaultParameters();
   saveDefaultParameters();
+#endif
 
   Serial.println("Get new parameters from EEPROM\n");
   getParameters();
@@ -65,5 +72,5 @@ void loop() {
   Serial.println("-------------------------------------------");
   printParameters();
   Serial.println();
-  delay(5000);
+  delay(1000);
 }
