@@ -6,6 +6,7 @@ char* HOSTNAME;
 
 boolean connectWifi() {
   setHostname(fset.serialNumber);
+  WiFi.persistent(false);
   WiFi.mode(WIFI_STA);
   WiFi.hostname(HOSTNAME);
   WiFi.config(wset.staticIp,wset.gateway,wset.subnet);
