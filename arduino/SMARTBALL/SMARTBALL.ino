@@ -1,6 +1,6 @@
 /* ----------------------------------------------------------------------------------
-   THE SMARTBALL PROJECT - 23/09/2018
-   Copyright 2013-2018 Sylvain GARNAVAULT
+   THE SMARTBALL PROJECT - 11/05/2019
+   Copyright 2013-2019 Sylvain GARNAVAULT
    ----------------------------------------------------------------------------------
 
    This program is free software: you can redistribute it and/or modify
@@ -48,7 +48,6 @@
 // USER PARAMETERS
 //-----------------------------------------------------------------------------------
 
-//#define UNIQUE_OUT_PORT      // uncomment to set a unique out port for each ball, outPort = dmgOutPort + serial.number
 //#define DEBUG                // uncomment for serial debugging messages
 
 //-----------------------------------------------------------------------------------
@@ -57,6 +56,7 @@
 
 bool   serverMode;
 Ticker batTicker;              // battery management ticker
+Ticker imuTicker;              // imu management ticker
 Ticker frameTicker;            // main frame ticker
 
 //-----------------------------------------------------------------------------------
@@ -83,8 +83,9 @@ void setup() {
     accessPointInit();
     serverInit();
   }
-  batTicker.attach_ms(100, updateBAT);
-  frameTicker.attach_ms(10, mainFrame);
+  imuTicker.attach_ms(7, imuFrame);       // IMU updates @ 142.85 Hz
+  batTicker.attach_ms(100, updateBAT);    // BAT updates @ 10 Hz
+  frameTicker.attach_ms(10, mainFrame);   // Main updates @ 100 Hz
 }
 
 //-----------------------------------------------------------------------------------
@@ -112,7 +113,14 @@ void mainFrame() {
     updateSTB();                        // update Strobe speed
     updateRGB();                        // update RGB leds
   }
-  if (imuAvailable()) updateIMU();      // update IMU values
   if (irlAvailable()) updateIRL();      // update infrared leds values
   if (motAvailable()) updateMOT();      // update vibration motor values
+}
+
+//-----------------------------------------------------------------------------------
+// IMU TICKER CALLBACK
+//-----------------------------------------------------------------------------------
+
+void imuFrame() {
+ if (imuAvailable()) updateIMU();      // update IMU values
 }

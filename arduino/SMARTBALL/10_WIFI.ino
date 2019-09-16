@@ -7,7 +7,7 @@ char* HOSTNAME;
 boolean connectWifi() {
   WiFi.mode(WIFI_STA);
   setHostname(fset.serialNumber);
-  WiFi.hostname(HOSTNAME);
+  WiFi.hostname(HOSTNAME);  
   WiFi.begin(wset.ssid, wset.password);
   int i = 0;
   bool state = true;

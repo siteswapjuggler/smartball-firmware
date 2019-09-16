@@ -22,6 +22,7 @@
 #define CMD_BAT      0x00		
 #define CMD_PING     0x01
 #define CMD_REBOOT   0x02
+#define CMD_SLEEP    0x03
 #define CMD_FACTORY  0x10
 #define SAVE_FACTORY 0x11
 #define CMD_GENERAL  0x12 
@@ -30,9 +31,9 @@
 #define CMD_STREAM   0x21
 #define CMD_COLOR2   0x22
 #define CMD_IMU      0x30
-#define SAVE_IMU     0x31
 #define CMD_ACCRANGE 0x32
 #define CMD_GYRRANGE 0x33
+#define SAVE_IMU     0x31
 #define CMD_IRL      0x40
 #define CMD_MOT      0x50
 #define CMD_STB		 0x60
@@ -64,20 +65,16 @@
 #define RGB_NUM   6
 
 //---------------------------------------------------------------
-// IMU FLAG ADDRESSES (8bit)
+// IMU FLAG ADDRESSES
 //---------------------------------------------------------------
 
 #define ACC_BIT  0
 #define GYR_BIT  1
 #define MAG_BIT  2
 #define TMP_BIT  3
-#define VEC_BIT  4 // Sensors Vector Magnitude
-#define QUA_BIT  5 // Orientation Quaternion 	TODO
-#define WLD_BIT  6 // World Acceleration 		TODO
-#define STA_BIT	 7 // State Detection 	 		TODO
 
 //---------------------------------------------------------------
-// DEVICE FLAG ADDRESSES (8bit)
+// DEVICE FLAG ADDRESSES
 //---------------------------------------------------------------
 
 #define RGB_BIT  0
@@ -85,19 +82,6 @@
 #define IRL_BIT  2
 #define MOT_BIT  3
 #define BUZ_BIT  4
-
-//---------------------------------------------------------------
-// STREAM FLAG ADDRESSES (16bit)
-//---------------------------------------------------------------
-
-#define COL_STREAM_MASK	 0b111
-#define COL1_STREAM_ADDR 0
-#define COL2_STREAM_ADDR 3
-#define MST_STREAM_BIT   6
-#define STB_STREAM_BIT   7
-#define IRL_STREAM_BIT   8
-#define MOT_STREAM_BIT   9
-#define LOOP_STREAM_BIT	 15
 
 //---------------------------------------------------------------
 // EEPROM ADDRESSES

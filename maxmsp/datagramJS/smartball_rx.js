@@ -2,7 +2,7 @@ autowatch=1;
 inlets=1;
 outlets=1;
 
-function parse(id,cmd,data) {
+function parse(id,sn,cmd,data) {
 	function xyz(addr) {
 		var coordinates = new Array();
 		for (var i=0;i<3;i++) {
@@ -57,18 +57,12 @@ function parse(id,cmd,data) {
 parse.local=1;
 parse.immediate=1;
 
-
-
 function list() {
-	var checksum = 0, data = arrayfromargs(arguments), l = data.length;
-	for (var i = 3; i < l - 1; i++) {
-		checksum += data[i];
-		checksum %= 256;
-	}
-	if (data[0] == 0xE7 && checksum == data[l-1]) {
-		id  = data[1] << 8 | data[2];
-		cmd = data[3];
-		parse(id,cmd,data.slice(6,l-1));
-	}
+	var data = arrayfromargs(arguments), 
+		l = data.length, 
+		id  = data[0] << 8 | data[1],
+		sn  = data[2] << 8 | data[3],
+		cmd = data[4];
+	parse(id,sn,cmd,data.slice(5,l));
 }
 list.immediate=1;

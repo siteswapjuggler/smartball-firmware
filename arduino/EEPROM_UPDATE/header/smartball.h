@@ -8,6 +8,7 @@
 #define RED    0xFF0000
 #define BLUE   0x0000FF
 #define GREEN  0x00FF00
+#define YELLOW 0xFFFF00
 #define BLACK  0x000000
 
 #define WAIT   0X8F4E00

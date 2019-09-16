@@ -30,6 +30,6 @@ bool changeMOT(int16_t v) {
 // DATAGRAM FUNCTIONS
 //-----------------------------------------------------------------------------------
 
-void setMOT() {
-  changeMOT(_DIN[0] << 8 | _DIN[1]);
+void setMOT(uint16_t addr) {
+  changeMOT(_DIN[addr] << 8 | _DIN[addr+1]);
 }

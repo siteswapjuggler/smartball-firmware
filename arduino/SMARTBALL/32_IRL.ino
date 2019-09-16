@@ -30,6 +30,6 @@ void changeIRL(int16_t v) {
 // DATAGRAM FUNCTIONS
 //-----------------------------------------------------------------------------------
 
-void setIRL() {
-  changeIRL(_DIN[0] << 8 | _DIN[1]);
+void setIRL(uint16_t addr) {
+  changeIRL(_DIN[addr] << 8 | _DIN[addr+1]);
 }
