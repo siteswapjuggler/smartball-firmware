@@ -21,7 +21,7 @@
 #include <ESP8266WebServer.h>  // allow WebServer for configuration
 #include <WiFiUDP.h>           // UDP Protocol Library
 #include <OSCBundle.h>         // OSC Protocol Library
-#include <MPU9250.h>           // Custom MPU920 SPI Library - see libraries subfolder
+#include <SB_MPU9250.h>        // Custom MPU920 SPI Library
 #include <Adafruit_DotStar.h>  // Adafruit_Dotstar Library - https://github.com/adafruit/Adafruit_DotStar >> Issue with SPI Mode has been documented here https://github.com/adafruit/Adafruit_DotStar/isetsues/28
 
 //-----------------------------------------------------------------------------------
