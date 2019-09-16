@@ -39,10 +39,10 @@ This firmware use two Arduino librairies, one for the dotstars driving and the o
 
 You have now to configure the boards options in the IDE, those are the good option : 
 - LOLIN(WEMOS) D1 R2 & Mini
-- 4M (1M SPIFFS)
+- 4M (2M SPIFFS)
 - Disabled
 - Nothing
-- v2 Higher Bandwidth
+- v2 Lower Memory 
 - Flash
 - 160 MHz
 - 921600
@@ -66,3 +66,12 @@ After configuring the IDE, boards, libraries and setting up EEPROM factory setti
 The new firmware use a SPI File System to store the webserver data files. You can upload those data by installing the file system upload as described in the repository : https://github.com/esp8266/arduino-esp8266fs-plugin, then using the *Tools > ESP8266 Sketch Data Upload* menu item within the Arduino IDE with the firmware sketch opened.
 
 **ATTENTION:** you need to power on the ball before uploading...
+
+## Linked repositories
+
+This repository refers directly to its following siblings : 
+
+- https://github.com/siteswapjuggler/smartball-externals
+- https://github.com/siteswapjuggler/smartball-hardware
+- https://github.com/siteswapjuggler/smartball-documents
+- https://github.com/siteswapjuggler/smartball-imu
