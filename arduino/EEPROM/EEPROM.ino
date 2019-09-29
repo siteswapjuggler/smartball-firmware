@@ -23,13 +23,13 @@
 // USER PARAMETERS
 //----------------------------------------------------------------------------------
 
-#define SERIAL_NUMBER   1
-#define DEVICE_FLAG     3
-#define DEFAULT_SSID    "ssid"
-#define DEFAULT_PWD     "password"
-#define DEFAULT_IP      "192.168.0.50"
-#define DEFAULT_STATIC  "192.168.0.100"
-#define DEFAULT_GATEWAY "192.168.0.1"
+#define SERIAL_NUMBER   0
+#define DEVICE_FLAG     15
+#define DEFAULT_SSID    "SiteswapTraveller"
+#define DEFAULT_PWD     "siteswap"
+#define DEFAULT_IP      "192.168.43.100"
+#define DEFAULT_STATIC  "192.168.43.101"
+#define DEFAULT_GATEWAY "192.168.43.1"
 #define DEFAULT_MASK    "255.255.255.0"
 
 //----------------------------------------------------------------------------------
@@ -37,7 +37,7 @@
 //----------------------------------------------------------------------------------
 
 #define MAJOR    0
-#define MINOR    3
+#define MINOR    4
 #define REVISION 0
 #define RESET_PARAMETERS
 

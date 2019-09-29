@@ -14,7 +14,10 @@ boolean connectDGM() {
 //-----------------------------------------------------------------------------------
 
 void receiveDGM() {
+  //getDebugTime(); // quand packet ça prend 13 µs sinon 1 µs quand boucle sans travail
   uint16_t packetSize = DGM.parsePacket();
+  //printTimeDebug("parsing: ");
+
   if (packetSize)  {
     printTimeDebug("packet: ");
     getDebugTime();
@@ -28,7 +31,7 @@ void receiveDGM() {
 
       case CMD_PING:      sendPong();              break;
       case CMD_REBOOT:    espReboot();             break;
-      
+
       case CMD_GENERAL:   setIdNumber();           break;
       case SAVE_GENERAL:  saveGeneralSettings();   break;
 
@@ -38,7 +41,7 @@ void receiveDGM() {
       //------------------------------------------------
       // Those commands needs high bandwidth efficiency
       //------------------------------------------------
-      
+
       case CMD_COLOR1:    setRGB(0, len / 3, 0);   break;
       case CMD_COLOR2:    setRGB(1, len / 3, 0);   break;
       case CMD_STREAM:    setSTM(len);             break;

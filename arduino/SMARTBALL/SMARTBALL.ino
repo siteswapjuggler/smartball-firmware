@@ -34,7 +34,7 @@
 // USER PARAMETERS
 //--------------------------------------------------------------------------------------
 
-#define DGM_DEBUG            // uncomment for datagram communication serial feedbacks
+//#define DGM_DEBUG            // uncomment for datagram communication serial feedbacks
 //#define TIME_DEBUG           // uncomment for time debug serial feedbacks
 
 //--------------------------------------------------------------------------------------
