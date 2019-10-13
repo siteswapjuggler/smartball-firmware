@@ -93,7 +93,7 @@ void setDefaultParameters() {
   fset.deviceFlag     = DEVICE_FLAG;        // 3 for les Objets Volants, 15 for full devices
   fset.adcCalibration = 1000.;              // ADC calibration
 
-  gset.idNumber       = 0;                  // Identification number
+  gset.idNumber       = ID_NUMBER;          // Identification number
   gset.imuFlag        = 1;                  // Only accelerometer
   gset.configFlag     = 0b100000011;        // Blink, batt & datagram
 

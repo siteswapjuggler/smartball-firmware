@@ -57,7 +57,7 @@ void setDefaultParameters() {
   fset.serialNumber   = SERIAL_NUMBER;      // Unique Serial Number
   fset.deviceFlag     = DEVICE_FLAG;        // 3 for les Objets Volants, 15 for full devices
   fset.adcCalibration = 1000.;              // ADC calibration
-  gset.idNumber       = 0;                  // Identification number
+  gset.idNumber       = ID_NUMBER;          // Identification number
   iset.streamFlag     = 1;                  // Only Acceleration
   iset.accRange       = 3;                  // Maximum range +- 16G
   iset.gyrRange       = 3;                  // Maximum range +- 2000DPS

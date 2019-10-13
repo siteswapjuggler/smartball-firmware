@@ -16,13 +16,15 @@ boolean connectDGM() {
 void receiveDGM() {
   //getDebugTime(); // quand packet ça prend 13 µs sinon 1 µs quand boucle sans travail
   uint16_t packetSize = DGM.parsePacket();
-  //printTimeDebug("parsing: ");
-
+  //printTimeDebug("", false);
+  
+  //getDebugTime(); // quand packet ça prend 13 µs sinon 1 µs quand boucle sans travail
   if (packetSize)  {
-    printTimeDebug("packet: ");
-    getDebugTime();
+  //  printTimeDebug("packet: ");
+  //  getDebugTime();
     byte cmd = DGM.read();
     uint16_t len = packetSize - 1;
+    // ici verifier que len n'est supérieur à la capacité du buffer
     if (len) DGM.read(_DIN, len);
     switch (cmd) {
       //------------------------------------------------
@@ -52,6 +54,7 @@ void receiveDGM() {
     }
     printDgmDebug(cmd, len, _DIN);
   }
+  //printTimeDebug("\t", true);
 }
 
 //-----------------------------------------------------------------------------------

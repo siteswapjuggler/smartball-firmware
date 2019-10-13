@@ -10,7 +10,7 @@ Adafruit_DotStar strip = Adafruit_DotStar(NUM_LEDS,DOTSTAR_BGR);
 #define MOT_PIN   D2
 #define IRL_PIN   D1
 
-#include <MPU9250.h>
+#include <SB_MPU9250.h>
 MPU9250 IMU(SPI, D3);
 
 #define SPEED    500
