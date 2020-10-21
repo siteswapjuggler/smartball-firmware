@@ -37,11 +37,11 @@ void printDgmDebug(uint8_t c, uint16_t l, uint8_t *data) {
 #ifdef DGM_DEBUG
   Serial.print("CMD: " + String(c, HEX) + "\t LEN: " + String(l));
   if (l) {
-    /*Serial.print("\t DATA: ");
+    Serial.print("\t DATA: ");
     for (int i = 0; i < l; i++) {
       Serial.print(String(data[i]));
       if (i + 1 < l ) Serial.print(" ");
-    }*/
+    }
     if (c == 33) {
       Serial.print("\t NUM: ");
       unsigned long n = data[7] << 16 | data[8] << 8 | data[9];

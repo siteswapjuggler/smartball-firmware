@@ -1,4 +1,5 @@
 release
+.DS_Store
 arduino/TESTS
 arduino/EEPROM/EEPROM_UPDATE
 arduino/SMARTBALL/node_modules

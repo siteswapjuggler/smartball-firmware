@@ -6,14 +6,15 @@
 //-----------------------------------------------------------------------------------
 
 #if !defined(ESP8266)
-  #error "Unsupported board selected!"
-#endif 
+#error "Unsupported board selected!"
+#endif
 
 //-----------------------------------------------------------------------------------
 // LIBRARIES
 //-----------------------------------------------------------------------------------
 
 #include <FS.h>                // SPIFFS management
+#include <Artnet.h>            // ArtNet Codec
 #include <Ticker.h>            // ESP8266 scheduling library for regular event
 #include <EEPROM.h>            // 512 byte EEPROM Emulation for ESP8266
 #include <ESP8266WiFi.h>       // Standard WiFi Library
@@ -38,7 +39,7 @@ enum _opMode : uint8_t {
 //-----------------------------------------------------------------------------------
 
 bool    bli, bat;                 // blink or not
-bool    dgm, ben;                 // protocol activation
+bool    dgm, ben, art;            // protocol activation
 bool    rgb, mot, imu, irl;       // device subsystem boolean
 
 String  eepromVersion;            // EEPROM version
@@ -95,6 +96,8 @@ _opMode operationMode;            // running or config
 #define CMD_COLOR1 	  0x20
 #define CMD_STREAM    0x21
 #define CMD_COLOR2    0x22
+#define CMD_WHITE1    0x23
+#define CMD_WHITE2    0x24
 #define CMD_IMU       0x30
 #define DEFAULT_IMU   0x34
 #define CMD_IRL       0x40
@@ -112,6 +115,16 @@ _opMode operationMode;            // running or config
 #define IMU_CS    D3
 #define IRL_PIN   D1
 #define MOT_PIN   D2
+#elif BOARD_VERSION == 2
+#define INT_PIN   D0
+#define IRL_PIN   D1
+#define MOT_PIN   D2
+#define IMU_CS    D3
+#define RGB_CS    D4 // LED_BUILTIN
+#define BUZ_PIN   D8
+#define BATT_PIN  A0
+#else
+#error "Invalid board version"
 #endif
 
 //---------------------------------------------------------------
@@ -138,7 +151,8 @@ _opMode operationMode;            // running or config
 #define BAT_BIT  1        // Send automatic battery information
 #define DGM_BIT  8        // Activate DGM protocol
 #define BEN_BIT  9        // Activate BenTo protocol
-#define SPD_BIT 15        // Speed variation 50Hz or 100Hz
+#define ART_BIT 10        // Activate ArtNet protocol BETA
+#define SPD_BIT 15        // Speed variation 50Hz (1) or 100Hz (0)
 
 
 //---------------------------------------------------------------
@@ -152,6 +166,7 @@ _opMode operationMode;            // running or config
 #define STB_STREAM_BIT    7
 #define IRL_STREAM_BIT    8
 #define MOT_STREAM_BIT    9
+#define GSC_STREAM_BIT    10
 #define LOOP_STREAM_BIT	  15
 
 //---------------------------------------------------------------

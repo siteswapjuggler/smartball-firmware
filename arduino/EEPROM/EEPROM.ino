@@ -23,15 +23,27 @@
 // USER PARAMETERS
 //----------------------------------------------------------------------------------
 
-#define ID_NUMBER       5
-#define SERIAL_NUMBER   31
-#define DEVICE_FLAG     3
-#define DEFAULT_SSID    "ssid"
-#define DEFAULT_PWD     "password"
+#define SERIAL_NUMBER   1
+#define ID_NUMBER       1
+#define DEVICE_FLAG     0b11111
+#define DEFAULT_SSID    "Labotronik"
+#define DEFAULT_PWD     "labotronik"
+#define DEFAULT_IP      "192.168.43.242"
+#define DEFAULT_STATIC  "192.168.43.101"
+#define DEFAULT_GATEWAY "192.168.43.1"
+#define DEFAULT_MASK    "255.255.255.0"
+
+/*
+#define SERIAL_NUMBER   19
+#define ID_NUMBER       19
+#define DEVICE_FLAG     0b11
+#define DEFAULT_SSID    "Les Objets Volants"
+#define DEFAULT_PWD     "lesobjetsvolants"
 #define DEFAULT_IP      "192.168.0.50"
-#define DEFAULT_STATIC  "192.168.0.131"
+#define DEFAULT_STATIC  "192.168.0.119"
 #define DEFAULT_GATEWAY "192.168.0.1"
 #define DEFAULT_MASK    "255.255.255.0"
+*/
 
 //----------------------------------------------------------------------------------
 // EEPROM VERSION
@@ -40,7 +52,7 @@
 #define MAJOR    0
 #define MINOR    4
 #define REVISION 0
-//#define RESET_PARAMETERS
+#define RESET_PARAMETERS
 
 //----------------------------------------------------------------------------------
 // SET & READ EEPROM

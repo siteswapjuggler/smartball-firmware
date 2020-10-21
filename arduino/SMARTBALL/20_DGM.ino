@@ -16,12 +16,9 @@ boolean connectDGM() {
 void receiveDGM() {
   //getDebugTime(); // quand packet ça prend 13 µs sinon 1 µs quand boucle sans travail
   uint16_t packetSize = DGM.parsePacket();
-  //printTimeDebug("", false);
   
   //getDebugTime(); // quand packet ça prend 13 µs sinon 1 µs quand boucle sans travail
   if (packetSize)  {
-  //  printTimeDebug("packet: ");
-  //  getDebugTime();
     byte cmd = DGM.read();
     uint16_t len = packetSize - 1;
     // ici verifier que len n'est supérieur à la capacité du buffer
@@ -46,6 +43,8 @@ void receiveDGM() {
 
       case CMD_COLOR1:    setRGB(0, len / 3, 0);   break;
       case CMD_COLOR2:    setRGB(1, len / 3, 0);   break;
+      case CMD_WHITE1:    setW(0, len, 0);         break;
+      case CMD_WHITE2:    setW(1, len, 0);         break;
       case CMD_STREAM:    setSTM(len);             break;
       case CMD_IRL:       setIRL(0);               break;
       case CMD_MOT:       setMOT(0);               break;
@@ -54,7 +53,6 @@ void receiveDGM() {
     }
     printDgmDebug(cmd, len, _DIN);
   }
-  //printTimeDebug("\t", true);
 }
 
 //-----------------------------------------------------------------------------------

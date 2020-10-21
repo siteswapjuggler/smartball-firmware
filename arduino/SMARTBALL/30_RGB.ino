@@ -16,6 +16,7 @@ void initRGB() {
   pinMode(RGB_CS, OUTPUT);
   digitalWrite(RGB_CS, LOW);
   strip.begin();
+  strip.show();
   digitalWrite(RGB_CS, HIGH);
   blinkLed(RED, LONG_BLINK);
 }
@@ -80,6 +81,14 @@ int32_t color(byte* data, uint16_t addr) {
   return (data[addr++] << 16) | (data[addr++] << 8) | data[addr];
 }
 
+int32_t white(byte* data, uint16_t addr) {
+  /*byte c3 = data[addr] / 3;
+  byte c2 = c3 + (data[addr] % 3 == 2);
+  byte c1 = c3 + (data[addr] % 3 == 1);
+  return (c3 << 16) | (c2 << 8) | c1;*/
+  return (data[addr] << 16) | (data[addr] << 8) | data[addr];
+}
+
 uint32_t blinkLed(uint32_t c, uint16_t BLINK_DUR) {
   if (bli && rgb) {
     colors[0][1] = c;
@@ -129,6 +138,37 @@ void setRGB(byte slot, byte n, uint16_t addr) {
   }
 }
 
+void setW(byte slot, byte n, uint16_t addr) {
+  int32_t c1, c2, c3;
+  switch (n) {
+    default:
+      for (int i = 0; i < RGB_NUM; i++)
+        colors[slot][i] = white(_DIN, addr);
+      break;
+    case 2:
+      for (int i = 0; i < RGB_NUM / 2; i++)
+        colors[slot][i] = white(_DIN, addr);
+      for (int i = RGB_NUM / 2; i < RGB_NUM; i++)
+        colors[slot][i] = white(_DIN, addr + 1);
+      break;
+    case 3:
+      c1 = white(_DIN, addr);
+      c2 = white(_DIN, addr + 1);
+      c3 = white(_DIN, addr + 2);
+      colors[slot][0] = c1;
+      colors[slot][5] = c1;
+      colors[slot][1] = c2;
+      colors[slot][4] = c2;
+      colors[slot][2] = c3;
+      colors[slot][3] = c3;
+      break;
+    case 6:
+      for (int i = 0; i < RGB_NUM; i++)
+        colors[slot][i] = white(_DIN, addr +  i);
+      break;
+  }
+}
+
 void setSTB(uint16_t addr) {
   strobeSpeed = (_DIN[addr] << 8) | _DIN[addr + 1];                       // in 0.01 ms steps
   strobeSpeed = strobeSpeed ? constrain(strobeSpeed, 1000, 50000) : 0;    // no strobe over 50 Hz and under 1 Hz
@@ -138,4 +178,15 @@ void setSTB(uint16_t addr) {
 void setMST(uint16_t addr) {
   dimmer = (float)((_DIN[addr] << 8) | _DIN[addr + 1]) / 100.;            // Q14.2
   dimmer = constrain(dimmer, 0., 100.);                                   // dimmer contrain from 0. to 100.
+}
+
+//-----------------------------------------------------------------------------------
+// ARTNET FUNCTIONS
+//-----------------------------------------------------------------------------------
+
+void artnetCallback(uint8_t* dmx, uint16_t size) {
+  uint32_t c = white(dmx, gset.idNumber - 1);     // -1 pour gérer l'offset
+  for (int i = 0; i < RGB_NUM; i++) {
+    colors[0][i] = c;                             // 1 Grayscale color per ball
+  }
 }

@@ -25,6 +25,7 @@ void initSystem() {
   bat = gset.configFlag & (1 << BAT_BIT);
   dgm = gset.configFlag & (1 << DGM_BIT);
   ben = gset.configFlag & (1 << BEN_BIT);
+  art = gset.configFlag & (1 << ART_BIT);
 }
 
 //-----------------------------------------------------------------------------------

@@ -62,15 +62,24 @@ void receiveOSC() {
 }
 
 void wassup(OSCMessage& msg) {
+  Serial.println("wassup");
   if (msg.size() == 1 && msg.isString(0)) {
-    /* BROKEN
-    msg.getString(0, bset.outputIp, IP_LEN);
+    char ipString[IP_LEN];
+    msg.getString(0, ipString, IP_LEN);
+    
+    IPAddress tmpIp;
+    tmpIp.fromString(ipString);  
+    bset.outputIp = (uint32_t)tmpIp;
+
+    char smartballIp[IP_LEN];
+    WiFi.localIP().toString().toCharArray(smartballIp, IP_LEN);
+
     OSCMessage answer("/wassup");
-    answer.add(WiFi.localIP().toString());
+    answer.add(smartballIp);
+    answer.add((int32)gset.idNumber);
     OSC.beginPacket(bset.outputIp, bset.oscOutputPort);
     answer.send(OSC);
     OSC.endPacket();
     answer.empty();
-    */
   }
 }

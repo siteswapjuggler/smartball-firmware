@@ -94,8 +94,8 @@ void setDefaultParameters() {
   fset.adcCalibration = 1000.;              // ADC calibration
 
   gset.idNumber       = ID_NUMBER;          // Identification number
-  gset.imuFlag        = 1;                  // Only accelerometer
-  gset.configFlag     = 0b100000011;        // Blink, batt & datagram
+  gset.imuFlag        = 0b11111111;         // Only accelerometer
+  gset.configFlag     = 0b1100000011;       // Blink, batt, bento & datagram
 
   tmpIp.fromString(DEFAULT_IP);
   dset.outputIp       = (uint32_t)tmpIp;    // default output IP

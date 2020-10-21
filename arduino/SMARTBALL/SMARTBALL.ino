@@ -27,7 +27,7 @@
 // BOARD AND VERSION INFO
 //--------------------------------------------------------------------------------------
 
-#define BOARD_VERSION 1        // 1 - Alpha and first batch for les Objets Volants
+#define BOARD_VERSION 2        // 1 - Alpha and first batch for les Objets Volants, 2 - 14:20 new batch
 #include "SMARTBALL_DEF.h"     // Smartball specific definitions
 
 //--------------------------------------------------------------------------------------
@@ -45,7 +45,6 @@ void setup() {
   //------------------------------------------------------------------------------------
   // Hardware configuration
   //------------------------------------------------------------------------------------
-
   initDebug();                  // serial connection
   initEeprom();                 // get EEPROM datas
   initDevice();                 // hardware initialisation
@@ -59,6 +58,7 @@ void setup() {
   if (connectWifi()) {
     if (dgm) blinkLed(connectDGM() ? GREEN : RED, MEDIUM_BLINK);
     if (ben) blinkLed(connectBEN() ? GREEN : RED, MEDIUM_BLINK);
+    if (art) blinkLed(connectART() ? GREEN : RED, MEDIUM_BLINK);   // (experimental)
     operationMode = RUN;
   }
   else {
@@ -94,6 +94,7 @@ void loop() {
       if (rgb) updateStrobe();   // update strobe state
       if (dgm) receiveDGM();     // receive Smartball Datagrams
       if (ben) receiveBEN();     // receive BenTo & Yo Protocol
+      if (art) receiveART();     // receive ArtNet (experimental)
       break;
     case SET:
       updateDNS();               // DNS redirection service
