@@ -5,7 +5,7 @@
 //  - adding eeprom versionning
 //  - factory settings address change
 //  - removing imu settings
-//  - completer general settings (imuFlag moved here, configFlag added)
+//  - completed general settings (imuFlag moved here, configFlag added)
 //  - adding dgm settings and bento settings
 //  - wifi settings now 32 char long
 //----------------------------------------------------------------------

@@ -18,13 +18,13 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
 */
 .icon-SSID {
   background-image: url(../img/sprite.png);
-  background-position: -56px -28px;
+  background-position: 0px 0px;
   width: 28px;
   height: 28px;
 }
 .icon-eeprom {
   background-image: url(../img/sprite.png);
-  background-position: 0px 0px;
+  background-position: -28px 0px;
   width: 28px;
   height: 28px;
 }
@@ -42,25 +42,25 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
 }
 .icon-firmware {
   background-image: url(../img/sprite.png);
-  background-position: -28px 0px;
+  background-position: 0px -28px;
   width: 28px;
   height: 28px;
 }
 .icon-id {
   background-image: url(../img/sprite.png);
-  background-position: 0px -28px;
+  background-position: -28px -28px;
   width: 28px;
   height: 28px;
 }
 .icon-protocol {
   background-image: url(../img/sprite.png);
-  background-position: -28px -28px;
+  background-position: -56px 0px;
   width: 28px;
   height: 28px;
 }
 .icon-serial {
   background-image: url(../img/sprite.png);
-  background-position: -56px 0px;
+  background-position: -56px -28px;
   width: 28px;
   height: 28px;
 }

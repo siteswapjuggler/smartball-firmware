@@ -41,7 +41,7 @@
 // BOARD AND VERSION INFO
 //--------------------------------------------------------------------------------------
 
-#define BOARD_VERSION 2        // 1 - Alpha and first batch for les Objets Volants, 2 - 14:20 new batch
+#define BOARD_VERSION 2        // 1 - Alpha and first batch for les Objets Volants, 2 - 14:20 new batch and Jive
 #include "SMARTBALL_DEF.h"     // Smartball specific definitions
 
 //--------------------------------------------------------------------------------------
