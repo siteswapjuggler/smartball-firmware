@@ -6,20 +6,24 @@ char* HOSTNAME;
 
 boolean connectWifi() {
   setHostname(fset.serialNumber);
+  WiFi.disconnect();
   WiFi.persistent(false);
   WiFi.mode(WIFI_STA);
   WiFi.hostname(HOSTNAME);
-  WiFi.config(wset.staticIp,wset.gateway,wset.subnet);
+  WiFi.config(wset.staticIp, wset.gateway, wset.subnet);
   WiFi.begin(wset.ssid, wset.password);
   uint32_t timeout = 0;
   while (WiFi.status() != WL_CONNECTED) {
+    //Serial.print(".");
     timeout += blinkLed(WAIT_COLOR, QUICK_BLINK);
     if (timeout >= WIFI_TIMEOUT || WiFi.status() == WL_CONNECT_FAILED) {
       WiFi.disconnect();
-      for (byte n = 0; n < 4; n++) blinkLed(ALERT_COLOR, LONG_BLINK);
+      for (byte n = 0; n < 5; n++) blinkLed(ALERT_COLOR, LONG_BLINK);
       return false;
     }
   }
+  //Serial.print("\nWiFi connected @ local IP: ");
+  //Serial.println(WiFi.localIP());
   return true;
 }
 

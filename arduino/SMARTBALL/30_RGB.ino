@@ -2,8 +2,10 @@
 // GLOBAL VARIABLE
 //-----------------------------------------------------------------------------------
 
+//attention la gestion de luminosité est faite à l'arrache dans la librairie dotstar avec START_PIXEL)
 Adafruit_DotStar strip = Adafruit_DotStar(RGB_NUM, D7, D5, DOTSTAR_BGR);
 
+byte startPixelDimmer = 31; // 7 for 1420, 31 for general use
 byte strobeState = 0;
 float dimmer = 100.;
 int32_t colors[2][RGB_NUM] = {0};
@@ -23,6 +25,7 @@ void initRGB() {
 
 void updateRGB() {
   digitalWrite(RGB_CS, LOW);
+  strip.setStartPixel(startPixelDimmer);
   for (int i = 0; i < RGB_NUM; i++) {
     strip.setPixelColor(i, dim(dimmer, colors[strobeState][i]));
   }
@@ -81,7 +84,7 @@ int32_t color(byte* data, uint16_t addr) {
   return (data[addr++] << 16) | (data[addr++] << 8) | data[addr];
 }
 
-int32_t white(byte* data, uint16_t addr) {
+int32_t white(const uint8_t* data, uint16_t addr) {
   /*byte c3 = data[addr] / 3;
   byte c2 = c3 + (data[addr] % 3 == 2);
   byte c1 = c3 + (data[addr] % 3 == 1);
@@ -184,9 +187,10 @@ void setMST(uint16_t addr) {
 // ARTNET FUNCTIONS
 //-----------------------------------------------------------------------------------
 
-void artnetCallback(uint8_t* dmx, uint16_t size) {
-  uint32_t c = white(dmx, gset.idNumber - 1);     // -1 pour gérer l'offset
+void artnetCallback(const uint8_t* dmx, const uint16_t size) {
+  startPixelDimmer = dmx[0] >> 3;             // channel 0 as brightness master
+  uint32_t c = white(dmx, gset.idNumber);     // channel 1 for id 1 and so on...
   for (int i = 0; i < RGB_NUM; i++) {
-    colors[0][i] = c;                             // 1 Grayscale color per ball
+    colors[0][i] = c;                         // 1 Grayscale color per ball
   }
 }

@@ -14,7 +14,22 @@
 
    You should have received a copy of the GNU General Public License
    along with this program. If not, see <http://www.gnu.org/licenses/>.
+   
+   -------------------------------------------------------------------------------------
+   IDE Configuration
+
+   - LOLIN(WEMOS) D1 R2 & Mini
+   - 4M (2M SPIFFS)
+   - Disabled
+   - Nothing
+   - v2 Lower Memory
+   - Flash
+   - 160 MHz
+   - 921600
+   - Only Sketch
 */
+
+//add no Wifi to this programm
 
 #include <EEPROM.h>
 #include <ESP8266WiFi.h>
@@ -23,6 +38,17 @@
 // USER PARAMETERS
 //----------------------------------------------------------------------------------
 
+#define SERIAL_NUMBER   86
+#define ID_NUMBER       6
+#define DEVICE_FLAG     0b11111
+#define DEFAULT_SSID    "LABOTRONIK"
+#define DEFAULT_PWD     "labotronik"
+#define DEFAULT_IP      "239.0.0.51"
+#define DEFAULT_STATIC  "192.168.100.106"
+#define DEFAULT_GATEWAY "192.168.100.1"
+#define DEFAULT_MASK    "255.255.255.0"
+
+/*
 #define SERIAL_NUMBER   1
 #define ID_NUMBER       1
 #define DEVICE_FLAG     0b11111
@@ -32,6 +58,7 @@
 #define DEFAULT_STATIC  "192.168.43.101"
 #define DEFAULT_GATEWAY "192.168.43.1"
 #define DEFAULT_MASK    "255.255.255.0"
+*/
 
 /*
 #define SERIAL_NUMBER   19
@@ -52,6 +79,7 @@
 #define MAJOR    0
 #define MINOR    4
 #define REVISION 0
+
 #define RESET_PARAMETERS
 
 //----------------------------------------------------------------------------------

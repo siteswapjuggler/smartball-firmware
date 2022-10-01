@@ -6,6 +6,7 @@ WiFiUDP DGM;                       // datagram UDP socket
 IPAddress multiIp(239, 0, 0, 50);  // multicast address of smartballs
 
 boolean connectDGM() {
+  //Serial.println("- begin datagram");
   return DGM.beginMulticast(WiFi.localIP(), multiIp, dset.inputPort) == 1;
 }
 

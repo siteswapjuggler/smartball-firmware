@@ -54,6 +54,7 @@ void initLED() {
   strip.begin();
   pinMode(RGB_CS, OUTPUT);
   digitalWrite(RGB_CS, HIGH);
+  strip.setStartPixel(0b11111);
   changeAll(0x0);
 }
 

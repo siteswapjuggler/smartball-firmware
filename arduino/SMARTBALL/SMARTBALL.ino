@@ -21,6 +21,20 @@
     - https://github.com/siteswapjuggler/smartball-hardware
     - https://github.com/siteswapjuggler/smartball-firmware
     - https://github.com/siteswapjuggler/smartball-externals
+
+
+   -------------------------------------------------------------------------------------
+   IDE Configuration
+
+   - LOLIN(WEMOS) D1 R2 & Mini
+   - 4M (2M SPIFFS)
+   - Disabled
+   - Nothing
+   - v2 Higher Bandwidth (No Feature)
+   - Flash
+   - 160 MHz
+   - 921600
+   - Only Sketch
 */
 
 //--------------------------------------------------------------------------------------
@@ -42,6 +56,10 @@
 //--------------------------------------------------------------------------------------
 
 void setup() {
+  //Serial.begin(115200);
+  //while (!Serial) delay(0);
+  //Serial.println("\n\nStarting SMARTBALL");
+
   //------------------------------------------------------------------------------------
   // Hardware configuration
   //------------------------------------------------------------------------------------
@@ -100,8 +118,8 @@ void loop() {
       updateDNS();               // DNS redirection service
       updateWebServer();         // Webserver Management
       break;
-    }
-  yield();                       // WiFi tasks extra management 
+  }
+  yield();                       // WiFi tasks extra management
   ESP.wdtFeed();                 // feeding watchdog
 }
 

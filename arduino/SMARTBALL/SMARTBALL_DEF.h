@@ -14,7 +14,7 @@
 //-----------------------------------------------------------------------------------
 
 #include <FS.h>                // SPIFFS management
-#include <Artnet.h>            // ArtNet Codec
+#include <ArtnetWiFi.h>        // ArtNet Codec
 #include <Ticker.h>            // ESP8266 scheduling library for regular event
 #include <EEPROM.h>            // 512 byte EEPROM Emulation for ESP8266
 #include <ESP8266WiFi.h>       // Standard WiFi Library
@@ -76,7 +76,7 @@ _opMode operationMode;            // running or config
 // BLINKS & TIMEOUTS
 //---------------------------------------------------------------
 
-#define WIFI_TIMEOUT 20000  // WiFi connection timeout in ms
+#define WIFI_TIMEOUT 30000  // WiFi connection timeout in ms
 #define LONG_BLINK   400    // 
 #define MEDIUM_BLINK 200    // 
 #define QUICK_BLINK  100    //

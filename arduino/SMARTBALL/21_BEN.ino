@@ -3,6 +3,7 @@
 //-----------------------------------------------------------------------------------
 
 boolean connectBEN() {
+  //Serial.println("- connect BenTo");
   return connectOSC() && connectBenTo();
 }
 
@@ -62,7 +63,7 @@ void receiveOSC() {
 }
 
 void wassup(OSCMessage& msg) {
-  Serial.println("wassup");
+  //Serial.println("wassup");
   if (msg.size() == 1 && msg.isString(0)) {
     char ipString[IP_LEN];
     msg.getString(0, ipString, IP_LEN);

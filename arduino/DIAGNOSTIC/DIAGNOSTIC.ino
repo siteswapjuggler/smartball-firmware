@@ -61,7 +61,7 @@ void setup() {
   Serial.begin(115200);
   initIMU();
   initLED();
-  fullLED();
+//  fullLED();
   initMOT();
   initIRL();
   initBUZ();

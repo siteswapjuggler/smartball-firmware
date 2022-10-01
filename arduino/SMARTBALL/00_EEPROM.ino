@@ -109,6 +109,35 @@ void setDefaultParameters() {
   wset.subnet         = (uint32_t)tmpIp;    // default subnetwork mask
 }
 
+void printEepromParameters() {
+  Serial.println("\n[ Eeprom Settings ]");
+  Serial.println("EC: 0x" + String(eset.credential, HEX));
+  Serial.println("EV: " + eepromVersion);
+  Serial.println("\n[ Factory Settings ]");
+  Serial.println("SN: " + String(fset.serialNumber));
+  Serial.println("DF: 0b" + String(fset.deviceFlag, BIN));
+  Serial.println("AC: " + String(fset.adcCalibration, 2));
+  Serial.println("\n[ General Settings ]");
+  Serial.println("ID: " + String(gset.idNumber));
+  Serial.println("IF: 0b" + String(gset.imuFlag, BIN));
+  Serial.println("CF: 0b" + String(gset.configFlag, BIN));
+  Serial.println("\n[ DGM Settings ]");
+  Serial.print("IP: ");Serial.println(IPAddress(dset.outputIp));
+  Serial.println("IN: " + String(dset.inputPort));
+  Serial.println("OU: " + String(dset.outputPort));
+  Serial.println("\n[ BenTo Settings ]");
+  Serial.print("IP: ");Serial.println(IPAddress(bset.outputIp));
+  Serial.println("IN: " + String(bset.benInputPort));
+  Serial.println("OI: " + String(bset.oscInputPort));
+  Serial.println("OO: " + String(bset.oscOutputPort));
+  Serial.println("\n[ WiFi Settings ]");
+  Serial.println("SSID:\t" + String(wset.ssid));
+  Serial.println("PWD:\t" + String(wset.password));
+  Serial.print("IP:\t");Serial.println(IPAddress(wset.staticIp));
+  Serial.print("GW:\t");Serial.println(IPAddress(wset.gateway));
+  Serial.print("SM:\t");Serial.println(IPAddress(wset.subnet));
+}
+
 void saveDefaultParameters() {
   EEPROM.begin(512);
   EEPROM.put(ES_ADDR, eset);
