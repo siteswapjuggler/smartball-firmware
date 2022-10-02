@@ -13,8 +13,9 @@
 // LIBRARIES
 //-----------------------------------------------------------------------------------
 
-#include <FS.h>                // SPIFFS management
-#include <ArtnetWiFi.h>        // ArtNet Codec
+//#include <FS.h>                // SPIFFS management
+#include <LittleFS.h>          // LittleFS management
+#include <ArtnetWiFi.h>        // ArtNet protocol
 #include <Ticker.h>            // ESP8266 scheduling library for regular event
 #include <EEPROM.h>            // 512 byte EEPROM Emulation for ESP8266
 #include <ESP8266WiFi.h>       // Standard WiFi Library
@@ -23,7 +24,7 @@
 #include <WiFiUDP.h>           // UDP Protocol Library
 #include <OSCBundle.h>         // OSC Protocol Library
 #include <SB_MPU9250.h>        // Custom MPU920 SPI Library
-#include <Adafruit_DotStar.h>  // Adafruit_Dotstar Library - https://github.com/adafruit/Adafruit_DotStar >> Issue with SPI Mode has been documented here https://github.com/adafruit/Adafruit_DotStar/isetsues/28
+#include <SB_DotStar.h>        // Custom SB Dotstar Library - https://github.com/adafruit/Adafruit_DotStar >> Issue with SPI Mode has been documented here https://github.com/adafruit/Adafruit_DotStar/isetsues/28
 
 //-----------------------------------------------------------------------------------
 // OPERATION MODE
@@ -39,7 +40,7 @@ enum _opMode : uint8_t {
 //-----------------------------------------------------------------------------------
 
 bool    bli, bat;                 // blink or not
-bool    dgm, ben, art;            // protocol activation
+bool    dgm, ben, art, osc;       // protocol activation
 bool    rgb, mot, imu, irl;       // device subsystem boolean
 
 String  eepromVersion;            // EEPROM version
@@ -56,7 +57,7 @@ _opMode operationMode;            // running or config
 //---------------------------------------------------------------
 
 #define FIRMWARE_STATE   "WIP"    // WIP, release, beta
-#define FIRMWARE_VERSION "0.4.0"  // 
+#define FIRMWARE_VERSION "0.5.0"  // 
 #define PROTOCOL_VERSION "0.4.0"  //
 
 //---------------------------------------------------------------
@@ -144,18 +145,6 @@ _opMode operationMode;            // running or config
 #define BUZ_BIT  4
 
 //---------------------------------------------------------------
-// CONFIG FLAG ADDRESSES (16 bits)
-//---------------------------------------------------------------
-
-#define BLI_BIT  0        // Blink leds at start
-#define BAT_BIT  1        // Send automatic battery information
-#define DGM_BIT  8        // Activate DGM protocol
-#define BEN_BIT  9        // Activate BenTo protocol
-#define ART_BIT 10        // Activate ArtNet protocol BETA
-#define SPD_BIT 15        // Speed variation 50Hz (1) or 100Hz (0)
-
-
-//---------------------------------------------------------------
 // STREAM FLAG ADDRESSES (16 bits)
 //---------------------------------------------------------------
 
@@ -168,6 +157,18 @@ _opMode operationMode;            // running or config
 #define MOT_STREAM_BIT    9
 #define GSC_STREAM_BIT    10
 #define LOOP_STREAM_BIT	  15
+
+//---------------------------------------------------------------
+// CONFIG FLAG ADDRESSES (16 bits)
+//---------------------------------------------------------------
+
+#define BLI_BIT  0        // Blink leds at start
+#define BAT_BIT  1        // Send automatic battery information
+#define DGM_BIT  8        // Activate DGM protocol
+#define BEN_BIT  9        // Activate BenTo protocol
+#define ART_BIT 10        // Activate ArtNet protocol BETA
+#define OSC_BIT 11        // Activate OSC protocol BETA
+#define SPD_BIT 15        // Speed variation 50Hz (1) or 100Hz (0)
 
 //---------------------------------------------------------------
 // IMU FLAG ADDRESSES (8 bits)
@@ -191,17 +192,19 @@ _opMode operationMode;            // running or config
 #define GS_ADDR  0x20
 #define DS_ADDR  0x30
 #define BS_ADDR  0x50
-#define WS_ADDR  0x70
+#define OS_ADDR  0x70
+#define AS_ADDR  0x90
+#define WS_ADDR  0xB0
 
 //---------------------------------------------------------------
-// EEPROM DATA STRUCTURES (176 bytes)
+// EEPROM DATA STRUCTURES (252 bytes)
 //---------------------------------------------------------------
 
 #define IP_LEN 16
 #define PWD_LEN  32
 #define SSID_LEN 32
 
-// Memory usage: 7/16 bytes
+// 0x00 Memory usage: 7/16 bytes
 struct _eepromSettings {
   uint32_t credential;      // must be 0xFDB97531
   uint8_t  major;           // major version number
@@ -209,37 +212,52 @@ struct _eepromSettings {
   uint8_t  revision;        // revision version number
 };
 
-// Memory usage: 8/16 bytes
+// 0x10 Memory usage: 8/16 bytes
 struct _factorySettings {
   uint16_t serialNumber;    // unique identification number
   uint16_t deviceFlag;      // subsystems definition
   float adcCalibration;     // scale factor for adc
 };
 
-// Memory usage: 6/16 bytes
+// 0x20 Memory usage: 6/16 bytes
 struct _generalSettings {
   uint16_t idNumber;        // software identification number
   uint16_t imuFlag;         // IMU data flag
   uint16_t configFlag;      // Configuration flag
+  bool     portalReboot;    // Reboot in portal mode
 };
 
-// Memory usage: 8/32 bytes
+// 0x30 Memory usage: 8/32 bytes
 struct _dgmSettings {
   uint32_t  outputIp;       // Client IP to send data to
   uint16_t  inputPort;      // Incoming port for datagram message
   uint16_t  outputPort;     // Outgoing port for datagram message
 };
 
-// Memory usage: 10/32 bytes
+// 0x50 Memory usage: 10/32 bytes
 struct _benSettings {
   uint32_t outputIp;        // Client IP to send data to
   uint16_t benInputPort;    // BenTo incoming port for datagram message
-  uint16_t oscInputPort;    // Yo Protocol Input port
-  uint16_t oscOutputPort;   // Yo Protocol Output port
+  uint16_t yoInputPort;     // Yo Protocol Input port
+  uint16_t yoOutputPort;    // Yo Protocol Output port
 };
 
-// Memory usage: 76 bytes
+
+// 0x70 Memory usage: 8/32 bytes
+struct _oscSettings {
+  uint32_t outputIp;        // Client IP to send data to
+  uint16_t oscInputPort;    // OSC Protocol Input port
+  uint16_t oscOutputPort;   // OSC Protocol Output port
+};
+
+// 0x90 Memory usage: 4/32 bytes
+struct _artnetSettings {
+  uint32_t universe;        // Artnet Universe
+};
+
+// 0xB0 Memory usage: 76 bytes
 struct _wifiSettings {
+  bool isStatic;
   char ssid[SSID_LEN];
   char password[PWD_LEN];
   uint32_t staticIp;

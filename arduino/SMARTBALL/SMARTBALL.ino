@@ -1,6 +1,6 @@
 /* -------------------------------------------------------------------------------------
    THE SMARTBALL PROJECT - 09/09/2019
-   Copyright 2018-2019 Sylvain GARNAVAULT
+   Copyright 2018-2022 Sylvain GARNAVAULT
    -------------------------------------------------------------------------------------
 
    This program is free software: you can redistribute it and/or modify
@@ -41,7 +41,8 @@
 // BOARD AND VERSION INFO
 //--------------------------------------------------------------------------------------
 
-#define BOARD_VERSION 2        // 1 - Alpha and first batch for les Objets Volants, 2 - 14:20 new batch and Jive
+#define BOARD_VERSION 1        // 1 - Alpha and first batch for les Objets Volants, 2 - 14:20 new batch and Jive
+#define START_PIXEL  31        // 7 for 1420, 31 for general use
 #include "SMARTBALL_DEF.h"     // Smartball specific definitions
 
 //--------------------------------------------------------------------------------------
@@ -73,9 +74,10 @@ void setup() {
   // WiFi configuration
   //------------------------------------------------------------------------------------
 
-  if (connectWifi()) {
+  if (connectWifi() and !isPortalReboot()) {
     if (dgm) blinkLed(connectDGM() ? GREEN : RED, MEDIUM_BLINK);
     if (ben) blinkLed(connectBEN() ? GREEN : RED, MEDIUM_BLINK);
+    if (osc) blinkLed(connectOSC() ? GREEN : RED, MEDIUM_BLINK);   // (experimental)
     if (art) blinkLed(connectART() ? GREEN : RED, MEDIUM_BLINK);   // (experimental)
     operationMode = RUN;
   }
@@ -112,7 +114,8 @@ void loop() {
       if (rgb) updateStrobe();   // update strobe state
       if (dgm) receiveDGM();     // receive Smartball Datagrams
       if (ben) receiveBEN();     // receive BenTo & Yo Protocol
-      if (art) receiveART();     // receive ArtNet (experimental)
+      if (osc) receiveOSC();     // receive OSC                     (experimental)
+      if (art) receiveART();     // receive ArtNet                  (experimental)
       break;
     case SET:
       updateDNS();               // DNS redirection service
@@ -142,4 +145,14 @@ void mainFrame() {
 
 void espReboot() {
   ESP.restart();
+}
+
+void normalReboot() {
+  if (isPortalReboot()) setPortalReboot(false);
+  espReboot();
+}
+
+void portalReboot() {
+  if (!isPortalReboot()) setPortalReboot(true);
+  espReboot();
 }

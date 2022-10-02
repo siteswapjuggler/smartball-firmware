@@ -5,10 +5,10 @@
 ESP8266WebServer server(80);                            //Server on port 80
 
 void initWebServer() {
-  SPIFFS.begin();                                       // Start file system
+  LittleFS.begin();                                       // Start file system
   server.on("/", handleRoot);                           // Hande root request
   server.on("/testBall", testBall);                     // Test the ball
-  server.on("/rebootBall", espReboot);                  // Reboot the ball
+  server.on("/rebootBall", normalReboot);               // Reboot the ball in normal mode
   server.on("/getNetworks", getNetworks);               // Get available networks
   server.on("/getParameters", getParameters);           // Asking for actual parameters
   server.on("/refreshNetworks", refreshNetworks);       // Refresh available networks
@@ -83,10 +83,10 @@ bool handleFileRead(String path) {
   if (path.endsWith("/")) path += "index.html";
   String contentType = getContentType(path);
   String pathWithGz = path + ".gz";
-  if (SPIFFS.exists(pathWithGz) || SPIFFS.exists(path)) {
-    if (SPIFFS.exists(pathWithGz))
+  if (LittleFS.exists(pathWithGz) || LittleFS.exists(path)) {
+    if (LittleFS.exists(pathWithGz))
       path += ".gz";
-    File file = SPIFFS.open(path, "r");
+    File file = LittleFS.open(path, "r");
     size_t sent = server.streamFile(file, contentType);
     file.close();
     return true;

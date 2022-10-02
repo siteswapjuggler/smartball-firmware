@@ -21,10 +21,33 @@ void updateBAT() {
 
   // SEND BATT VALUE @1Hz
   if (batCounter == 0) {
-    int16_t val = (int16_t)(batValue * 100.);
-    _DOUT[0] = val >> 8; _DOUT[1] = val & 255;
-    sendDgmAnswer(CMD_BAT, 2);
+    if (dgm) sendBAT();
+    if (osc) sendOSCBat();
   }
   batCounter++;
   batCounter %= 10;
+}
+
+
+//-----------------------------------------------------------------------------------
+// DATAGRAM FEEDBACK
+//-----------------------------------------------------------------------------------
+
+void sendBAT() {
+  int16_t val = (int16_t)(batValue * 100.);
+  _DOUT[0] = val >> 8; _DOUT[1] = val & 255;
+  sendDgmAnswer(CMD_BAT, 2);
+}
+
+//-----------------------------------------------------------------------------------
+// OSC FEEDBACK
+//-----------------------------------------------------------------------------------
+
+void sendOSCBat() {
+  OSCMessage msg("/sb/batt");
+  msg.add(batValue);
+  OSC.beginPacket(oset.outputIp, oset.oscOutputPort);
+  msg.send(OSC);
+  OSC.endPacket();
+  msg.empty();
 }

@@ -1,6 +1,6 @@
 /* -------------------------------------------------------------------------------------
    THE SMARTBALL PROJECT - 08/09/2019
-   Copyright 2013-2019 Sylvain GARNAVAULT
+   Copyright 2013-2022 Sylvain GARNAVAULT
    -------------------------------------------------------------------------------------
 
    This program is free software: you can redistribute it and/or modify
@@ -38,49 +38,25 @@
 // USER PARAMETERS
 //----------------------------------------------------------------------------------
 
-#define SERIAL_NUMBER   86
-#define ID_NUMBER       6
-#define DEVICE_FLAG     0b11111
-#define DEFAULT_SSID    "LABOTRONIK"
-#define DEFAULT_PWD     "labotronik"
-#define DEFAULT_IP      "239.0.0.51"
-#define DEFAULT_STATIC  "192.168.100.106"
-#define DEFAULT_GATEWAY "192.168.100.1"
-#define DEFAULT_MASK    "255.255.255.0"
-
-/*
-#define SERIAL_NUMBER   1
+#define SERIAL_NUMBER   37
 #define ID_NUMBER       1
-#define DEVICE_FLAG     0b11111
-#define DEFAULT_SSID    "Labotronik"
-#define DEFAULT_PWD     "labotronik"
-#define DEFAULT_IP      "192.168.43.242"
-#define DEFAULT_STATIC  "192.168.43.101"
-#define DEFAULT_GATEWAY "192.168.43.1"
+#define DEVICE_FLAG     0b1111
+#define DEFAULT_SSID    "network"
+#define DEFAULT_PWD     "password"
+#define DEFAULT_IP      "192.168.1.10"
+#define DEFAULT_STATIC  "192.168.1.100"
+#define DEFAULT_GATEWAY "192.168.1.1"
 #define DEFAULT_MASK    "255.255.255.0"
-*/
-
-/*
-#define SERIAL_NUMBER   19
-#define ID_NUMBER       19
-#define DEVICE_FLAG     0b11
-#define DEFAULT_SSID    "Les Objets Volants"
-#define DEFAULT_PWD     "lesobjetsvolants"
-#define DEFAULT_IP      "192.168.0.50"
-#define DEFAULT_STATIC  "192.168.0.119"
-#define DEFAULT_GATEWAY "192.168.0.1"
-#define DEFAULT_MASK    "255.255.255.0"
-*/
 
 //----------------------------------------------------------------------------------
 // EEPROM VERSION
 //----------------------------------------------------------------------------------
 
 #define MAJOR    0
-#define MINOR    4
+#define MINOR    5
 #define REVISION 0
 
-#define RESET_PARAMETERS
+//#define RESET_PARAMETERS
 
 //----------------------------------------------------------------------------------
 // SET & READ EEPROM
@@ -99,7 +75,6 @@ void setup() {
 
   Serial.println("Get new parameters from EEPROM\n");
   getParameters();
-
   eepromVersion = "v" + String(MAJOR) + "." + String(MINOR) + "." + String(REVISION);
 }
 

@@ -50,14 +50,15 @@ void updateIMU() {
   ballState = ((IMU.getAccelN_mss() > 15.) << 1) | ((IMU.getAccelN_mss() < 8.) << 0) ;
 
   if (imuCounter == 0) {
-    sendIMU();
+    if (dgm) sendIMU();
+    if (osc) sendOSCIMU();
   }
   imuCounter++;
   imuCounter %= 3;
 }
 
 //-----------------------------------------------------------------------------------
-// DATAGRAM FUNCTIONS
+// DATAGRAM FEEDBACK
 //-----------------------------------------------------------------------------------
 
 void sendIMU() {
@@ -134,4 +135,26 @@ void sendIMU() {
 
     sendDgmAnswer(CMD_IMU, index);
   }
+}
+
+
+//-----------------------------------------------------------------------------------
+// OSC FEEDBACK
+//-----------------------------------------------------------------------------------
+
+void sendOSCIMU() {
+  OSCMessage msg("/sb/imu");
+  msg.add(IMU.getAccelX_mss());
+  msg.add(IMU.getAccelY_mss());
+  msg.add(IMU.getAccelZ_mss());
+  msg.add(IMU.getGyroX_rads());
+  msg.add(IMU.getGyroY_rads());
+  msg.add(IMU.getGyroZ_rads());
+  msg.add(IMU.getMagX_uT());
+  msg.add(IMU.getMagY_uT());
+  msg.add(IMU.getMagZ_uT());
+  OSC.beginPacket(oset.outputIp, oset.oscOutputPort);
+  msg.send(OSC);
+  OSC.endPacket();
+  msg.empty();
 }

@@ -3,9 +3,9 @@
 //-----------------------------------------------------------------------------------
 
 //attention la gestion de luminosité est faite à l'arrache dans la librairie dotstar avec START_PIXEL)
-Adafruit_DotStar strip = Adafruit_DotStar(RGB_NUM, D7, D5, DOTSTAR_BGR);
+SB_DotStar strip = SB_DotStar(RGB_NUM, D7, D5, DOTSTAR_BGR);
 
-byte startPixelDimmer = 31; // 7 for 1420, 31 for general use
+byte startPixelDimmer = START_PIXEL; // 7 for 1420, 31 for general use
 byte strobeState = 0;
 float dimmer = 100.;
 int32_t colors[2][RGB_NUM] = {0};
@@ -86,9 +86,9 @@ int32_t color(byte* data, uint16_t addr) {
 
 int32_t white(const uint8_t* data, uint16_t addr) {
   /*byte c3 = data[addr] / 3;
-  byte c2 = c3 + (data[addr] % 3 == 2);
-  byte c1 = c3 + (data[addr] % 3 == 1);
-  return (c3 << 16) | (c2 << 8) | c1;*/
+    byte c2 = c3 + (data[addr] % 3 == 2);
+    byte c1 = c3 + (data[addr] % 3 == 1);
+    return (c3 << 16) | (c2 << 8) | c1;*/
   return (data[addr] << 16) | (data[addr] << 8) | data[addr];
 }
 
@@ -173,14 +173,22 @@ void setW(byte slot, byte n, uint16_t addr) {
 }
 
 void setSTB(uint16_t addr) {
-  strobeSpeed = (_DIN[addr] << 8) | _DIN[addr + 1];                       // in 0.01 ms steps
-  strobeSpeed = strobeSpeed ? constrain(strobeSpeed, 1000, 50000) : 0;    // no strobe over 50 Hz and under 1 Hz
-  strobeSpeed *= 10;                                                      // transformation into µs
+  uint16_t v = (_DIN[addr] << 8) | _DIN[addr + 1];  // in 0.01 ms steps
+  checkSTB(v);
+}
+
+void checkSTB(uint16_t v) {
+  strobeSpeed = v ? constrain(v, 1000, 50000) : 0;  // no strobe over 50 Hz and under 1 Hz
+  strobeSpeed *= 10;                                // transformation into µs
 }
 
 void setMST(uint16_t addr) {
-  dimmer = (float)((_DIN[addr] << 8) | _DIN[addr + 1]) / 100.;            // Q14.2
-  dimmer = constrain(dimmer, 0., 100.);                                   // dimmer contrain from 0. to 100.
+  float v = (float)((_DIN[addr] << 8) | _DIN[addr + 1]) / 100.;   // Q14.2
+  checkMST(v);
+}
+
+void checkMST(float v) {
+  dimmer = constrain(v, 0., 100.);                  // dimmer contrain from 0. to 100.
 }
 
 //-----------------------------------------------------------------------------------

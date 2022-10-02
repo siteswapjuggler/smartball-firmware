@@ -84,21 +84,18 @@ void getParameters() {
 void setDefaultParameters() {
   IPAddress tmpIp;
 
-  eset.credential     = 0xECA8642;          // Eeprom magic number, previously 0xFDB97531
+  eset.credential     = 0xFDB97531;         // Eeprom magic number
   eset.major          = 0;                  // Eeprom major version
   eset.minor          = 4;                  // Eeprom minor version
   eset.revision       = 0;                  // Eeprom revision version
 
   fset.serialNumber   = SERIAL_NUMBER;      // Unique Serial Number
-  fset.deviceFlag     = DEVICE_FLAG;        // 3 for les Objets Volants, 15 for full devices
+  fset.deviceFlag     = DEVICE_FLAG;        // 3 for les Objets Volants, 15 for v1 full, 31 for v2 full
   fset.adcCalibration = 1000.;              // ADC calibration
 
   gset.idNumber       = ID_NUMBER;          // Identification number
-//  gset.imuFlag        = 0b1;              // Only accelerometer
   gset.imuFlag        = 0b111;
-//  gset.configFlag     = 0b1100000011;       // Blink, batt, bento & datagram
-//  gset.configFlag     = 0b0000010100000011; // Blink, batt, dgm, artnet
-  gset.configFlag     = 0b0000000100000011;   // Blink, batt, dgm
+  gset.configFlag     = 0b0000000100000011; // Blink, batt, dgm
 
   tmpIp.fromString(DEFAULT_IP);
   dset.outputIp       = (uint32_t)tmpIp;    // default output IP

@@ -4,11 +4,11 @@
 
 boolean connectBEN() {
   //Serial.println("- connect BenTo");
-  return connectOSC() && connectBenTo();
+  return connectYO() && connectBenTo();
 }
 
 boolean receiveBEN() {
-  receiveOSC();
+  receiveYO();
   receiveBenTo();
 }
 
@@ -38,22 +38,22 @@ void receiveBenTo() {
 // YO OSC SOCKET
 //-----------------------------------------------------------------------------------
 
-WiFiUDP OSC;
+WiFiUDP YO;
 
-boolean connectOSC() {
-  return OSC.begin(bset.oscInputPort) == 1;
+boolean connectYO() {
+  return YO.begin(bset.yoInputPort) == 1;
 }
 
 //-----------------------------------------------------------------------------------
 // YO OSC PROTOCOL
 //-----------------------------------------------------------------------------------
 
-void receiveOSC() {
+void receiveYO() {
   OSCMessage msg;
-  uint16_t packetSize = OSC.parsePacket();
+  uint16_t packetSize = YO.parsePacket();
   if ( packetSize > 0)  {
     while (packetSize--) {
-      char c = OSC.read();
+      char c = YO.read();
       msg.fill(c);
     }
     if (!msg.hasError()) {
@@ -78,9 +78,9 @@ void wassup(OSCMessage& msg) {
     OSCMessage answer("/wassup");
     answer.add(smartballIp);
     answer.add((int32)gset.idNumber);
-    OSC.beginPacket(bset.outputIp, bset.oscOutputPort);
-    answer.send(OSC);
-    OSC.endPacket();
+    YO.beginPacket(bset.outputIp, bset.yoOutputPort);
+    answer.send(YO);
+    YO.endPacket();
     answer.empty();
   }
 }

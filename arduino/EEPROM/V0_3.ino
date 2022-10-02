@@ -55,7 +55,7 @@ void getParameters() {
 
 void setDefaultParameters() {
   fset.serialNumber   = SERIAL_NUMBER;      // Unique Serial Number
-  fset.deviceFlag     = DEVICE_FLAG;        // 3 for les Objets Volants, 15 for full devices
+  fset.deviceFlag     = DEVICE_FLAG;        // 3 for les Objets Volants, 15 for v1 full, 31 for v2 full
   fset.adcCalibration = 1000.;              // ADC calibration
   gset.idNumber       = ID_NUMBER;          // Identification number
   iset.streamFlag     = 1;                  // Only Acceleration
