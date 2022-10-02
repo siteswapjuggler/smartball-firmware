@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 446.0, 201.0, 1290.0, 837.0 ],
+		"rect" : [ 151.0, 174.0, 1290.0, 837.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -46,7 +46,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 238.0, 85.0, 58.0, 22.0 ],
-					"presentation_linecount" : 2,
 					"text" : "/sb/portal"
 				}
 
@@ -69,7 +68,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 1178.779968000000054, 365.0, 74.0, 20.0 ],
-					"presentation_linecount" : 2,
 					"text" : "magnet (µT)"
 				}
 
@@ -92,7 +90,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 929.0, 365.0, 95.0, 20.0 ],
-					"presentation_linecount" : 9,
 					"text" : "accel (m.s-2)"
 				}
 
@@ -571,7 +568,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 18.0, 770.0, 161.0, 22.0 ],
-					"presentation_linecount" : 2,
 					"text" : "/sb/color1 $1 $2 $3 $4 $5 $6"
 				}
 
@@ -682,7 +678,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 421.0, 546.0, 111.0, 22.0 ],
-					"presentation_linecount" : 2,
 					"text" : "/sb/color1 $1 $2 $3"
 				}
 
@@ -763,7 +758,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 421.0, 306.5, 81.0, 22.0 ],
-					"presentation_linecount" : 2,
 					"text" : "/sb/master $1"
 				}
 
@@ -933,7 +927,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 18.0, 546.0, 94.0, 22.0 ],
-					"presentation_linecount" : 2,
 					"text" : "/sb/color1 $1 $2"
 				}
 
@@ -1046,7 +1039,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 421.0, 172.0, 77.0, 22.0 ],
-					"presentation_linecount" : 2,
 					"text" : "/sb/color1 $1"
 				}
 
@@ -1059,7 +1051,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 317.0, 172.0, 75.0, 22.0 ],
-					"presentation_linecount" : 2,
 					"text" : "/sb/motor $1"
 				}
 

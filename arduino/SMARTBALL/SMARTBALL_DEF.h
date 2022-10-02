@@ -13,7 +13,6 @@
 // LIBRARIES
 //-----------------------------------------------------------------------------------
 
-//#include <FS.h>                // SPIFFS management
 #include <LittleFS.h>          // LittleFS management
 #include <ArtnetWiFi.h>        // ArtNet protocol
 #include <Ticker.h>            // ESP8266 scheduling library for regular event

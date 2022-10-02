@@ -14,15 +14,16 @@ boolean connectOSC() {
 //-----------------------------------------------------------------------------------
 
 void receiveOSC() {
+  OSCBundle  bdl;
   OSCMessage msg;
   uint16_t packetSize = OSC.parsePacket();
   if ( packetSize > 0)  {
     while (packetSize--) {
       char c = OSC.read();
       msg.fill(c);
+      bdl.fill(c);
     }
     if (!msg.hasError()) {
-      msg.dispatch("/sb/save",    oscSave);
       msg.dispatch("/sb/infra",   oscInfra);
       msg.dispatch("/sb/motor",   oscMotor);
       msg.dispatch("/sb/strobe",  oscStrobe);
@@ -31,6 +32,16 @@ void receiveOSC() {
       msg.dispatch("/sb/color2",  oscColor2);
       msg.dispatch("/sb/portal",  oscPortal);
       msg.dispatch("/sb/connect", oscConnect);
+    }
+    if (!bdl.hasError()) {
+      bdl.dispatch("/sb/infra",   oscInfra);
+      bdl.dispatch("/sb/motor",   oscMotor);
+      bdl.dispatch("/sb/strobe",  oscStrobe);
+      bdl.dispatch("/sb/master",  oscMaster);
+      bdl.dispatch("/sb/color1",  oscColor1);
+      bdl.dispatch("/sb/color2",  oscColor2);
+      bdl.dispatch("/sb/portal",  oscPortal);
+      bdl.dispatch("/sb/connect", oscConnect);
     }
   }
 }
