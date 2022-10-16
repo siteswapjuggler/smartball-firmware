@@ -24,6 +24,7 @@ void receiveOSC() {
       bdl.fill(c);
     }
     if (!msg.hasError()) {
+      msg.dispatch("/sb/save",    oscSave);
       msg.dispatch("/sb/infra",   oscInfra);
       msg.dispatch("/sb/motor",   oscMotor);
       msg.dispatch("/sb/strobe",  oscStrobe);
@@ -33,7 +34,8 @@ void receiveOSC() {
       msg.dispatch("/sb/portal",  oscPortal);
       msg.dispatch("/sb/connect", oscConnect);
     }
-    if (!bdl.hasError()) {
+    else if (!bdl.hasError()) {
+      bdl.dispatch("/sb/save",    oscSave);
       bdl.dispatch("/sb/infra",   oscInfra);
       bdl.dispatch("/sb/motor",   oscMotor);
       bdl.dispatch("/sb/strobe",  oscStrobe);
@@ -53,6 +55,12 @@ void receiveOSC() {
 
 void oscSave(OSCMessage& msg) {
   saveOSCSettings();
+
+  OSCMessage answer("/sb/saved");
+  OSC.beginPacket(oset.outputIp, oset.oscOutputPort);
+  answer.send(OSC);
+  OSC.endPacket();
+  answer.empty();
 }
 
 void oscPortal(OSCMessage& msg) {
@@ -75,9 +83,9 @@ void oscColor(byte slot, OSCMessage& msg) {
   if (execute) {
     for (int i = 0; i < msg.size(); i++) {
       int32_t v = msg.getInt(i);
-      _DIN[addr++] = v & 255;
-      _DIN[addr++] = (v >> 8) & 255;
+      _DIN[addr++] = (v >> 24) & 255;
       _DIN[addr++] = (v >> 16) & 255;
+      _DIN[addr++] = (v >> 8)  & 255;
     }
   }
   setRGB(slot, msg.size(), 0);

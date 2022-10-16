@@ -38,7 +38,7 @@
 // USER PARAMETERS
 //----------------------------------------------------------------------------------
 
-#define SERIAL_NUMBER   37
+#define SERIAL_NUMBER   38
 #define ID_NUMBER       1
 #define DEVICE_FLAG     0b1111
 #define DEFAULT_SSID    "network"

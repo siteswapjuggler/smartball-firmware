@@ -28,7 +28,7 @@ void initEeprom() {
   EEPROM.end();
   eepromVersion = getEepromVersion();
 
-  if (eset.credential != 0xECA8642) {
+  if (eset.credential != 0xECA8641) {
     setDefaultParameters();
     saveDefaultParameters();
     espReboot();
@@ -92,7 +92,7 @@ void saveOSCSettings() {
 void setDefaultParameters() {
   IPAddress tmpIp;
 
-  eset.credential     = 0xECA8642;          // Eeprom magic number
+  eset.credential     = 0xECA8641;          // Eeprom magic number
   eset.major          = MAJOR;              // Eeprom major version
   eset.minor          = MINOR;              // Eeprom minor version
   eset.revision       = REVISION;           // Eeprom revision version
@@ -122,6 +122,8 @@ void setDefaultParameters() {
   oset.oscInputPort   = 10000;              // default OSC input port
   oset.oscOutputPort  = 12000;              // defautl OSC output port
 
+  aset.mode           = 0;                  // default DMX channel mode
+  aset.channel        = 0;                  // default first DMX channel
   aset.universe       = 1;                  // default artnet universe
 
   strcpy(wset.ssid, DEFAULT_SSID);          // default ssid
@@ -148,6 +150,7 @@ void printEepromParameters() {
   Serial.println("ID: " + String(gset.idNumber));
   Serial.println("IF: 0b" + String(gset.imuFlag, BIN));
   Serial.println("CF: 0b" + String(gset.configFlag, BIN));
+  Serial.print("PR:\t");Serial.println(gset.portalReboot ? "true" : "false");;
   
   Serial.println("\n[ DGM Settings ]");
   Serial.print("IP: ");Serial.println(IPAddress(dset.outputIp));
@@ -166,6 +169,8 @@ void printEepromParameters() {
   Serial.println("OO: " + String(oset.oscOutputPort));
   
   Serial.println("\n[ Artnet Settings ]");
+  Serial.println("MO: " + String(aset.mode));
+  Serial.println("CH: " + String(aset.channel));
   Serial.println("UN: " + String(aset.universe));
 
   Serial.println("\n[ WiFi Settings ]");

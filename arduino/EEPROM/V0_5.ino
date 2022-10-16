@@ -101,8 +101,10 @@ struct _oscSettings {
   uint16_t oscOutputPort;   // OSC Protocol Output port
 };
 
-// 0x90 Memory usage: 4/32 bytes
+// 0x90 Memory usage: 8/32 bytes
 struct _artnetSettings {
+  uint16_t mode;            // DMX Mode
+  uint16_t channel;         // first DMX channel
   uint32_t universe;        // Artnet Universe
 };
 
@@ -171,6 +173,8 @@ void setDefaultParameters() {
   oset.oscInputPort   = 10000;              // default OSC input port
   oset.oscOutputPort  = 12000;              // defautl OSC output port
 
+  aset.mode           = 0;                  // default DMX channel mode
+  aset.channel        = 0;                  // default first DMX channel
   aset.universe       = 1;                  // default artnet universe
 
   strcpy(wset.ssid, DEFAULT_SSID);          // default ssid
@@ -229,6 +233,8 @@ void printParameters() {
   Serial.println("OO: " + String(oset.oscOutputPort));
   
   Serial.println("\n[ Artnet Settings ]");
+  Serial.println("MO: " + String(aset.mode));
+  Serial.println("CH: " + String(aset.channel));
   Serial.println("UN: " + String(aset.universe));
 
   Serial.println("\n[ WiFi Settings ]");

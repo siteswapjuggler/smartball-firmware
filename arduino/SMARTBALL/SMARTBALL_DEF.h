@@ -249,8 +249,10 @@ struct _oscSettings {
   uint16_t oscOutputPort;   // OSC Protocol Output port
 };
 
-// 0x90 Memory usage: 4/32 bytes
+// 0x90 Memory usage: 8/32 bytes
 struct _artnetSettings {
+  uint16_t mode;            // DMX Mode
+  uint16_t channel;         // first DMX channel
   uint32_t universe;        // Artnet Universe
 };
 
