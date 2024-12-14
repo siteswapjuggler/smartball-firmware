@@ -84,7 +84,7 @@ void saveOSCSettings() {
 #define DEVICE_FLAG     0b11111
 #define DEFAULT_SSID    "network"
 #define DEFAULT_PWD     "password"
-#define DEFAULT_IP      "192.168.1.10"
+#define DEFAULT_IP      "239.0.0.51"
 #define DEFAULT_STATIC  "192.168.1.100"
 #define DEFAULT_GATEWAY "192.168.1.1"
 #define DEFAULT_MASK    "255.255.255.0"
@@ -103,7 +103,7 @@ void setDefaultParameters() {
 
   gset.idNumber       = ID_NUMBER;          // Identification number
   gset.imuFlag        = 1 << ACC_BIT | 1 << GYR_BIT | 1 << MAG_BIT;
-  gset.configFlag     = 1 << BLI_BIT | 1 << BAT_BIT | 1 << OSC_BIT | 1 << SPD_BIT;
+  gset.configFlag     = 1 << BLI_BIT | 1 << BAT_BIT | 1 << DGM_BIT | 1 << SPD_BIT;
   gset.portalReboot   = false;
 
   tmpIp.fromString(DEFAULT_IP);

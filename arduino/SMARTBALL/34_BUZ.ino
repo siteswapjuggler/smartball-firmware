@@ -21,7 +21,7 @@ void updateBUZ() {
   noTone(BUZ_PIN);
 }
 
-bool changeBUZ(int16_t v) {
+void changeBUZ(int16_t v) {
   motValue = v;
 }
 
