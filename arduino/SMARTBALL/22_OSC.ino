@@ -75,18 +75,16 @@ void oscInfra(OSCMessage& msg) {
 }
 
 void oscColor(byte slot, OSCMessage& msg) {
-  uint8_t addr = 0;
-  bool execute = true;
   for (int i = 0; i < msg.size(); i++) {
-    execute = msg.isInt(i);
+    if (!msg.isInt(i)) return;
   }
-  if (execute) {
-    for (int i = 0; i < msg.size(); i++) {
-      int32_t v = msg.getInt(i);
-      _DIN[addr++] = (v >> 24) & 255;
-      _DIN[addr++] = (v >> 16) & 255;
-      _DIN[addr++] = (v >> 8)  & 255;
-    }
+
+  uint8_t addr = 0;
+  for (int i = 0; i < msg.size(); i++) {
+    int32_t v = msg.getInt(i);
+    _DIN[addr++] = (v >> 24) & 255;
+    _DIN[addr++] = (v >> 16) & 255;
+    _DIN[addr++] = (v >> 8)  & 255;
   }
   setRGB(slot, msg.size(), 0);
 }

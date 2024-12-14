@@ -39,6 +39,9 @@ translation['en'] = {
 	'wifi-form-password-placehoder': 'password',
 	'submit-button': 'Apply',
 	
+    //WIFI FORM
+    'proto-form-title': 'Protocol configuration',
+
 	//CURRENT PARAMETERS
 	'parameters-title': 'Current parameters',
 	'test-button': 'Test'

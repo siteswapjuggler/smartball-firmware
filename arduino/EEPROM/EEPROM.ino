@@ -38,15 +38,16 @@
 // USER PARAMETERS
 //----------------------------------------------------------------------------------
 
-#define SERIAL_NUMBER   38
-#define ID_NUMBER       1
-#define DEVICE_FLAG     0b1111
-#define DEFAULT_SSID    "network"
-#define DEFAULT_PWD     "password"
+#define SERIAL_NUMBER   37
+#define ID_NUMBER       0
+#define DEVICE_FLAG     0b11111
+#define DEFAULT_SSID    "SiteswapTraveler"
+#define DEFAULT_PWD     "siteswap"
 #define DEFAULT_IP      "192.168.1.10"
-#define DEFAULT_STATIC  "192.168.1.100"
+#define DEFAULT_STATIC  "192.168.1.110"
 #define DEFAULT_GATEWAY "192.168.1.1"
 #define DEFAULT_MASK    "255.255.255.0"
+#define DEFAULT_MULTI   "239.0.0.51"
 
 //----------------------------------------------------------------------------------
 // EEPROM VERSION
@@ -56,7 +57,7 @@
 #define MINOR    5
 #define REVISION 0
 
-//#define RESET_PARAMETERS
+#define RESET_PARAMETERS
 
 //----------------------------------------------------------------------------------
 // SET & READ EEPROM

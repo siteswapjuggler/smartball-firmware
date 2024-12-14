@@ -3,6 +3,9 @@
 //-----------------------------------------------------------------------------------
 
 char* HOSTNAME;
+char HOSTNAME_ALPHA[]  = "SB_ALPHA";
+char HOSTNAME_NORMAL[] = "SB_00000";
+
 
 boolean connectWifi() {
   setHostname(fset.serialNumber);
@@ -35,14 +38,14 @@ boolean connectWifi() {
 
 void setHostname(uint16_t sn) {
   if (sn) {
-    HOSTNAME = "SB_00000";
+    HOSTNAME = HOSTNAME_NORMAL;
     for (int i = 0, m = 1; i < 5; i++) {
       HOSTNAME[7 - i] = 48 + ((sn / m) % 10);
       m *= 10;
     }
   }
   else {
-    HOSTNAME = "SB_ALPHA";
+    HOSTNAME = HOSTNAME_ALPHA;
   }
 }
 

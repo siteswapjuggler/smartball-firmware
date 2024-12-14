@@ -18,7 +18,7 @@ void updateMOT() {
   analogWrite(MOT_PIN, motValue);
 }
 
-bool changeMOT(int16_t v) {
+void changeMOT(int16_t v) {
   motValue = v & 1023;
 }
 

@@ -1,6 +1,8 @@
 <!doctype html>
 <!-- Bootstrap 4.6.x -->
 
+
+
 <html dir="ltr" lang="en">
 
 	<head>
@@ -40,7 +42,7 @@
 			</div>
 
 			<!------------------------------------------------------------------------------------->
-			<!-- WiFi configuration 																														 -->
+			<!-- WiFi configuration 														     -->
 			<!------------------------------------------------------------------------------------->
 
 			<div class="mt-3">
@@ -80,8 +82,89 @@
 				</form>
 			</div>
 
+            <!------------------------------------------------------------------------------------->
+            <!-- Protocol configuration                                                          -->
+            <!------------------------------------------------------------------------------------->
+
+            <div style="clear:both;"></div>
+
+            <div class="mt-3">
+				<ul class="nav nav-tabs" id="myTab" role="tablist">
+				  <li class="nav-item" role="presentation">
+					<button class="nav-link active" id="network-tab" data-toggle="tab" data-target="#network" type="button" role="tab" aria-controls="network" aria-selected="true">Network</button>
+				  </li>
+				  <li class="nav-item" role="presentation">
+					<button class="nav-link" id="protocols-tab" data-toggle="tab" data-target="#protocols" type="button" role="tab" aria-controls="protocols" aria-selected="false">Protocols</button>
+				  </li>
+				  <li class="nav-item" role="presentation">
+					<button class="nav-link" id="artnet-tab" data-toggle="tab" data-target="#artnet" type="button" role="tab" aria-controls="artnet" aria-selected="false">Artnet</button>
+				  </li>
+				  <li class="nav-item" role="presentation">
+					<button class="nav-link" id="sensors-tab" data-toggle="tab" data-target="#sensors" type="button" role="tab" aria-controls="sensors" aria-selected="false">Sensors</button>
+				  </li>
+				</ul>
+				<div class="tab-content" id="myTabContent">
+				  <div class="tab-pane show active" id="network" role="tabpanel" aria-labelledby="network-tab">
+					  
+					  <div class="form-group col-md-4">
+						  <label for="inputState">State</label>
+						  <select id="inputState" class="form-control">
+							<option selected>Automatic</option>
+							<option>Static IP</option>option>
+						  </select>
+						</div>
+
+					  <div class="input-group mt-3 mb-3">
+						  <div class="input-group-prepend">
+							<span class="input-group-text" id="ip-label">Static IP</span>
+						  </div>
+						  <input type="text" class="form-control" placeholder="192.168.100.50">
+					  </div>
+
+					  <div class="input-group mb-3">
+						  <div class="input-group-prepend">
+							<span class="input-group-text" id="mask-label">Subnet</span>
+						  </div>
+						  <input type="text" class="form-control" placeholder="255.255.255.0">
+					  </div>
+
+					  <div class="input-group mb-3">
+						  <div class="input-group-prepend">
+							<span class="input-group-text" id="gateway-label">Gateway</span>
+						  </div>
+						  <input type="text" class="form-control" placeholder="192.168.100.1">
+					  </div>
+					 
+
+				  </div>
+					
+				  <div class="tab-pane" id="protocols" role="tabpanel" aria-labelledby="protocols-tab">
+					  <div class="form-check form-check-inline">
+						  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+						  <label class="form-check-label" for="inlineCheckbox1">Accelerometer</label>
+						</div>
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+						  <label class="form-check-label" for="inlineCheckbox2">Gyrometer</label>
+						</div>
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3" disabled>
+						  <label class="form-check-label" for="inlineCheckbox3">Magnetometer</label>
+						</div>
+					  Here you can set the active protocols OSC, Artnet, Bento, Datagram...
+				  </div>
+				  <div class="tab-pane" id="artnet" role="tabpanel" aria-labelledby="artnet-tab">
+					  Here you can specify artnet specification mode, channel and univers...
+				  </div>
+				  <div class="tab-pane" id="sensors" role="tabpanel" aria-labelledby="sensors-tab">
+					  Here you can specify the sensors specification.
+				  </div>
+				</div>
+            </div>
+            
+            
 			<!------------------------------------------------------------------------------------->
-			<!-- Actual parameters 																						   								 -->
+			<!-- Actual parameters 															     -->
 			<!------------------------------------------------------------------------------------->
 			
 			<div style="clear:both;"></div>
@@ -104,6 +187,8 @@
 		</main>
 
 		<!-- build:js script/index.js -->
+		<script src="./js/jquery.slim.min.js"></script>
+		<script src="./js/bootstrap.min.js"></script>
 		<script src="./js/index-multilang.js"></script>
 		<script src="./js/translation.js"></script>
 		<script src="./js/index-script.js"></script>

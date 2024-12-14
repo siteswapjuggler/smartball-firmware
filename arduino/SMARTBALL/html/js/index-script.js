@@ -60,3 +60,13 @@ function getNetworks(refresh) {
 
 getNetworks(false);
 getParameters();
+
+$('#v-pills-home-tab button').on('click', function (event) {
+  event.preventDefault()
+  $(this).tab('show')
+});
+
+$('#v-pills-profile-tab button').on('click', function (event) {
+  event.preventDefault()
+  $(this).tab('show')
+});

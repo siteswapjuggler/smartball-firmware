@@ -78,7 +78,7 @@ void setup() {
     if (dgm) blinkLed(connectDGM() ? GREEN : RED, MEDIUM_BLINK);
     if (ben) blinkLed(connectBEN() ? GREEN : RED, MEDIUM_BLINK);
     if (osc) blinkLed(connectOSC() ? GREEN : RED, MEDIUM_BLINK);   // (experimental)
-    if (art) blinkLed(connectART() ? GREEN : RED, MEDIUM_BLINK);   // (experimental)
+    //if (art) blinkLed(connectART() ? GREEN : RED, MEDIUM_BLINK);   // (experimental)
     operationMode = RUN;
   }
   else {
@@ -115,7 +115,7 @@ void loop() {
       if (dgm) receiveDGM();     // receive Smartball Datagrams
       if (ben) receiveBEN();     // receive BenTo & Yo Protocol
       if (osc) receiveOSC();     // receive OSC                     (experimental)
-      if (art) receiveART();     // receive ArtNet                  (experimental)
+      //if (art) receiveART();     // receive ArtNet                  (experimental)
       break;
     case SET:
       updateDNS();               // DNS redirection service

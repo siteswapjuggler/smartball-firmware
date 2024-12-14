@@ -143,7 +143,7 @@ void getParameters() {
 void setDefaultParameters() {
   IPAddress tmpIp;
 
-  eset.credential     = 0xECA8642;          // Eeprom magic number
+  eset.credential     = 0xECA8641;          // Eeprom magic number
   eset.major          = MAJOR;              // Eeprom major version
   eset.minor          = MINOR;              // Eeprom minor version
   eset.revision       = REVISION;           // Eeprom revision version
@@ -154,10 +154,10 @@ void setDefaultParameters() {
 
   gset.idNumber       = ID_NUMBER;          // Identification number
   gset.imuFlag        = 1 << ACC_BIT | 1 << GYR_BIT | 1 << MAG_BIT;
-  gset.configFlag     = 1 << BLI_BIT | 1 << BAT_BIT | 1 << OSC_BIT |1 << SPD_BIT;
+  gset.configFlag     = 1 << BLI_BIT | 1 << BAT_BIT | 1 << DGM_BIT | 1 << SPD_BIT;
   gset.portalReboot   = false;
 
-  tmpIp.fromString(DEFAULT_IP);
+  tmpIp.fromString(DEFAULT_MULTI);
   dset.outputIp       = (uint32_t)tmpIp;    // default output IP
   dset.inputPort      = 8000;               // default input port
   dset.outputPort     = 9000;               // default output port
@@ -170,8 +170,8 @@ void setDefaultParameters() {
 
   tmpIp.fromString(DEFAULT_IP);
   oset.outputIp       = (uint32_t)tmpIp;    // default output IP
-  oset.oscInputPort   = 10000;              // default OSC input port
-  oset.oscOutputPort  = 12000;              // defautl OSC output port
+  oset.oscInputPort   = 10001;              // default OSC input port
+  oset.oscOutputPort  = 12001;              // defautl OSC output port
 
   aset.mode           = 0;                  // default DMX channel mode
   aset.channel        = 0;                  // default first DMX channel

@@ -26,6 +26,7 @@ void updateWebServer() {
 //-----------------------------------------------------------------------------------
 
 bool test = false;
+bool isScanning = false;
 
 void testBall() {
   test = test ? false : true;
@@ -38,8 +39,12 @@ void getNetworks() {
 }
 
 void refreshNetworks() {
-  availableNetworks = listNetworks();
-  getNetworks();
+  if (!isScanning) {
+    isScanning = true;
+    availableNetworks = listNetworks();
+    getNetworks();
+    isScanning = false;
+  }
 }
 
 void setNetwork() {
@@ -52,7 +57,13 @@ void setNetwork() {
 void getParameters() {
   String answer;
   answer += String(wset.ssid)+","+String(gset.idNumber)+","+String(HOSTNAME)+",";
-  answer += String(FIRMWARE_VERSION)+" | "+String(FIRMWARE_STATE)+","+eepromVersion+","+String(PROTOCOL_VERSION);
+  answer += String(FIRMWARE_VERSION)+" | "+String(FIRMWARE_STATE)+","+eepromVersion+","+String(PROTOCOL_VERSION)+",";
+  answer += String(gset.imuFlag)+","+String(gset.configFlag)+",";
+  answer += String(dset.outputIp)+","+String(dset.inputPort)+","+String(dset.outputPort);
+  answer += String(bset.outputIp)+","+String(bset.benInputPort)+","+String(bset.yoInputPort)+","+String(bset.yoOutputPort)+",";
+  answer += String(oset.outputIp)+","+String(oset.oscInputPort)+","+String(oset.oscOutputPort)+",";
+  answer += String(aset.mode)+","+String(aset.channel)+","+String(aset.universe)+",";
+  answer += String(wset.staticIp)+","+String(wset.gateway)+","+String(wset.subnet);
   server.send(200, "text/plain", answer);
 }
 

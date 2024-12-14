@@ -23,7 +23,8 @@
 #include <WiFiUDP.h>           // UDP Protocol Library
 #include <OSCBundle.h>         // OSC Protocol Library
 #include <SB_MPU9250.h>        // Custom MPU920 SPI Library
-#include <SB_DotStar.h>        // Custom SB Dotstar Library - https://github.com/adafruit/Adafruit_DotStar >> Issue with SPI Mode has been documented here https://github.com/adafruit/Adafruit_DotStar/isetsues/28
+#include <SB_DotStar.h>        // Custom SB Dotstar Library - https://github.com/adafruit/Adafruit_DotStar >> Issue with SPI Mode has been documented here https://github.com/adafruit/Adafruit_DotStar/issues/28
+                               // the custom library add the start_pixel functionality 
 
 //-----------------------------------------------------------------------------------
 // OPERATION MODE

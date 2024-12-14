@@ -7,7 +7,7 @@ boolean connectBEN() {
   return connectYO() && connectBenTo();
 }
 
-boolean receiveBEN() {
+void receiveBEN() {
   receiveYO();
   receiveBenTo();
 }
@@ -51,7 +51,7 @@ boolean connectYO() {
 void receiveYO() {
   OSCMessage msg;
   uint16_t packetSize = YO.parsePacket();
-  if ( packetSize > 0)  {
+  if (packetSize > 0) {
     while (packetSize--) {
       char c = YO.read();
       msg.fill(c);
@@ -67,9 +67,9 @@ void wassup(OSCMessage& msg) {
   if (msg.size() == 1 && msg.isString(0)) {
     char ipString[IP_LEN];
     msg.getString(0, ipString, IP_LEN);
-    
+
     IPAddress tmpIp;
-    tmpIp.fromString(ipString);  
+    tmpIp.fromString(ipString);
     bset.outputIp = (uint32_t)tmpIp;
 
     char smartballIp[IP_LEN];
