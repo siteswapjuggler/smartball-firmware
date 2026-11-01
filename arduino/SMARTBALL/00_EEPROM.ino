@@ -103,7 +103,7 @@ void setDefaultParameters() {
 
   gset.idNumber       = ID_NUMBER;          // Identification number
   gset.imuFlag        = 1 << ACC_BIT | 1 << GYR_BIT | 1 << MAG_BIT;
-  gset.configFlag     = 1 << BLI_BIT | 1 << BAT_BIT | 1 << DGM_BIT | 1 << SPD_BIT;
+  gset.configFlag     = 1 << BLI_BIT | 1 << BAT_BIT | 1 << DGM_BIT | 1 << OSC_BIT | 1 << SPD_BIT;
   gset.portalReboot   = false;
 
   tmpIp.fromString(DEFAULT_IP);
