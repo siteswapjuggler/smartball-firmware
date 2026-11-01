@@ -41,8 +41,8 @@
 #define SERIAL_NUMBER   37
 #define ID_NUMBER       0
 #define DEVICE_FLAG     0b11111
-#define DEFAULT_SSID    "SiteswapTraveler"
-#define DEFAULT_PWD     "siteswap"
+#define DEFAULT_SSID    "network"
+#define DEFAULT_PWD     "password"
 #define DEFAULT_IP      "192.168.1.10"
 #define DEFAULT_STATIC  "192.168.1.110"
 #define DEFAULT_GATEWAY "192.168.1.1"

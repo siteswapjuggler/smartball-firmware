@@ -21,7 +21,7 @@ The Smartball project is an ESP8266 Arduino compatible firmware. In order to upl
 - choosing your IDE options
 - upload EEPROM factory settings
 - upload the firmware
-- upload SPIFFS data
+- upload LittleFS data
 
 ### Installing Arduino IDE 
 
@@ -33,13 +33,13 @@ Follow the "Installing with Board Manager" steps from this repository https://gi
 
 ### Installing firmware dependencies
 
-This firmware use two Arduino librairies, one for the dotstars driving and the other one for the MPU9250 sensor. Both libraries are joined in the 'arduino/LIBRARIES' subfolder. You can add them within the Arduino IDE by following those instructions: https://www.arduino.cc/en/Guide/Libraries
+This firmware uses five Arduino libraries: SB DotStar for the dotstars driving, SB MPU9250 for the sensor, ArtnetWifi, OSC and Ticker. All of them are joined in the 'arduino/LIBRAIRIES' subfolder. You can add them within the Arduino IDE by following those instructions: https://www.arduino.cc/en/Guide/Libraries
 
 ### Choosing IDE options 
 
-You have now to configure the boards options in the IDE, those are the good option : 
+You have now to configure the boards options in the IDE, those are the good option, checked with the ESP8266 core 3.1.2 : 
 - LOLIN(WEMOS) D1 R2 & Mini
-- 4M (2M SPIFFS)
+- 4MB (FS:2MB OTA:~1019KB)
 - Disabled
 - Nothing
 - v2 Lower Memory 
@@ -50,20 +50,20 @@ You have now to configure the boards options in the IDE, those are the good opti
 
 ### Upload EEPROM factory settings
 
-After configuring the IDE, boards and libraries, just plug your Smartball, choose its serial port in the "Tool" menu and upload the firmware sketch stored in the 'arduino/EEPROM' subfolder. Remember to change to Serial Number according to your ball. Be patient, ESP8266 sketches can takes some time to compile. The communication can fail with high baudrates, check for power on, unplug and replug and try again.
+After configuring the IDE, boards and libraries, just plug your Smartball, choose its serial port in the "Tool" menu and upload the firmware sketch stored in the 'arduino/EEPROM' subfolder. Remember to change the Serial Number according to your ball, and DEFAULT_SSID and DEFAULT_PWD according to your network. Be patient, ESP8266 sketches can takes some time to compile. The communication can fail with high baudrates, check for power on, unplug and replug and try again.
 
 **ATTENTION:** you need to power on the ball before uploading...
 
 
 ### Upload the firmware
 
-After configuring the IDE, boards, libraries and setting up EEPROM factory settings, just plug your Smartball, choose its serial port in the "Tool" menu and upload the firmware sketch stored in the 'arduino/SMARTBALL' subfolder. Be patient, ESP8266 sketches can takes some time to compile. The communication can fail with high baudrates, check for power on, unplug and replug and try again.
+After configuring the IDE, boards, libraries and setting up EEPROM factory settings, set BOARD_VERSION in 'SMARTBALL.ino' (1 for the alpha and the first batch, 2 for the 14:20 and Jive batches), also set DEFAULT_SSID and DEFAULT_PWD in '00_EEPROM.ino', then plug your Smartball, choose its serial port in the "Tool" menu and upload the firmware sketch stored in the 'arduino/SMARTBALL' subfolder. Be patient, ESP8266 sketches can takes some time to compile. The communication can fail with high baudrates, check for power on, unplug and replug and try again.
 
 **ATTENTION:** you need to power on the ball before uploading...
 
-### Upload SPIFFS data
+### Upload LittleFS data
 
-The new firmware use a SPI File System to store the webserver data files. You can upload those data by installing the file system upload as described in the repository : https://github.com/esp8266/arduino-esp8266fs-plugin, then using the *Tools > ESP8266 Sketch Data Upload* menu item within the Arduino IDE with the firmware sketch opened.
+The firmware uses LittleFS to store the webserver data files. You can upload those data by installing the file system upload as described in the repository : https://github.com/earlephilhower/arduino-esp8266littlefs-plugin, then using the *Tools > ESP8266 LittleFS Data Upload* menu item within the Arduino IDE with the firmware sketch opened.
 
 **ATTENTION:** you need to power on the ball before uploading...
 
