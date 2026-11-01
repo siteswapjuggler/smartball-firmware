@@ -60,8 +60,8 @@ void setup() {
   iset.accRange = 3;
   iset.gyrRange = 3;
   gset.idNumber = ofset.serialNumber;
-  strcpy(wset.ssid, "Les Objets Volants");
-  strcpy(wset.password, "lesobjetsvolants");
+  strcpy(wset.ssid, "network");
+  strcpy(wset.password, "password");
   strcpy(wset.outputIp, "239.0.0.51");
 
   EEPROM.begin(512);

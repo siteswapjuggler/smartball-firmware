@@ -50,8 +50,8 @@ void factorySettings() {
   iset.accRange   = 3;
   iset.gyrRange   = 3;
   
-  strcpy(wset.ssid, "DOME_FORMATION");
-  strcpy(wset.password, "dome_formation");
+  strcpy(wset.ssid, "network");
+  strcpy(wset.password, "password");
   strcpy(wset.outputIp, "192.168.200.10");
   
   EEPROM.begin(512);
